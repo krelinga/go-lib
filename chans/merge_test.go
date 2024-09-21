@@ -1,5 +1,7 @@
 package chans
 
+// spell-checker:ignore chans stretchr
+
 import (
 	"testing"
 	"time"

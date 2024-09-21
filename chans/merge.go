@@ -1,5 +1,7 @@
 package chans
 
+// spell-checker:ignore chans
+
 import "sync"
 
 // Merge() merges multiple channels into a single channel.
