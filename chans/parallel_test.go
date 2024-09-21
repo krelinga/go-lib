@@ -3,10 +3,10 @@ package chans
 // spell-checker:ignore chans stretchr chanstest
 
 import (
-	"sync"
 	"testing"
 
 	"github.com/krelinga/go-lib/chans/chanstest"
+	"github.com/krelinga/go-lib/routines"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -49,18 +49,15 @@ func TestParallelErr(t *testing.T) {
 			}
 			return x * 2, nil
 		})
-		wg := sync.WaitGroup{}
-		wg.Add(2)
-		go func() {
-			defer wg.Done()
-			chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
-		}()
-		go func() {
-			defer wg.Done()
-			assert.ErrorIs(t, <-err, assert.AnError)
-			chanstest.AssertEventuallyClosed(t, err)
-		}()
-		wg.Wait()
+		routines.RunAndWait(
+			func() {
+				chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
+			},
+			func() {
+				assert.ErrorIs(t, <-err, assert.AnError)
+				chanstest.AssertEventuallyClosed(t, err)
+			},
+		)
 	})
 }
 
