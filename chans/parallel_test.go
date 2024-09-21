@@ -65,6 +65,36 @@ func TestParallelErr(t *testing.T) {
 			assert.ErrorIs(t, <-err, assert.AnError)
 			assertEventuallyClosed(t, err)
 		}()
-		wg.Wait()	
+		wg.Wait()
+	})
+}
+
+func TestParallel(t *testing.T) {
+	t.Parallel()
+
+	t.Run("Empty", func(t *testing.T) {
+		t.Parallel()
+		in := make(chan int)
+		out := Parallel(10, in, func(int) int {
+			return 0
+		})
+		close(in)
+		assertEventuallyClosed(t, out)
+	})
+	t.Run("EveryInputSeen", func(t *testing.T) {
+		t.Parallel()
+		in := make(chan int, 3)
+		for i := 0; i < 3; i++ {
+			in <- i
+		}
+		close(in)
+		out := Parallel(10, in, func(x int) int {
+			return x * 2
+		})
+		found := []int{}
+		for x := range out {
+			found = append(found, x)
+		}
+		assert.ElementsMatch(t, []int{0, 2, 4}, found)
 	})
 }
