@@ -5,7 +5,6 @@ package chans
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/krelinga/go-lib/chans/chanstest"
 )
 
@@ -23,8 +22,7 @@ func TestMerge(t *testing.T) {
 		c := Merge(c1)
 		c1 <- 1024
 		close(c1)
-		assert.Equal(t, 1024, <-c)
-		chanstest.AssertEventuallyClosed(t, c)
+		chanstest.AssertElementsEventuallyMatch(t, c, []int{1024})
 	})
 	t.Run("Multiple", func(t *testing.T) {
 		t.Parallel()
@@ -35,10 +33,6 @@ func TestMerge(t *testing.T) {
 		c2 <- 2048
 		close(c1)
 		close(c2)
-		found := []int{}
-		for v := range c {
-			found = append(found, v)
-		}
-		assert.ElementsMatch(t, []int{1024, 2048}, found)
+		chanstest.AssertElementsEventuallyMatch(t, c, []int{1024, 2048})
 	})
 }

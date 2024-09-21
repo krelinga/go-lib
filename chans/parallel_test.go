@@ -33,11 +33,7 @@ func TestParallelErr(t *testing.T) {
 		out, err := ParallelErr(10, in, func(x int) (int, error) {
 			return x * 2, nil
 		})
-		found := []int{}
-		for x := range out {
-			found = append(found, x)
-		}
-		assert.ElementsMatch(t, []int{0, 2, 4}, found)
+		chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
 		chanstest.AssertEventuallyClosed(t, err)
 	})
 	t.Run("Errors", func(t *testing.T) {
@@ -57,11 +53,7 @@ func TestParallelErr(t *testing.T) {
 		wg.Add(2)
 		go func() {
 			defer wg.Done()
-			found := []int{}
-			for x := range out {
-				found = append(found, x)
-			}
-			assert.ElementsMatch(t, []int{0, 4}, found)
+			chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
 		}()
 		go func() {
 			defer wg.Done()
