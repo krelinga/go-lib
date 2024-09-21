@@ -1,11 +1,12 @@
 package chans
 
-// spell-checker:ignore chans stretchr
+// spell-checker:ignore chans stretchr chanstest
 
 import (
 	"sync"
 	"testing"
 
+	"github.com/krelinga/go-lib/chans/chanstest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,8 +20,8 @@ func TestParallelErr(t *testing.T) {
 			return 0, nil
 		})
 		close(in)
-		assertEventuallyClosed(t, out)
-		assertEventuallyClosed(t, err)
+		chanstest.AssertEventuallyClosed(t, out)
+		chanstest.AssertEventuallyClosed(t, err)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()
@@ -37,7 +38,7 @@ func TestParallelErr(t *testing.T) {
 			found = append(found, x)
 		}
 		assert.ElementsMatch(t, []int{0, 2, 4}, found)
-		assertEventuallyClosed(t, err)
+		chanstest.AssertEventuallyClosed(t, err)
 	})
 	t.Run("Errors", func(t *testing.T) {
 		t.Parallel()
@@ -65,7 +66,7 @@ func TestParallelErr(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			assert.ErrorIs(t, <-err, assert.AnError)
-			assertEventuallyClosed(t, err)
+			chanstest.AssertEventuallyClosed(t, err)
 		}()
 		wg.Wait()
 	})
@@ -81,7 +82,7 @@ func TestParallel(t *testing.T) {
 			return 0
 		})
 		close(in)
-		assertEventuallyClosed(t, out)
+		chanstest.AssertEventuallyClosed(t, out)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()

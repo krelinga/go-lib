@@ -1,11 +1,12 @@
 package chans
 
-// spell-checker:ignore chans stretchr
+// spell-checker:ignore chans stretchr chanstest
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/krelinga/go-lib/chans/chanstest"
 )
 
 func TestMerge(t *testing.T) {
@@ -14,7 +15,7 @@ func TestMerge(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		t.Parallel()
 		c := Merge[int]()
-		assertEventuallyClosed(t, c)
+		chanstest.AssertEventuallyClosed(t, c)
 	})
 	t.Run("Single", func(t *testing.T) {
 		t.Parallel()
@@ -23,7 +24,7 @@ func TestMerge(t *testing.T) {
 		c1 <- 1024
 		close(c1)
 		assert.Equal(t, 1024, <-c)
-		assertEventuallyClosed(t, c)
+		chanstest.AssertEventuallyClosed(t, c)
 	})
 	t.Run("Multiple", func(t *testing.T) {
 		t.Parallel()

@@ -1,6 +1,6 @@
-package chans
+package chanstest
 
-// spell-checker:ignore chans stretchr
+// spell-checker:ignore chanstest stretchr
 
 import (
 	"testing"
@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func assertEventuallyClosed[payload any](t *testing.T, c <-chan payload) {
+func AssertEventuallyClosed[payload any](t *testing.T, c <-chan payload) {
 	assert.Eventually(t, func() bool {
 		select {
 		case _, ok := <-c:
