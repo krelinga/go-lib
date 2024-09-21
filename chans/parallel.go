@@ -1,5 +1,7 @@
 package chans
 
+// spell-checker:ignore chans
+
 import "fmt"
 
 func each[inType any, outType any](f func(inType) outType, in ...inType) []outType {
