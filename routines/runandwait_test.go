@@ -43,6 +43,6 @@ func TestRunAndWait(t *testing.T) {
 		close(bWait)
 		assert.False(t, chanIsClosed(fnReturned))
 		close(cWait)
-		chanstest.AssertEventuallyClosed(t, fnReturned)
+		chanstest.AssertEventuallyEmpty(t, fnReturned)
 	})
 }

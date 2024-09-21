@@ -20,8 +20,8 @@ func TestParallelErr(t *testing.T) {
 			return 0, nil
 		})
 		close(in)
-		chanstest.AssertEventuallyClosed(t, out)
-		chanstest.AssertEventuallyClosed(t, err)
+		chanstest.AssertEventuallyEmpty(t, out)
+		chanstest.AssertEventuallyEmpty(t, err)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()
@@ -34,7 +34,7 @@ func TestParallelErr(t *testing.T) {
 			return x * 2, nil
 		})
 		chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
-		chanstest.AssertEventuallyClosed(t, err)
+		chanstest.AssertEventuallyEmpty(t, err)
 	})
 	t.Run("Errors", func(t *testing.T) {
 		t.Parallel()
@@ -55,7 +55,7 @@ func TestParallelErr(t *testing.T) {
 			},
 			func() {
 				assert.ErrorIs(t, <-err, assert.AnError)
-				chanstest.AssertEventuallyClosed(t, err)
+				chanstest.AssertEventuallyEmpty(t, err)
 			},
 		)
 	})
@@ -71,7 +71,7 @@ func TestParallel(t *testing.T) {
 			return 0
 		})
 		close(in)
-		chanstest.AssertEventuallyClosed(t, out)
+		chanstest.AssertEventuallyEmpty(t, out)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()

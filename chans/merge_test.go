@@ -14,7 +14,7 @@ func TestMerge(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		t.Parallel()
 		c := Merge[int]()
-		chanstest.AssertEventuallyClosed(t, c)
+		chanstest.AssertEventuallyEmpty(t, c)
 	})
 	t.Run("Single", func(t *testing.T) {
 		t.Parallel()
