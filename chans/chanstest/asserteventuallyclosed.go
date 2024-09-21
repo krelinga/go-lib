@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// AssertEventuallyClosed asserts that the channel is eventually closed.
 func AssertEventuallyClosed[payload any](t *testing.T, c <-chan payload) {
 	assert.Eventually(t, func() bool {
 		select {
