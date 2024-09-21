@@ -4,24 +4,12 @@ package chans
 
 import (
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMerge(t *testing.T) {
 	t.Parallel()
-
-	assertEventuallyClosed := func(t *testing.T, c <-chan int) {
-		assert.Eventually(t, func() bool {
-			select {
-			case _, ok := <-c:
-				return !ok
-			default:
-				return false
-			}
-		}, time.Second, 10*time.Millisecond)
-	}
 
 	t.Run("Empty", func(t *testing.T) {
 		t.Parallel()
