@@ -1,11 +1,11 @@
 package routines
 
-// spell-checker:ignore chans stretchr chanstest
+// spell-checker:ignore chans stretchr pipetest
 
 import (
 	"testing"
 
-	"github.com/krelinga/go-lib/pipe/chanstest"
+	"github.com/krelinga/go-lib/pipe/pipetest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -43,6 +43,6 @@ func TestRunAndWait(t *testing.T) {
 		close(bWait)
 		assert.False(t, chanIsClosed(fnReturned))
 		close(cWait)
-		chanstest.AssertEventuallyEmpty(t, fnReturned)
+		pipetest.AssertEventuallyEmpty(t, fnReturned)
 	})
 }

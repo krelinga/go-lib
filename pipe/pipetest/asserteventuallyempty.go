@@ -1,4 +1,4 @@
-package chanstest
+package pipetest
 
 // spell-checker:ignore chanstest stretchr
 

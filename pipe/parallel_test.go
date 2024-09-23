@@ -1,12 +1,12 @@
 package pipe
 
-// spell-checker:ignore chans stretchr chanstest
+// spell-checker:ignore chans stretchr pipetest
 
 import (
 	"context"
 	"testing"
 
-	"github.com/krelinga/go-lib/pipe/chanstest"
+	"github.com/krelinga/go-lib/pipe/pipetest"
 	"github.com/krelinga/go-lib/routines"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,8 +23,8 @@ func TestParallelErr(t *testing.T) {
 			return 0, nil
 		})
 		close(in)
-		chanstest.AssertEventuallyEmpty(t, out)
-		chanstest.AssertEventuallyEmpty(t, err)
+		pipetest.AssertEventuallyEmpty(t, out)
+		pipetest.AssertEventuallyEmpty(t, err)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()
@@ -38,8 +38,8 @@ func TestParallelErr(t *testing.T) {
 		out, err := ParallelErr(ctx, 10, in, func(x int) (int, error) {
 			return x * 2, nil
 		})
-		chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
-		chanstest.AssertEventuallyEmpty(t, err)
+		pipetest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
+		pipetest.AssertEventuallyEmpty(t, err)
 	})
 	t.Run("Errors", func(t *testing.T) {
 		t.Parallel()
@@ -58,11 +58,11 @@ func TestParallelErr(t *testing.T) {
 		})
 		routines.RunAndWait(
 			func() {
-				chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
+				pipetest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
 			},
 			func() {
 				assert.ErrorIs(t, <-err, assert.AnError)
-				chanstest.AssertEventuallyEmpty(t, err)
+				pipetest.AssertEventuallyEmpty(t, err)
 			},
 		)
 	})
@@ -80,7 +80,7 @@ func TestParallel(t *testing.T) {
 			return 0
 		})
 		close(in)
-		chanstest.AssertEventuallyEmpty(t, out)
+		pipetest.AssertEventuallyEmpty(t, out)
 	})
 	t.Run("EveryInputSeen", func(t *testing.T) {
 		t.Parallel()

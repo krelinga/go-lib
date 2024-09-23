@@ -1,4 +1,4 @@
-package chanstest
+package pipetest
 
 import (
 	"testing"

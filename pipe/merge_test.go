@@ -1,12 +1,12 @@
 package pipe
 
-// spell-checker:ignore chans stretchr chanstest
+// spell-checker:ignore chans stretchr pipetest
 
 import (
 	"context"
 	"testing"
 
-	"github.com/krelinga/go-lib/pipe/chanstest"
+	"github.com/krelinga/go-lib/pipe/pipetest"
 )
 
 func TestMerge(t *testing.T) {
@@ -17,7 +17,7 @@ func TestMerge(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		c := Merge[int](ctx)
-		chanstest.AssertEventuallyEmpty(t, c)
+		pipetest.AssertEventuallyEmpty(t, c)
 	})
 	t.Run("Single", func(t *testing.T) {
 		t.Parallel()
@@ -27,7 +27,7 @@ func TestMerge(t *testing.T) {
 		c := Merge(ctx, c1)
 		c1 <- 1024
 		close(c1)
-		chanstest.AssertElementsEventuallyMatch(t, c, []int{1024})
+		pipetest.AssertElementsEventuallyMatch(t, c, []int{1024})
 	})
 	t.Run("Multiple", func(t *testing.T) {
 		t.Parallel()
@@ -40,6 +40,6 @@ func TestMerge(t *testing.T) {
 		c2 <- 2048
 		close(c1)
 		close(c2)
-		chanstest.AssertElementsEventuallyMatch(t, c, []int{1024, 2048})
+		pipetest.AssertElementsEventuallyMatch(t, c, []int{1024, 2048})
 	})
 }
