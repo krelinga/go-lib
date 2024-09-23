@@ -15,7 +15,7 @@ func each[inType any, outType any](f func(inType) outType, in ...inType) []outTy
 	return out
 }
 
-func ParallelErr[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
+func ParDoErr[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
 	outs := make([]chan outType, parallelism)
 	errors := make([]chan error, parallelism)
 	for i := 0; i < parallelism; i++ {
@@ -46,9 +46,9 @@ func ParallelErr[inType any, outType any](ctx context.Context, parallelism int, 
 	return Merge(ctx, roOuts...), Merge(ctx, roErrors...)
 }
 
-// Parallel() runs a function in parallel on each value from the input channel.
-func Parallel[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) outType) <-chan outType {
-	outs, errs := ParallelErr(ctx, parallelism, in, func(in inType) (outType, error) {
+// ParDo() runs a function in parallel on each value from the input channel.
+func ParDo[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) outType) <-chan outType {
+	outs, errs := ParDoErr(ctx, parallelism, in, func(in inType) (outType, error) {
 		return f(in), nil
 	})
 	go func() {

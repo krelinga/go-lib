@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParallelErr(t *testing.T) {
+func TestParDoErr(t *testing.T) {
 	t.Parallel()
 
 	t.Run("Empty", func(t *testing.T) {
@@ -18,7 +18,7 @@ func TestParallelErr(t *testing.T) {
 		in := make(chan int)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		out, err := ParallelErr(ctx, 10, in, func(int) (int, error) {
+		out, err := ParDoErr(ctx, 10, in, func(int) (int, error) {
 			return 0, nil
 		})
 		close(in)
@@ -34,7 +34,7 @@ func TestParallelErr(t *testing.T) {
 		close(in)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		out, err := ParallelErr(ctx, 10, in, func(x int) (int, error) {
+		out, err := ParDoErr(ctx, 10, in, func(x int) (int, error) {
 			return x * 2, nil
 		})
 		pipetest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
@@ -49,7 +49,7 @@ func TestParallelErr(t *testing.T) {
 		close(in)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		out, err := ParallelErr(ctx, 10, in, func(x int) (int, error) {
+		out, err := ParDoErr(ctx, 10, in, func(x int) (int, error) {
 			if x == 1 {
 				return 0, assert.AnError
 			}
@@ -67,7 +67,7 @@ func TestParallelErr(t *testing.T) {
 	})
 }
 
-func TestParallel(t *testing.T) {
+func TestParDo(t *testing.T) {
 	t.Parallel()
 
 	t.Run("Empty", func(t *testing.T) {
@@ -75,7 +75,7 @@ func TestParallel(t *testing.T) {
 		in := make(chan int)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		out := Parallel(ctx, 10, in, func(int) int {
+		out := ParDo(ctx, 10, in, func(int) int {
 			return 0
 		})
 		close(in)
@@ -90,7 +90,7 @@ func TestParallel(t *testing.T) {
 		close(in)
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		out := Parallel(ctx, 10, in, func(x int) int {
+		out := ParDo(ctx, 10, in, func(x int) int {
 			return x * 2
 		})
 		found := []int{}
