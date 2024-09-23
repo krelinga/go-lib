@@ -5,7 +5,7 @@ package routines
 import (
 	"testing"
 
-	"github.com/krelinga/go-lib/chans/chanstest"
+	"github.com/krelinga/go-lib/pipe/chanstest"
 	"github.com/stretchr/testify/assert"
 )
 

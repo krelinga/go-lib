@@ -1,4 +1,4 @@
-package chans
+package pipe
 
 // spell-checker:ignore chans stretchr chanstest
 
@@ -6,7 +6,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/krelinga/go-lib/chans/chanstest"
+	"github.com/krelinga/go-lib/pipe/chanstest"
 	"github.com/krelinga/go-lib/routines"
 	"github.com/stretchr/testify/assert"
 )
