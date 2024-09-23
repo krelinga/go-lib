@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/krelinga/go-lib/pipe/pipetest"
-	"github.com/krelinga/go-lib/routines"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -56,7 +55,7 @@ func TestParallelErr(t *testing.T) {
 			}
 			return x * 2, nil
 		})
-		routines.RunAndWait(
+		Wait(
 			func() {
 				pipetest.AssertElementsEventuallyMatch(t, out, []int{0, 4})
 			},
