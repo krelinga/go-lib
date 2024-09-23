@@ -2,7 +2,10 @@ package chans
 
 // spell-checker:ignore chans
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 func each[inType any, outType any](f func(inType) outType, in ...inType) []outType {
 	out := make([]outType, len(in))
@@ -12,7 +15,7 @@ func each[inType any, outType any](f func(inType) outType, in ...inType) []outTy
 	return out
 }
 
-func ParallelErr[inType any, outType any](parallelism int, in <-chan inType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
+func ParallelErr[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
 	outs := make([]chan outType, parallelism)
 	errors := make([]chan error, parallelism)
 	for i := 0; i < parallelism; i++ {
@@ -25,10 +28,14 @@ func ParallelErr[inType any, outType any](parallelism int, in <-chan inType, f f
 			for inVal := range in {
 				outVal, err := f(inVal)
 				if err != nil {
-					errors[i] <- err
+					if !TryWrite(ctx, errors[i], err) {
+						return
+					}
 					continue
 				}
-				outs[i] <- outVal
+				if !TryWrite(ctx, outs[i], outVal) {
+					return
+				}
 			}
 		}()
 	}
@@ -36,12 +43,12 @@ func ParallelErr[inType any, outType any](parallelism int, in <-chan inType, f f
 	roOuts := each(ReadOnly, outs...)
 	roErrors := each(ReadOnly, errors...)
 
-	return Merge(roOuts...), Merge(roErrors...)
+	return Merge(ctx, roOuts...), Merge(ctx, roErrors...)
 }
 
 // Parallel() runs a function in parallel on each value from the input channel.
-func Parallel[inType any, outType any](parallelism int, in <-chan inType, f func(inType) outType) <-chan outType {
-	outs, errs := ParallelErr(parallelism, in, func(in inType) (outType, error) {
+func Parallel[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) outType) <-chan outType {
+	outs, errs := ParallelErr(ctx, parallelism, in, func(in inType) (outType, error) {
 		return f(in), nil
 	})
 	go func() {

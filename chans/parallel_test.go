@@ -3,6 +3,7 @@ package chans
 // spell-checker:ignore chans stretchr chanstest
 
 import (
+	"context"
 	"testing"
 
 	"github.com/krelinga/go-lib/chans/chanstest"
@@ -16,7 +17,9 @@ func TestParallelErr(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		t.Parallel()
 		in := make(chan int)
-		out, err := ParallelErr(10, in, func(int) (int, error) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		out, err := ParallelErr(ctx, 10, in, func(int) (int, error) {
 			return 0, nil
 		})
 		close(in)
@@ -30,7 +33,9 @@ func TestParallelErr(t *testing.T) {
 			in <- i
 		}
 		close(in)
-		out, err := ParallelErr(10, in, func(x int) (int, error) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		out, err := ParallelErr(ctx, 10, in, func(x int) (int, error) {
 			return x * 2, nil
 		})
 		chanstest.AssertElementsEventuallyMatch(t, out, []int{0, 2, 4})
@@ -43,7 +48,9 @@ func TestParallelErr(t *testing.T) {
 			in <- i
 		}
 		close(in)
-		out, err := ParallelErr(10, in, func(x int) (int, error) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		out, err := ParallelErr(ctx, 10, in, func(x int) (int, error) {
 			if x == 1 {
 				return 0, assert.AnError
 			}
@@ -67,7 +74,9 @@ func TestParallel(t *testing.T) {
 	t.Run("Empty", func(t *testing.T) {
 		t.Parallel()
 		in := make(chan int)
-		out := Parallel(10, in, func(int) int {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		out := Parallel(ctx, 10, in, func(int) int {
 			return 0
 		})
 		close(in)
@@ -80,7 +89,9 @@ func TestParallel(t *testing.T) {
 			in <- i
 		}
 		close(in)
-		out := Parallel(10, in, func(x int) int {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		out := Parallel(ctx, 10, in, func(x int) int {
 			return x * 2
 		})
 		found := []int{}

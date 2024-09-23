@@ -2,10 +2,13 @@ package chans
 
 // spell-checker:ignore chans
 
-import "sync"
+import (
+	"context"
+	"sync"
+)
 
 // Merge() merges multiple channels into a single channel.
-func Merge[t any](channels ...<-chan t) <-chan t {
+func Merge[t any](ctx context.Context, channels ...<-chan t) <-chan t {
 	out := make(chan t, len(channels))
 	var wg sync.WaitGroup
 	wg.Add(len(channels))
@@ -14,7 +17,9 @@ func Merge[t any](channels ...<-chan t) <-chan t {
 		go func() {
 			defer wg.Done()
 			for v := range c {
-				out <- v
+				if !TryWrite(ctx, out, v) {
+					return
+				}
 			}
 		}()
 	}
