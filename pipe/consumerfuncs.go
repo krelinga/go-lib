@@ -56,3 +56,15 @@ func DiscardFunc[V any](in <-chan V) func() {
 		dropAll(in)
 	}
 }
+
+// The ToMap function returns a function which, when called, consumes all key-value pairs
+// from the input channel and stores them in the given map.  The returned function only
+// terminates when the input channel is closed.  If the same key is encountered multiple
+// times, the value in the map will be the last value seen.
+func ToMapFunc[K comparable, V any](in <-chan KV[K, V], out *map[K]V) func() {
+	return func() {
+		for kv := range in {
+			(*out)[kv.Key] = kv.Val
+		}
+	}
+}

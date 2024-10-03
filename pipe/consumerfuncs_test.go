@@ -159,3 +159,60 @@ func TestDiscardFunc(t *testing.T) {
 	close(empty)
 	DiscardFunc(empty)()
 }
+
+func TestToMapFunc(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		input    []KV[string, int]
+		expected map[string]int
+	}{
+		{
+			name:     "Empty input",
+			input:    []KV[string, int]{},
+			expected: map[string]int{},
+		},
+		{
+			name: "Single element",
+			input: []KV[string, int]{
+				{Key: "a", Val: 1},
+			},
+			expected: map[string]int{"a": 1},
+		},
+		{
+			name: "Multiple elements with unique keys",
+			input: []KV[string, int]{
+				{Key: "a", Val: 1},
+				{Key: "b", Val: 2},
+				{Key: "c", Val: 3},
+			},
+			expected: map[string]int{"a": 1, "b": 2, "c": 3},
+		},
+		{
+			name: "Multiple elements with duplicate keys",
+			input: []KV[string, int]{
+				{Key: "a", Val: 1},
+				{Key: "b", Val: 2},
+				{Key: "a", Val: 3},
+			},
+			expected: map[string]int{"a": 3, "b": 2},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			in := make(chan KV[string, int], len(tt.input))
+			for _, kv := range tt.input {
+				in <- kv
+			}
+			close(in)
+
+			out := make(map[string]int)
+			toMap := ToMapFunc(in, &out)
+			toMap()
+
+			assert.Equal(t, tt.expected, out)
+		})
+	}
+}
