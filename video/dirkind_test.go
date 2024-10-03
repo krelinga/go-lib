@@ -1,6 +1,7 @@
 package video
 
 import (
+	"encoding/json"
 	"os"
 	"testing"
 
@@ -86,6 +87,74 @@ func TestGetDirKind(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.expected, result)
+			}
+		})
+	}
+}
+func TestDirKindJSON(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name        string
+		dirKind     DirKind
+		expected    string
+		expectError bool
+	}{
+		{
+			name:        "Marshal Movie",
+			dirKind:     DirKindMovie,
+			expected:    `"movie"`,
+			expectError: false,
+		},
+		{
+			name:        "Marshal Show",
+			dirKind:     DirKindShow,
+			expected:    `"show"`,
+			expectError: false,
+		},
+		{
+			name:        "Unmarshal Movie",
+			dirKind:     DirKindMovie,
+			expected:    `"movie"`,
+			expectError: false,
+		},
+		{
+			name:        "Unmarshal Show",
+			dirKind:     DirKindShow,
+			expected:    `"show"`,
+			expectError: false,
+		},
+		{
+			name:        "Unmarshal Invalid",
+			dirKind:     0,
+			expected:    `"invalid"`,
+			expectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			if tt.name[:7] == "Marshal" {
+				// Test JSON marshalling
+				result, err := json.Marshal(tt.dirKind)
+				if tt.expectError {
+					assert.Error(t, err)
+				} else {
+					assert.NoError(t, err)
+					assert.JSONEq(t, tt.expected, string(result))
+				}
+			} else {
+				// Test JSON unmarshalling
+				var dk DirKind
+				err := json.Unmarshal([]byte(tt.expected), &dk)
+				if tt.expectError {
+					assert.Error(t, err)
+				} else {
+					assert.NoError(t, err)
+					assert.Equal(t, tt.dirKind, dk)
+				}
 			}
 		})
 	}
