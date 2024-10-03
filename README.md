@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.1
+
+- Add `DirKind` and `GetDirKind()` to `video`.
+
 ### v0.3.0
 
 - Remove `ReadOnly()` method from `pipe`.  This was made obsolete by switching to
