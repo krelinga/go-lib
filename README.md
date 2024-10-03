@@ -2,6 +2,13 @@
 
 ## Releases
 
+### v0.3.0
+
+- Remove `ReadOnly()` method from `pipe`.  This was made obsolete by switching to
+  some more-forgiving type constraints and using a helper function to implement `Merge()`.
+- Add `ParDoFilter()` and `ParDoFilterErr()` to `pipe`.
+- Internal simplifications to `video.BuildFileInfo()`.
+
 ### v0.2.1
 
 - Add `pipe` tools for dealing with maps:
