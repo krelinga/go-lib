@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.2
+
+- Add human-readable JSON marshalling & unmarshalling for `video.DirKind`.
+
 ### v0.3.1
 
 - Add `DirKind` and `GetDirKind()` to `video`.
