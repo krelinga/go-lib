@@ -11,7 +11,6 @@
     - `FirstFunc()`
     - `LastFunc()`
     - `DiscardFunc()`
-- 
 
 ### v0.1.0
 
