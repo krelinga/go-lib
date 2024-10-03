@@ -4,8 +4,8 @@ import "context"
 
 // The GroupBy function reads from the input channel and groups the values by key.
 // This requires storing all of the values in memory, so it is not suitable for large datasets.
-func GroupBy[K comparable, V any](ctx context.Context, in <-chan KV[K, V]) <-chan KV[K, []V] {
-	out := make(chan KV[K, []V])
+func GroupBy[K comparable, V any](ctx context.Context, in <-chan *KV[K, V]) <-chan *KV[K, []V] {
+	out := make(chan *KV[K, []V])
 
 	go func() {
 		defer close(out)
@@ -20,7 +20,7 @@ func GroupBy[K comparable, V any](ctx context.Context, in <-chan KV[K, V]) <-cha
 		}
 
 		for key, values := range seen {
-			if !TryWrite(ctx, out, KV[K, []V]{Key: key, Val: values}) {
+			if !TryWrite(ctx, out, &KV[K, []V]{Key: key, Val: values}) {
 				return
 			}
 		}

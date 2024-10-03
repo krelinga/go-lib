@@ -13,14 +13,14 @@ func TestGroupBy(t *testing.T) {
 	t.Run("RunsToCompletion", func(t *testing.T) {
 		t.Parallel()
 		ctx := context.Background()
-		in := make(chan KV[string, int])
+		in := make(chan *KV[string, int])
 
 		go func() {
 			defer close(in)
-			in <- KV[string, int]{Key: "a", Val: 1}
-			in <- KV[string, int]{Key: "b", Val: 2}
-			in <- KV[string, int]{Key: "a", Val: 3}
-			in <- KV[string, int]{Key: "b", Val: 4}
+			in <- &KV[string, int]{Key: "a", Val: 1}
+			in <- &KV[string, int]{Key: "b", Val: 2}
+			in <- &KV[string, int]{Key: "a", Val: 3}
+			in <- &KV[string, int]{Key: "b", Val: 4}
 		}()
 
 		out := GroupBy(ctx, in)
@@ -43,10 +43,10 @@ func TestGroupBy(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel() // Cancel right away.
 
-		in := make(chan KV[string, int])
+		in := make(chan *KV[string, int])
 		go func() {
 			defer close(in)
-			in <- KV[string, int]{Key: "a", Val: 1}
+			in <- &KV[string, int]{Key: "a", Val: 1}
 		}()
 
 		out := GroupBy(ctx, in)
