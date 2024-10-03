@@ -81,26 +81,28 @@ func BuildFileInfo(ctx context.Context, files <-chan filesystem.DirEntry) <-chan
 		foundNfo
 		foundTcProfile
 	)
+	type record = pipe.KV[string, state]
+	type groupedRecord = pipe.KV[string, []state]
 
-	toRecords := func(in <-chan filesystem.DirEntry) <-chan *pipe.KV[string, state] {
-		out := make(chan *pipe.KV[string, state])
+	toRecords := func(in <-chan filesystem.DirEntry) <-chan *record {
+		out := make(chan *record)
 
 		go func() {
 			defer close(out)
 
 			for entry := range in {
 				if strings.HasSuffix(entry.Path(), ".mkv") {
-					if !pipe.TryWrite(ctx, out, &pipe.KV[string, state]{Key: entry.Path(), Val: foundMkv}) {
+					if !pipe.TryWrite(ctx, out, &record{Key: entry.Path(), Val: foundMkv}) {
 						return
 					}
 				}
 				if strings.HasSuffix(entry.Path(), ".nfo") {
-					if !pipe.TryWrite(ctx, out, &pipe.KV[string, state]{Key: NewPathsFromNfo(entry.Path()).Mkv(), Val: foundNfo}) {
+					if !pipe.TryWrite(ctx, out, &record{Key: NewPathsFromNfo(entry.Path()).Mkv(), Val: foundNfo}) {
 						return
 					}
 				}
 				if strings.HasSuffix(entry.Path(), ".tcprofile") {
-					if !pipe.TryWrite(ctx, out, &pipe.KV[string, state]{Key: NewPathsFromTcProfile(entry.Path()).Mkv(), Val: foundTcProfile}) {
+					if !pipe.TryWrite(ctx, out, &record{Key: NewPathsFromTcProfile(entry.Path()).Mkv(), Val: foundTcProfile}) {
 						return
 					}
 				}
@@ -110,7 +112,7 @@ func BuildFileInfo(ctx context.Context, files <-chan filesystem.DirEntry) <-chan
 		return out
 	}
 
-	groupedToFileInfo := func(in <-chan *pipe.KV[string, []state]) <-chan *FileInfo {
+	groupedToFileInfo := func(in <-chan *groupedRecord) <-chan *FileInfo {
 		out := make(chan *FileInfo)
 
 		go func() {
