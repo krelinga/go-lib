@@ -7,15 +7,7 @@ import (
 	"fmt"
 )
 
-func each[inType any, outType any](f func(inType) outType, in ...inType) []outType {
-	out := make([]outType, len(in))
-	for i, v := range in {
-		out[i] = f(v)
-	}
-	return out
-}
-
-func ParDoErr[inType any, outType any](ctx context.Context, parallelism int, in <-chan inType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
+func ParDoErr[inType any, outType any, chanInType readable[inType]](ctx context.Context, parallelism int, in chanInType, f func(inType) (outType, error)) (<-chan outType, <-chan error) {
 	outs := make([]chan outType, parallelism)
 	errors := make([]chan error, parallelism)
 	for i := 0; i < parallelism; i++ {
@@ -40,10 +32,7 @@ func ParDoErr[inType any, outType any](ctx context.Context, parallelism int, in 
 		}()
 	}
 
-	roOuts := each(ReadOnly, outs...)
-	roErrors := each(ReadOnly, errors...)
-
-	return Merge(ctx, roOuts...), Merge(ctx, roErrors...)
+	return mergeImpl(ctx, outs...), mergeImpl(ctx, errors...)
 }
 
 // ParDo() runs a function in parallel on each value from the input channel.
