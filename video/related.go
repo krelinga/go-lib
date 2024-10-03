@@ -2,6 +2,7 @@ package video
 
 import (
 	"context"
+	"path/filepath"
 	"strings"
 
 	"github.com/krelinga/go-lib/filesystem"
@@ -84,67 +85,45 @@ func BuildFileInfo(ctx context.Context, files <-chan filesystem.DirEntry) <-chan
 	type record = pipe.KV[string, state]
 	type groupedRecord = pipe.KV[string, []state]
 
-	toRecords := func(in <-chan filesystem.DirEntry) <-chan *record {
-		out := make(chan *record)
+	filterTypes := func(entry filesystem.DirEntry) bool {
+		ext := filepath.Ext(entry.Path())
+		return ext == ".mkv" || ext == ".nfo" || ext == ".tcprofile"
+	}
+	toRecord := func(entry filesystem.DirEntry) *record {
+		switch {
+		case strings.HasSuffix(entry.Path(), ".mkv"):
+			return &record{Key: entry.Path(), Val: foundMkv}
+		case strings.HasSuffix(entry.Path(), ".nfo"):
+			return &record{Key: NewPathsFromNfo(entry.Path()).Mkv(), Val: foundNfo}
+		case strings.HasSuffix(entry.Path(), ".tcprofile"):
+			return &record{Key: NewPathsFromTcProfile(entry.Path()).Mkv(), Val: foundTcProfile}
+		default:
+			panic("unexpected file type")
+		}
+	}
 
-		go func() {
-			defer close(out)
-
-			for entry := range in {
-				if strings.HasSuffix(entry.Path(), ".mkv") {
-					if !pipe.TryWrite(ctx, out, &record{Key: entry.Path(), Val: foundMkv}) {
-						return
-					}
-				}
-				if strings.HasSuffix(entry.Path(), ".nfo") {
-					if !pipe.TryWrite(ctx, out, &record{Key: NewPathsFromNfo(entry.Path()).Mkv(), Val: foundNfo}) {
-						return
-					}
-				}
-				if strings.HasSuffix(entry.Path(), ".tcprofile") {
-					if !pipe.TryWrite(ctx, out, &record{Key: NewPathsFromTcProfile(entry.Path()).Mkv(), Val: foundTcProfile}) {
-						return
-					}
-				}
+	groupedToFileInfo := func(in *groupedRecord) *FileInfo {
+		out := &FileInfo{}
+		for _, v := range in.Val {
+			switch v {
+			case foundMkv:
+				out.MkvPath = in.Key
+			case foundNfo:
+				out.HasNfo = true
+			case foundTcProfile:
+				out.HasTcProfile = true
 			}
-		}()
-
+		}
 		return out
 	}
 
-	groupedToFileInfo := func(in <-chan *groupedRecord) <-chan *FileInfo {
-		out := make(chan *FileInfo)
-
-		go func() {
-			defer close(out)
-
-			for group := range in {
-				found := func(s state) bool {
-					for _, v := range group.Val {
-						if v == s {
-							return true
-						}
-					}
-					return false
-				}
-				if !found(foundMkv) {
-					continue
-				}
-				info := &FileInfo{
-					MkvPath:      group.Key,
-					HasNfo:       found(foundNfo),
-					HasTcProfile: found(foundTcProfile),
-				}
-				if !pipe.TryWrite(ctx, out, info) {
-					return
-				}
-			}
-		}()
-
-		return out
+	filterEmptyMkvPath := func(f *FileInfo) bool {
+		return f.MkvPath != ""
 	}
 
-	records := toRecords(files)
+	filtered := pipe.ParDoFilter(ctx, 1, files, filterTypes)
+	records := pipe.ParDo(ctx, 1, filtered, toRecord)
 	grouped := pipe.GroupBy(ctx, records)
-	return groupedToFileInfo(grouped)
+	fileInfos := pipe.ParDo(ctx, 1, grouped, groupedToFileInfo)
+	return pipe.ParDoFilter(ctx, 1, fileInfos, filterEmptyMkvPath)
 }
