@@ -2,6 +2,17 @@
 
 ## Releases
 
+### v0.2.1
+
+- Add `pipe` tools for dealing with maps:
+    - `KV` for representing keys & values of different types.
+    - `GroupBy()` for combining values from identical keys.
+    - `ToMapFunc()` for outputting `KV`s into a `map`.
+- Add the `filesystem` module, which contains the `WalkAll()` method for walking over all files in the filesystem.
+- Add the `video` package, which contains:
+    - path conversion utilities.
+    - A pipeline for reading the output of `filesystem.WalkAll()` and joining the various kinds of paths into a struct to capture their existence.
+
 ### v0.2.0
 
 - Restructure things into a single `pipe` package, including some renaming simplifications.
