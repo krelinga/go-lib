@@ -4,7 +4,7 @@ import "context"
 
 // spell-checker:ignore chans
 
-// TryWrite() writes a value to a channel if the context is not done.
+// TryWrite() blocks until either the value is written to the channel or the context becomes done.
 //
 // Returns true if the value was written, false if the context was done.
 func TryWrite[chanType any](ctx context.Context, out chan<- chanType, val chanType) bool {

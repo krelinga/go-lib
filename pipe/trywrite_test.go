@@ -15,7 +15,7 @@ func TestTryWrite(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel() // Immediately cancel the context
 
-		out := make(chan int, 1)
+		out := make(chan int)
 		val := 42
 
 		written := TryWrite(ctx, out, val)
@@ -43,10 +43,8 @@ func TestTryWrite(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
 		defer cancel()
 
-		out := make(chan int, 1)
+		out := make(chan int)
 		val := 42
-
-		time.Sleep(2 * time.Millisecond) // Ensure the context times out
 
 		written := TryWrite(ctx, out, val)
 		assert.False(t, written, "Expected write to fail, but it succeeded")
