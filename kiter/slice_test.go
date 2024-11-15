@@ -8,9 +8,11 @@ import (
 
 func TestFromSlice(t *testing.T) {
 	tests := []struct {
-		name  string
-		input []int
-		want  []int
+		name      string
+		input     []int
+		want      []int
+		stopEarly bool
+		stopValue int
 	}{
 		{
 			name:  "empty slice",
@@ -27,6 +29,13 @@ func TestFromSlice(t *testing.T) {
 			input: []int{1, 2, 3, 4, 5},
 			want:  []int{1, 2, 3, 4, 5},
 		},
+		{
+			name:      "stop early",
+			input:     []int{1, 2, 3, 4},
+			want:      []int{1, 2},
+			stopEarly: true,
+			stopValue: 2,
+		},
 	}
 
 	for _, tt := range tests {
@@ -35,16 +44,12 @@ func TestFromSlice(t *testing.T) {
 			seq := FromSlice(tt.input)
 			for v := range seq {
 				got = append(got, v)
-			}
-
-			assert.Equal(t, tt.want, got)
-
-			// early exit
-			for v := range FromSlice(tt.input) {
-				if v == 1 {
+				if tt.stopEarly && v == tt.stopValue {
 					break
 				}
 			}
+
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
