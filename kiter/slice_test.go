@@ -31,22 +31,13 @@ func TestFromSlice(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var got []int
+			got := []int{}
 			seq := FromSlice(tt.input)
 			for v := range seq {
 				got = append(got, v)
 			}
 
-			if len(got) != len(tt.want) {
-				t.Errorf("got %v, want %v", got, tt.want)
-			}
-
-			for i := range got {
-				if got[i] != tt.want[i] {
-					t.Errorf("got %v, want %v", got, tt.want)
-					break
-				}
-			}
+			assert.Equal(t, tt.want, got)
 
 			// early exit
 			for v := range FromSlice(tt.input) {
@@ -126,4 +117,3 @@ func TestAppendToSlice(t *testing.T) {
 		})
 	}
 }
-
