@@ -13,3 +13,9 @@ func Sorted2[K cmp.Ordered, V any](in iter.Seq2[K, V]) iter.Seq2[K, V] {
 	})
 	return FromPairs(FromSlice(slice))
 }
+
+func Sorted[V cmp.Ordered](in iter.Seq[V]) iter.Seq[V] {
+	slice := ToSlice(in)
+	slices.Sort(slice)
+	return FromSlice(slice)
+}

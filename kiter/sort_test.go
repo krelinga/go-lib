@@ -42,3 +42,40 @@ func TestSorted2(t *testing.T) {
 		})
 	}
 }
+func TestSorted(t *testing.T) {
+	tests := []struct {
+		name string
+		in   []int
+		want []int
+	}{
+		{
+			name: "sorted input",
+			in:   []int{1, 2, 3},
+			want: []int{1, 2, 3},
+		},
+		{
+			name: "unsorted input",
+			in:   []int{3, 1, 2},
+			want: []int{1, 2, 3},
+		},
+		{
+			name: "empty input",
+			in:   []int{},
+			want: []int{},
+		},
+		{
+			name: "single element",
+			in:   []int{1},
+			want: []int{1},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			in := FromSlice(tt.in)
+			got := ToSlice(Sorted(in))
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
