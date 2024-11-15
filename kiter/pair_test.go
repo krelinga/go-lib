@@ -10,7 +10,7 @@ func TestToPairs(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    map[int]string
-		expected []Pair[int, string]
+		expected []KV[int, string]
 	}{
 		{
 			name: "three elements",
@@ -19,7 +19,7 @@ func TestToPairs(t *testing.T) {
 				2: "two",
 				3: "three",
 			},
-			expected: []Pair[int, string]{
+			expected: []KV[int, string]{
 				{1, "one"},
 				{2, "two"},
 				{3, "three"},
@@ -28,14 +28,14 @@ func TestToPairs(t *testing.T) {
 		{
 			name:     "empty map",
 			input:    map[int]string{},
-			expected: []Pair[int, string]{},
+			expected: []KV[int, string]{},
 		},
 		{
 			name: "single element",
 			input: map[int]string{
 				1: "one",
 			},
-			expected: []Pair[int, string]{
+			expected: []KV[int, string]{
 				{1, "one"},
 			},
 		},
@@ -52,12 +52,12 @@ func TestToPairs(t *testing.T) {
 func TestFromPairs(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    []Pair[int, string]
+		input    []KV[int, string]
 		expected map[int]string
 	}{
 		{
 			name: "three elements",
-			input: []Pair[int, string]{
+			input: []KV[int, string]{
 				{1, "one"},
 				{2, "two"},
 				{3, "three"},
@@ -70,12 +70,12 @@ func TestFromPairs(t *testing.T) {
 		},
 		{
 			name:     "empty slice",
-			input:    []Pair[int, string]{},
+			input:    []KV[int, string]{},
 			expected: map[int]string{},
 		},
 		{
 			name: "single element",
-			input: []Pair[int, string]{
+			input: []KV[int, string]{
 				{1, "one"},
 			},
 			expected: map[int]string{
@@ -92,4 +92,3 @@ func TestFromPairs(t *testing.T) {
 		})
 	}
 }
-

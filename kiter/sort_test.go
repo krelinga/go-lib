@@ -9,28 +9,28 @@ import (
 func TestSorted2(t *testing.T) {
 	tests := []struct {
 		name string
-		in   []Pair[int, string]
-		want []Pair[int, string]
+		in   []KV[int, string]
+		want []KV[int, string]
 	}{
 		{
 			name: "sorted input",
-			in:   []Pair[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
-			want: []Pair[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
+			in:   []KV[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
+			want: []KV[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
 		},
 		{
 			name: "unsorted input",
-			in:   []Pair[int, string]{{3, "c"}, {1, "a"}, {2, "b"}},
-			want: []Pair[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
+			in:   []KV[int, string]{{3, "c"}, {1, "a"}, {2, "b"}},
+			want: []KV[int, string]{{1, "a"}, {2, "b"}, {3, "c"}},
 		},
 		{
 			name: "empty input",
-			in:   []Pair[int, string]{},
-			want: []Pair[int, string]{},
+			in:   []KV[int, string]{},
+			want: []KV[int, string]{},
 		},
 		{
 			name: "single element",
-			in:   []Pair[int, string]{{1, "a"}},
-			want: []Pair[int, string]{{1, "a"}},
+			in:   []KV[int, string]{{1, "a"}},
+			want: []KV[int, string]{{1, "a"}},
 		},
 	}
 
