@@ -122,3 +122,51 @@ func TestAppendToSlice(t *testing.T) {
 		})
 	}
 }
+func TestFromKVSlice(t *testing.T) {
+	tests := []struct {
+		name      string
+		input     []KV[int, string]
+		want      []KV[int, string]
+		stopEarly bool
+		stopKey   int
+	}{
+		{
+			name:  "empty slice",
+			input: []KV[int, string]{},
+			want:  []KV[int, string]{},
+		},
+		{
+			name:  "single element",
+			input: []KV[int, string]{{K: 1, V: "one"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}},
+		},
+		{
+			name:  "multiple elements",
+			input: []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+		},
+		{
+			name:      "stop early",
+			input:     []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+			want:      []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}},
+			stopEarly: true,
+			stopKey:   2,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := []KV[int, string]{}
+			seq := FromKVSlice(tt.input)
+			for k, v := range seq {
+				got = append(got, KV[int, string]{K: k, V: v})
+				if tt.stopEarly && k == tt.stopKey {
+					break
+				}
+			}
+
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+

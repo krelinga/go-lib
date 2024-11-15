@@ -23,3 +23,13 @@ func AppendToSlice[V any](slice []V, in iter.Seq[V]) []V {
 	}
 	return slice
 }
+
+func FromKVSlice[K, V any](slice []KV[K, V]) iter.Seq2[K, V] {
+	return func(yield func(K, V) bool) {
+		for _, kv := range slice {
+			if !yield(kv.K, kv.V) {
+				break
+			}
+		}
+	}
+}
