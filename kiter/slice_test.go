@@ -169,4 +169,74 @@ func TestFromKVSlice(t *testing.T) {
 		})
 	}
 }
+func TestToKVSlice(t *testing.T) {
+	tests := []struct {
+		name  string
+		input []KV[int, string]
+		want  []KV[int, string]
+	}{
+		{
+			name:  "empty sequence",
+			input: []KV[int, string]{},
+			want:  []KV[int, string]{},
+		},
+		{
+			name:  "single element",
+			input: []KV[int, string]{{K: 1, V: "one"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}},
+		},
+		{
+			name:  "multiple elements",
+			input: []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			seq := FromKVSlice(tt.input)
+			got := ToKVSlice(seq)
+
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+func TestAppendToKVSlice(t *testing.T) {
+	tests := []struct {
+		name  string
+		input []KV[int, string]
+		seq   []KV[int, string]
+		want  []KV[int, string]
+	}{
+		{
+			name:  "append to empty slice",
+			input: []KV[int, string]{},
+			seq:   []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}},
+		},
+		{
+			name:  "append to non-empty slice",
+			input: []KV[int, string]{{K: 1, V: "one"}},
+			seq:   []KV[int, string]{{K: 2, V: "two"}, {K: 3, V: "three"}},
+			want:  []KV[int, string]{{K: 1, V: "one"}, {K: 2, V: "two"}, {K: 3, V: "three"}},
+		},
+		{
+			name:  "append empty sequence",
+			input: []KV[int, string]{{K: 1, V: "one"}},
+			seq:   []KV[int, string]{},
+			want:  []KV[int, string]{{K: 1, V: "one"}},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			seq := FromKVSlice(tt.seq)
+			got := AppendToKVSlice(tt.input, seq)
+
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+
 
