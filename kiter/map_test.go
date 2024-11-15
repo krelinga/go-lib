@@ -7,52 +7,45 @@ import (
 )
 
 func TestMap(t *testing.T) {
-	in := FromSlice([]int{1, 2, 3, 4})
-	fn := func(x int) int {
-		return x * 2
+	tests := []struct {
+		name      string
+		input     []int
+		expected  []int
+		stopEarly bool
+		stopValue int
+	}{
+		{
+			name:     "Normal case",
+			input:    []int{1, 2, 3, 4},
+			expected: []int{2, 4, 6, 8},
+		},
+		{
+			name:     "Empty input",
+			input:    []int{},
+			expected: []int{},
+		},
+		{
+			name:      "Stop early",
+			input:     []int{1, 2, 3, 4},
+			expected:  []int{2, 4},
+			stopEarly: true,
+			stopValue: 4,
+		},
 	}
 
-	out := Map(in, fn)
-	var result []int
-	for v := range out {
-		result = append(result, v)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			in := FromSlice(tt.input)
+			fn := func(x int) int { return x * 2 }
+			out := Map(in, fn)
+			result := []int{}
+			for v := range out {
+				result = append(result, v)
+				if tt.stopEarly && v == tt.stopValue {
+					break
+				}
+			}
+			assert.Equal(t, tt.expected, result)
+		})
 	}
-
-	expected := []int{2, 4, 6, 8}
-	assert.Equal(t, expected, result)
-}
-
-func TestMapEmpty(t *testing.T) {
-	in := FromSlice([]int{})
-	fn := func(x int) int {
-		return x * 2
-	}
-
-	out := Map(in, fn)
-	result := []int{}
-	for v := range out {
-		result = append(result, v)
-	}
-
-	expected := []int{}
-	assert.Equal(t, expected, result)
-}
-
-func TestMapStopEarly(t *testing.T) {
-	in := FromSlice([]int{1, 2, 3, 4})
-	fn := func(x int) int {
-		return x * 2
-	}
-
-	out := Map(in, fn)
-	var result []int
-	for v := range out {
-		result = append(result, v)
-		if v == 4 {
-			break
-		}
-	}
-
-	expected := []int{2, 4}
-	assert.Equal(t, expected, result)
 }
