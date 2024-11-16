@@ -14,11 +14,11 @@ func FromMap[K comparable, V any](m map[K]V) iter.Seq2[K, V] {
 
 func ToMap[K comparable, V any](in iter.Seq2[K, V]) map[K]V {
 	m := map[K]V{}
-	InsertIntoMap(m, in)
+	ToMapInsert(m, in)
 	return m
 }
 
-func InsertIntoMap[K comparable, V any](m map[K]V, in iter.Seq2[K, V]){
+func ToMapInsert[K comparable, V any](m map[K]V, in iter.Seq2[K, V]) {
 	for k, v := range in {
 		m[k] = v
 	}

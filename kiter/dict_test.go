@@ -126,7 +126,7 @@ func TestInsertIntoMap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			seq := FromMap(tt.input)
-			InsertIntoMap(tt.initial, seq)
+			ToMapInsert(tt.initial, seq)
 			assert.Equal(t, tt.expected, tt.initial)
 		})
 	}
