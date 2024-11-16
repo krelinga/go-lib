@@ -42,3 +42,58 @@ func TestFilter(t *testing.T) {
 		})
 	}
 }
+func TestFilter2(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       []KV[int, string]
+		filterFunc  func(int, string) bool
+		expectedOut []KV[int, string]
+	}{
+		{
+			name: "All pass",
+			input: []KV[int, string]{
+				{1, "one"},
+				{2, "two"},
+				{3, "three"},
+			},
+			filterFunc: func(k int, v string) bool { return true },
+			expectedOut: []KV[int, string]{
+				{1, "one"},
+				{2, "two"},
+				{3, "three"},
+			},
+		},
+		{
+			name: "None pass",
+			input: []KV[int, string]{
+				{1, "one"},
+				{2, "two"},
+				{3, "three"},
+			},
+			filterFunc: func(k int, v string) bool { return false },
+			expectedOut: []KV[int, string]{},
+		},
+		{
+			name: "Some pass",
+			input: []KV[int, string]{
+				{1, "one"},
+				{2, "two"},
+				{3, "three"},
+			},
+			filterFunc: func(k int, v string) bool { return k%2 == 0 },
+			expectedOut: []KV[int, string]{
+				{2, "two"},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			in := FromKVSlice(tt.input)
+			out := Filter2(in, tt.filterFunc)
+			result := ToKVSlice(out)
+			assert.Equal(t, tt.expectedOut, result)
+		})
+	}
+}
+
