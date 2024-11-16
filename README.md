@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.6
+
+- Add the `Width()` and `Height()` methods to `geom.Polygon`.
+
 ### v0.3.5
 
 - Add `geom` package, which includes:
