@@ -36,10 +36,10 @@ func FromKVSlice[K, V any](slice []KV[K, V]) iter.Seq2[K, V] {
 
 func ToKVSlice[K, V any](in iter.Seq2[K, V]) []KV[K, V] {
 	slice := []KV[K, V]{}
-	return AppendToKVSlice(slice, in)
+	return ToKVSliceAppend(slice, in)
 }
 
-func AppendToKVSlice[K, V any](slice []KV[K, V], in iter.Seq2[K, V]) []KV[K, V] {
+func ToKVSliceAppend[K, V any](slice []KV[K, V], in iter.Seq2[K, V]) []KV[K, V] {
 	for k, v := range in {
 		slice = append(slice, KV[K, V]{K: k, V: v})
 	}

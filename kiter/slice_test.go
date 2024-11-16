@@ -231,7 +231,7 @@ func TestAppendToKVSlice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			seq := FromKVSlice(tt.seq)
-			got := AppendToKVSlice(tt.input, seq)
+			got := ToKVSliceAppend(tt.input, seq)
 
 			assert.Equal(t, tt.want, got)
 		})
