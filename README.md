@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.4
+
+- Add `kiter.SliceMap()` utility function.
+
 ### v0.3.3
 
 - Add `kiter` package with many iterator tools.
