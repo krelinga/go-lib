@@ -116,7 +116,7 @@ func TestAppendToSlice(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			seq := FromSlice(tt.seq)
-			got := AppendToSlice(tt.input, seq)
+			got := ToSliceAppend(tt.input, seq)
 
 			assert.Equal(t, tt.want, got)
 		})
@@ -237,6 +237,3 @@ func TestAppendToKVSlice(t *testing.T) {
 		})
 	}
 }
-
-
-
