@@ -22,3 +22,7 @@ func Map2[Kin, Vin, Kout, Vout any](in iter.Seq2[Kin, Vin], fn func(Kin, Vin) (K
 		}
 	}
 }
+
+func SliceMap[Vin, Vout any](in []Vin, fn func(Vin) Vout) []Vout {
+	return ToSlice(Map(FromSlice(in), fn))
+}

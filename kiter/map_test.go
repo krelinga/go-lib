@@ -93,4 +93,34 @@ func TestMap2(t *testing.T) {
 		})
 	}
 }
+func TestSliceMap(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{
+			name:     "Normal case",
+			input:    []int{1, 2, 3, 4},
+			expected: []int{2, 4, 6, 8},
+		},
+		{
+			name:     "Empty input",
+			input:    []int{},
+			expected: []int{},
+		},
+		{
+			name:     "Single element",
+			input:    []int{5},
+			expected: []int{10},
+		},
+	}
 
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			fn := func(x int) int { return x * 2 }
+			result := SliceMap(tt.input, fn)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
