@@ -2,6 +2,11 @@
 
 ## Releases
 
+### v0.3.7
+
+- Add the `Rotate()` and `RotatePolygon()` functions.
+- Add the `Midpoint()` function.
+
 ### v0.3.6
 
 - Add the `Width()` and `Height()` methods to `geom.Polygon`.
