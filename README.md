@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.3
+
+- Add `kiter` package with many iterator tools.
+
 ### v0.3.2
 
 - Add human-readable JSON marshalling & unmarshalling for `video.DirKind`.
