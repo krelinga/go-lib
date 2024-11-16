@@ -42,3 +42,27 @@ func TestHexagon(t *testing.T) {
 		}
 	}
 }
+func TestHexagonTileOffset(t *testing.T) {
+	tests := []struct {
+		r          float64
+		expectedDx float64
+		expectedDy float64
+	}{
+		{
+			r:          1,
+			expectedDx: 1.5,
+			expectedDy: Sin(Degrees(60)),
+		},
+		{
+			r:          2,
+			expectedDx: 3,
+			expectedDy: 2 * Sin(Degrees(60)),
+		},
+	}
+
+	for _, test := range tests {
+		dx, dy := HexagonTileOffset(test.r)
+		assert.Equal(t, test.expectedDx, dx, "HexagonTileOffset(%v) dx = %v; want %v", test.r, dx, test.expectedDx)
+		assert.Equal(t, test.expectedDy, dy, "HexagonTileOffset(%v) dy = %v; want %v", test.r, dy, test.expectedDy)
+	}
+}
