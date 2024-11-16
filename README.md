@@ -2,6 +2,14 @@
 
 ## Releases
 
+### v0.3.5
+
+- Add `geom` package, which includes:
+    - The `Angle` interface, along with `Degrees()` and `Radians()` creation methods.
+    - The `Polygon` type.
+    - Various trigonometric functions implemented in terms of `Angle`.
+    - The `Hexagon()` function.
+
 ### v0.3.4
 
 - Add `kiter.SliceMap()` utility function.
