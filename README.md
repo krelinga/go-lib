@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.3.8
+
+- Add `HexagonTileOffset()` function.
+
 ### v0.3.7
 
 - Add the `Rotate()` and `RotatePolygon()` functions.
