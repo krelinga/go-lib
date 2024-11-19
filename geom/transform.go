@@ -37,4 +37,46 @@ API Options:
 
 
 #2 sounds good, let's go with that.
+
+Upon some further experimentation, it looks like there's a 3rd option that
+involves using a generic Transform() method at the global scope that wraps
+a weakly-typed call on an interface hierarchy with a cast.  Something like:
+
+type foo interface {
+	clone() foo
+}
+
+type intFoo int
+
+func newIntFoo(x int) *intFoo {
+	y := new(intFoo)
+	*y = intFoo(x)
+	return y
+}
+
+func (x *intFoo) clone() foo {
+	cloned := new(intFoo)
+	*cloned = intFoo(int(*x))
+	return cloned
+}
+
+type stringFoo string
+
+func newStringFoo(x string) *stringFoo {
+	y := new(stringFoo)
+	*y = stringFoo(x)
+	return y
+}
+
+func (x *stringFoo) clone() foo {
+	cloned := new(stringFoo)
+	*cloned = stringFoo(string(*x))
+	return cloned
+}
+
+
+func Clone[X foo](in X) X {
+	cloned := in.clone()
+	return cloned.(X)
+}
 */
