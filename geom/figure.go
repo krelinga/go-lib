@@ -17,6 +17,8 @@ func NewFigure(paths ...Path) *Figure {
 		mp:      mp,
 	}
 
+	// TODO: check that the figure is closed before returning.
+
 	return f
 }
 
