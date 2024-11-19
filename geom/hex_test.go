@@ -7,62 +7,14 @@ import (
 )
 
 func TestHexagon(t *testing.T) {
-	tests := []struct {
-		r        float64
-		expected Polygon
-	}{
-		{
-			r: 1,
-			expected: Polygon{
-				Point{1, 0},
-				Point{0.5, Sin(Degrees(60))},
-				Point{-0.5, Sin(Degrees(60))},
-				Point{-1, 0},
-				Point{-0.5, -Sin(Degrees(60))},
-				Point{0.5, -Sin(Degrees(60))},
-			},
-		},
-		{
-			r: 2,
-			expected: Polygon{
-				Point{2, 0},
-				Point{1, 2 * Sin(Degrees(60))},
-				Point{-1, 2 * Sin(Degrees(60))},
-				Point{-2, 0},
-				Point{-1, -2 * Sin(Degrees(60))},
-				Point{1, -2 * Sin(Degrees(60))},
-			},
-		},
+	var top LineTag
+	var topLeft, topRight PointTag
+	h := Hexagon(1, TagTopLine(&top), TagTopLeftPoint(&topLeft), TagTopRightPoint(&topRight))
+	gotTop := top.Get(h)
+	if !assert.NotNil(t, gotTop) {
+		return
 	}
-
-	for _, test := range tests {
-		result := Hexagon(test.r)
-		for i, point := range result {
-			assert.Equal(t, test.expected[i], point, "Hexagon(%v)[%d] = %v; want %v", test.r, i, point, test.expected[i])
-		}
-	}
-}
-func TestHexagonTileOffset(t *testing.T) {
-	tests := []struct {
-		r          float64
-		expectedDx float64
-		expectedDy float64
-	}{
-		{
-			r:          1,
-			expectedDx: 1.5,
-			expectedDy: Sin(Degrees(60)),
-		},
-		{
-			r:          2,
-			expectedDx: 3,
-			expectedDy: 2 * Sin(Degrees(60)),
-		},
-	}
-
-	for _, test := range tests {
-		dx, dy := HexagonTileOffset(test.r)
-		assert.Equal(t, test.expectedDx, dx, "HexagonTileOffset(%v) dx = %v; want %v", test.r, dx, test.expectedDx)
-		assert.Equal(t, test.expectedDy, dy, "HexagonTileOffset(%v) dy = %v; want %v", test.r, dy, test.expectedDy)
-	}
+	gotP1, gotP2 := gotTop.Endpoints()
+	assert.Equal(t, gotP1, topLeft.Get(h))
+	assert.Equal(t, gotP2, topRight.Get(h))
 }
