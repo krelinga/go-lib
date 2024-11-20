@@ -42,4 +42,21 @@ func (mp MultiPath) Extend(paths ...Path) *MultiPath {
 	return NewMultiPath(parts...)
 }
 
+func (mp MultiPath) clone() Element {
+	out := &MultiPath{
+		tagBase: mp.tagBase,
+		paths:   make([]Path, len(mp.paths)),
+	}
+	for i, path := range mp.paths {
+		out.paths[i] = clone(path)
+	}
+	return out
+}
+
+func (mp MultiPath) translate(dx, dy float64) {
+	for _, path := range mp.paths {
+		path.translate(dx, dy)
+	}
+}
+
 func (mp MultiPath) pathIsAClosedType() {}

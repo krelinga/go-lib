@@ -7,4 +7,7 @@ type Element interface {
 
 	getByTag(*tag) Element
 	getTagIndex() iter.Seq2[*tag, Element]
+
+	clone() Element
+	translate(dx, dy float64)
 }

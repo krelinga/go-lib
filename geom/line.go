@@ -42,4 +42,18 @@ func (l *Line) Endpoints() (*Point, *Point) {
 	return l.p1, l.p2
 }
 
+func (l *Line) clone() Element {
+	out := &Line{
+		tagBase: l.tagBase,
+		p1:      clone(l.p1),
+		p2:      clone(l.p2),
+	}
+	return out
+}
+
+func (l *Line) translate(dx, dy float64) {
+	l.p1.translate(dx, dy)
+	l.p2.translate(dx, dy)
+}
+
 func (l *Line) pathIsAClosedType() {}

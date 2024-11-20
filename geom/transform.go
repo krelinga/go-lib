@@ -80,3 +80,23 @@ func Clone[X foo](in X) X {
 	return cloned.(X)
 }
 */
+
+func clone[E Element](in E) E {
+	return in.clone().(E)
+}
+
+type Transformation func(Element)
+
+func Translate(dx, dy float64) Transformation {
+	return func(e Element) {
+		e.translate(dx, dy)
+	}
+}
+
+func Transform[E Element](in E, fns ...Transformation) E {
+	out := clone(in)
+	for _, fn := range fns {
+		fn(out)
+	}
+	return out
+}

@@ -29,3 +29,14 @@ func (f *Figure) BoundingBox() BoundingBox {
 func (f *Figure) Paths() iter.Seq[Path] {
 	return f.mp.Paths()
 }
+
+func (f *Figure) clone() Element {
+	return &Figure{
+		tagBase: f.tagBase,
+		mp:      clone(f.mp),
+	}
+}
+
+func (f *Figure) translate(dx, dy float64) {
+	f.mp.translate(dx, dy)
+}

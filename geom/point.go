@@ -30,4 +30,17 @@ func (p *Point) Endpoints() (*Point, *Point) {
 	return p, p
 }
 
+func (p *Point) clone() Element {
+	return &Point{
+		tagBase: p.tagBase,
+		x:       p.x,
+		y:       p.y,
+	}
+}
+
+func (p *Point) translate(dx, dy float64) {
+	p.x += dx
+	p.y += dy
+}
+
 func (p *Point) pathIsAClosedType() {}
