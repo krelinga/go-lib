@@ -15,6 +15,6 @@ func TestHexagon(t *testing.T) {
 		return
 	}
 	gotP1, gotP2 := gotTop.Endpoints()
-	assert.Equal(t, gotP1, topLeft.Get(h))
-	assert.Equal(t, gotP2, topRight.Get(h))
+	assertXYEqual(t, gotP1, topLeft.Get(h))
+	assertXYEqual(t, gotP2, topRight.Get(h))
 }

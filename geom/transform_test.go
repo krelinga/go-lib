@@ -2,11 +2,7 @@ package geom
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
-
-const Delta = 1e-9
 
 func TestTransform(t *testing.T) {
 	t.Run("Translate", func(t *testing.T) {
@@ -14,16 +10,11 @@ func TestTransform(t *testing.T) {
 			var inTag PointTag
 			in := NewPoint(1, 2, &inTag)
 			out := Transform(in, Translate(3, 4))
-
-			assert.Equal(t, 4.0, out.X())
-			assert.Equal(t, 6.0, out.Y())
+			assertXYEqual(t, NewPoint(4, 6), out)
 
 			outFromTag := inTag.Get(out)
-			assert.Equal(t, 4.0, outFromTag.X())
-			assert.Equal(t, 6.0, outFromTag.Y())
-
-			assert.Equal(t, 1.0, in.X())
-			assert.Equal(t, 2.0, in.Y())
+			assertXYEqual(t, NewPoint(4, 6), outFromTag)
+			assertXYEqual(t, NewPoint(1, 2), in)
 		})
 	})
 
@@ -62,30 +53,22 @@ func TestTransform(t *testing.T) {
 					out := Transform(in, Rotate(tt.angle, tt.direction))
 
 					p1, p2 := out.Endpoints()
-					assert.InDelta(t, tt.wantP1.X(), p1.X(), Delta)
-					assert.InDelta(t, tt.wantP1.Y(), p1.Y(), Delta)
-					assert.InDelta(t, tt.wantP2.X(), p2.X(), Delta)
-					assert.InDelta(t, tt.wantP2.Y(), p2.Y(), Delta)
+					assertXYEqual(t, tt.wantP1, p1)
+					assertXYEqual(t, tt.wantP2, p2)
 
 					fromTag := lt.Get(out)
 					p1, p2 = fromTag.Endpoints()
-					assert.InDelta(t, tt.wantP1.X(), p1.X(), Delta)
-					assert.InDelta(t, tt.wantP1.Y(), p1.Y(), Delta)
-					assert.InDelta(t, tt.wantP2.X(), p2.X(), Delta)
-					assert.InDelta(t, tt.wantP2.Y(), p2.Y(), Delta)
+					assertXYEqual(t, tt.wantP1, p1)
+					assertXYEqual(t, tt.wantP2, p2)
 
 					p1, p2 = in.Endpoints()
-					assert.InDelta(t, tt.p1.X(), p1.X(), Delta)
-					assert.InDelta(t, tt.p1.Y(), p1.Y(), Delta)
-					assert.InDelta(t, tt.p2.X(), p2.X(), Delta)
-					assert.InDelta(t, tt.p2.Y(), p2.Y(), Delta)
+					assertXYEqual(t, tt.p1, p1)
+					assertXYEqual(t, tt.p2, p2)
 
 					fromTag = lt.Get(in)
 					p1, p2 = fromTag.Endpoints()
-					assert.InDelta(t, tt.p1.X(), p1.X(), Delta)
-					assert.InDelta(t, tt.p1.Y(), p1.Y(), Delta)
-					assert.InDelta(t, tt.p2.X(), p2.X(), Delta)
-					assert.InDelta(t, tt.p2.Y(), p2.Y(), Delta)
+					assertXYEqual(t, tt.p1, p1)
+					assertXYEqual(t, tt.p2, p2)
 				})
 			}
 		})

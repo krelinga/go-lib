@@ -12,9 +12,7 @@ func TestNewCircle(t *testing.T) {
 		const radius = 5.0
 		circle := NewCircle(center, radius)
 
-		assert.Equal(t, center.X(), circle.Center().X())
-		assert.Equal(t, center.Y(), circle.Center().Y())
-
+		assertXYEqual(t, center, circle.Center())
 		assert.Equal(t, radius, circle.Radius())
 	})
 
@@ -27,8 +25,7 @@ func TestNewCircle(t *testing.T) {
 
 		tCircle := Transform(circle, Translate(1, 2))
 		tCenter := pt.Get(tCircle)
-		assert.Equal(t, 1.0, tCenter.X())
-		assert.Equal(t, 2.0, tCenter.Y())
+		assertXYEqual(t, NewPoint(1, 2), tCenter)
 		assert.Equal(t, radius, tCircle.Radius())
 		assert.Equal(t, ct.Get(tCircle), tCircle)
 	})
