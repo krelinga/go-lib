@@ -43,8 +43,10 @@ func (lt *LineTag) set(t *tag) {
 	lt.t = t
 }
 
+type tagIndex = map[*tag]Element
+
 type tagBase struct {
-	tagIndex map[*tag]Element
+	tagIndex tagIndex
 }
 
 func (tb *tagBase) getByTag(tag *tag) Element {
