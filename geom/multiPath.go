@@ -31,20 +31,20 @@ func (mp *MultiPath) Endpoints() (*Point, *Point) {
 	return start, end
 }
 
-func (mu MultiPath) Paths() iter.Seq[Path] {
+func (mu *MultiPath) Paths() iter.Seq[Path] {
 	return slices.Values(mu.paths)
 }
 
-func (mp MultiPath) Extend(paths ...Path) *MultiPath {
+func (mp *MultiPath) Extend(paths ...Path) *MultiPath {
 	parts := make([]Path, 0, len(mp.paths)+len(paths))
 	parts = append(parts, mp.paths...)
 	parts = append(parts, paths...)
 	return NewMultiPath(parts...)
 }
 
-func (mp MultiPath) clone() Element {
+func (mp *MultiPath) clone() Element {
 	out := &MultiPath{
-		paths:   make([]Path, len(mp.paths)),
+		paths: make([]Path, len(mp.paths)),
 	}
 	for i, path := range mp.paths {
 		out.paths[i] = clone(path)
@@ -53,10 +53,10 @@ func (mp MultiPath) clone() Element {
 	return out
 }
 
-func (mp MultiPath) translate(dx, dy float64) {
+func (mp *MultiPath) translate(dx, dy float64) {
 	for _, path := range mp.paths {
 		path.translate(dx, dy)
 	}
 }
 
-func (mp MultiPath) pathIsAClosedType() {}
+func (mp *MultiPath) pathIsAClosedType() {}
