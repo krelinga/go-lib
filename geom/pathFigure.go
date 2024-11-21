@@ -44,3 +44,5 @@ func (f *PathFigure) translate(dx, dy float64) {
 func (f *PathFigure) rotate(angle Angle, dir Direction) {
 	f.mp.rotate(angle, dir)
 }
+
+func (f* PathFigure) figureIsAClosedType() {}
