@@ -7,9 +7,9 @@ type Line struct {
 
 func NewLine(p1, p2 *Point, tags ...*LineTag) *Line {
 	l := &Line{p1: p1, p2: p2}
-	l.tagBase.addAllTags(p1.getTagIndex())
-	l.tagBase.addAllTags(p2.getTagIndex())
-	addTags(&l.tagBase, l, tags...)
+	l.tagBase.addChildTags(p1.getTagIndex())
+	l.tagBase.addChildTags(p2.getTagIndex())
+	addPublicTags(&l.tagBase, l, tags...)
 	return l
 }
 
@@ -43,11 +43,12 @@ func (l *Line) Endpoints() (*Point, *Point) {
 }
 
 func (l *Line) clone() Element {
-	out := &Line{
-		tagBase: l.tagBase,
-		p1:      clone(l.p1),
-		p2:      clone(l.p2),
-	}
+	out := &Line{}
+	out.p1 = clone(l.p1)
+	out.addChildTags(out.p1.getTagIndex())
+	out.p2 = clone(l.p2)
+	out.addChildTags(out.p2.getTagIndex())
+	out.addSelfTags(out, l.getSelfTags())
 	return out
 }
 

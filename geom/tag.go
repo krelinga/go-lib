@@ -2,7 +2,6 @@ package geom
 
 import (
 	"iter"
-	"maps"
 )
 
 // I first tried to use struct{} for the underlying type of tag, but
@@ -43,7 +42,19 @@ func (lt *LineTag) set(t *tag) {
 	lt.t = t
 }
 
-type tagIndex = map[*tag]Element
+type tagSource bool
+
+const (
+	fromChild tagSource = true
+	fromSelf  tagSource = false
+)
+
+type tagIndexValue struct {
+	e         Element
+	tagSource tagSource
+}
+
+type tagIndex = map[*tag]tagIndexValue
 
 type tagBase struct {
 	tagIndex tagIndex
@@ -53,29 +64,67 @@ func (tb *tagBase) getByTag(tag *tag) Element {
 	if tb.tagIndex == nil {
 		return nil
 	}
-	return tb.tagIndex[tag]
+	value, ok := tb.tagIndex[tag]
+	if !ok {
+		return nil
+	}
+	return value.e
 }
 
 func (tb *tagBase) getTagIndex() iter.Seq2[*tag, Element] {
-	return maps.All(tb.tagIndex)
+	return func(yield func(*tag, Element) bool) {
+		for k, v := range tb.tagIndex {
+			if !yield(k, v.e) {
+				return
+			}
+		}
+	}
 }
 
-func (tb *tagBase) addAllTags(in iter.Seq2[*tag, Element]) {
+func (tb *tagBase) getSelfTags() iter.Seq[*tag] {
+	return func(yield func(*tag) bool) {
+		for k, v := range tb.tagIndex {
+			if v.tagSource == fromSelf {
+				if !yield(k) {
+					return
+				}
+			}
+		}
+	}
+}
+
+func (tb *tagBase) addChildTags(in iter.Seq2[*tag, Element]) {
 	if tb.tagIndex == nil {
-		tb.tagIndex = make(map[*tag]Element)
+		tb.tagIndex = make(tagIndex)
 	}
 	for k, v := range in {
-		tb.tagIndex[k] = v
+		tb.tagIndex[k] = tagIndexValue{v, fromChild}
 	}
 }
 
-func addTags[PT publicTag](tb *tagBase, e Element, pts ...PT) {
+func (tb *tagBase) addSelfTags(e Element, in iter.Seq[*tag]) {
+	if tb.tagIndex == nil {
+		tb.tagIndex = make(tagIndex)
+	}
+	for t := range in {
+		tb.tagIndex[t] = tagIndexValue{
+			e: 	   e,
+			tagSource: fromSelf,
+		}
+	}
+}
+
+// TODO: does this need to be a generic function?
+func addPublicTags[PT publicTag](tb *tagBase, e Element, pts ...PT) {
 	ptr := new(tag)
 	if tb.tagIndex == nil {
-		tb.tagIndex = make(map[*tag]Element)
+		tb.tagIndex = make(tagIndex)
 	}
 	for _, pt := range pts {
 		pt.set(ptr)
-		tb.tagIndex[ptr] = e
+		tb.tagIndex[ptr] = tagIndexValue{
+			e:         e,
+			tagSource: fromSelf,
+		}
 	}
 }

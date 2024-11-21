@@ -15,7 +15,7 @@ func NewMultiPath(paths ...Path) *MultiPath {
 	// is the same as the ending point of path n.
 	mp := &MultiPath{paths: paths}
 	for _, path := range paths {
-		mp.addAllTags(path.getTagIndex())
+		mp.addChildTags(path.getTagIndex())
 	}
 	return mp
 }
@@ -44,11 +44,11 @@ func (mp MultiPath) Extend(paths ...Path) *MultiPath {
 
 func (mp MultiPath) clone() Element {
 	out := &MultiPath{
-		tagBase: mp.tagBase,
 		paths:   make([]Path, len(mp.paths)),
 	}
 	for i, path := range mp.paths {
 		out.paths[i] = clone(path)
+		out.addChildTags(out.paths[i].getTagIndex())
 	}
 	return out
 }
