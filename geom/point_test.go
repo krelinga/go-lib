@@ -26,7 +26,7 @@ func TestNewPoint(t *testing.T) {
 		assert.Equal(t, tt.y, p.Y())
 		for _, tag := range tt.tags {
 			got := tag.Get(p)
-			assert.Equal(t, p, got)
+			assert.Same(t, p, got)
 		}
 
 		var otherTag PointTag

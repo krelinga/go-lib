@@ -16,9 +16,9 @@ func TestLine(t *testing.T) {
 		p2 := NewPoint(1, 1)
 		l := NewLine(p1, p2, &lt1, &lt2)
 
-		assert.Equal(t, p1, pt.Get(l))
-		assert.Equal(t, l, lt1.Get(l))
-		assert.Equal(t, l, lt2.Get(l))
+		assert.Same(t, p1, pt.Get(l))
+		assert.Same(t, l, lt1.Get(l))
+		assert.Same(t, l, lt2.Get(l))
 	})
 
 	t.Run("Basics", func(t *testing.T) {
@@ -27,11 +27,11 @@ func TestLine(t *testing.T) {
 		l := NewLine(p1, p2)
 
 		gotp1, gotp2 := l.Endpoints()
-		assert.Equal(t, p1, gotp1)
-		assert.Equal(t, p2, gotp2)
+		assert.Same(t, p1, gotp1)
+		assert.Same(t, p2, gotp2)
 
 		bb := l.BoundingBox()
-		assert.Equal(t, p1, bb.Min)
-		assert.Equal(t, p2, bb.Max)
+		assert.Same(t, p1, bb.Min)
+		assert.Same(t, p2, bb.Max)
 	})
 }

@@ -27,6 +27,6 @@ func TestNewCircle(t *testing.T) {
 		tCenter := pt.Get(tCircle)
 		assertXYEqual(t, NewPoint(1, 2), tCenter)
 		assert.Equal(t, radius, tCircle.Radius())
-		assert.Equal(t, ct.Get(tCircle), tCircle)
+		assert.Same(t, ct.Get(tCircle), tCircle)
 	})
 }
