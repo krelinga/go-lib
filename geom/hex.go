@@ -4,7 +4,7 @@ type HexagonOpt interface {
 	Hexagon(*hexagonTags)
 }
 
-func Hexagon(r float64, opts ...HexagonOpt) *Figure {
+func Hexagon(r float64, opts ...HexagonOpt) *PathFigure {
 	ht := hexagonTags{}
 	for _, opt := range opts {
 		opt.Hexagon(&ht)
@@ -24,7 +24,7 @@ func Hexagon(r float64, opts ...HexagonOpt) *Figure {
 	bottomLeftLine := NewLine(bottomLeftPoint, leftPoint, ht.bottomLeftLineTags...)
 	topLeftLine := NewLine(leftPoint, topLeftPoint, ht.topLeftLineTags...)
 
-	f := NewFigure(topLine, topRightLine, bottomRightLine, bottomLine, bottomLeftLine, topLeftLine)
+	f := NewPathFigure(topLine, topRightLine, bottomRightLine, bottomLine, bottomLeftLine, topLeftLine)
 	if f == nil {
 		panic("Hexagon should be closed")
 	}
