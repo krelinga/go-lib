@@ -7,9 +7,9 @@ type Line struct {
 
 func NewLine(p1, p2 *Point, tags ...*LineTag) *Line {
 	l := &Line{p1: p1, p2: p2}
-	l.tagBase.addChildTags(p1.getTagIndex())
-	l.tagBase.addChildTags(p2.getTagIndex())
-	addPublicTags(&l.tagBase, l, tags...)
+	l.addChildTags(p1.getTagIndex())
+	l.addChildTags(p2.getTagIndex())
+	l.addPublicTags(l, toPublicTagArray(tags))
 	return l
 }
 

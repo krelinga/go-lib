@@ -7,7 +7,7 @@ type Point struct {
 
 func NewPoint(x, y float64, tags ...*PointTag) *Point {
 	p := &Point{x: x, y: y}
-	addPublicTags(&p.tagBase, p, tags...)
+	p.addPublicTags(p, toPublicTagArray(tags))
 	return p
 }
 
@@ -32,8 +32,8 @@ func (p *Point) Endpoints() (*Point, *Point) {
 
 func (p *Point) clone() Element {
 	out := &Point{
-		x:       p.x,
-		y:       p.y,
+		x: p.x,
+		y: p.y,
 	}
 	out.addSelfTags(out, p.getSelfTags())
 	return out

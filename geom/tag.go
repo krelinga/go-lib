@@ -42,6 +42,14 @@ func (lt *LineTag) set(t *tag) {
 	lt.t = t
 }
 
+func toPublicTagArray[PT publicTag](pts []PT) []publicTag {
+	out := make([]publicTag, len(pts))
+	for i, pt := range pts {
+		out[i] = pt
+	}
+	return out
+}
+
 type tagSource bool
 
 const (
@@ -108,14 +116,14 @@ func (tb *tagBase) addSelfTags(e Element, in iter.Seq[*tag]) {
 	}
 	for t := range in {
 		tb.tagIndex[t] = tagIndexValue{
-			e: 	   e,
+			e:         e,
 			tagSource: fromSelf,
 		}
 	}
 }
 
 // TODO: does this need to be a generic function?
-func addPublicTags[PT publicTag](tb *tagBase, e Element, pts ...PT) {
+func (tb *tagBase) addPublicTags(e Element, pts []publicTag) {
 	ptr := new(tag)
 	if tb.tagIndex == nil {
 		tb.tagIndex = make(tagIndex)
