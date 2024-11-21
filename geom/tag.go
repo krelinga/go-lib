@@ -1,7 +1,6 @@
 package geom
 
 import (
-	"fmt"
 	"iter"
 	"maps"
 )
@@ -12,8 +11,7 @@ import (
 type tag int
 
 func getImpl[Seeking Element](c Element, t *tag) Seeking {
-	found, ok := c.getByTag(t).(Seeking)
-	fmt.Printf("found: %v, ok: %v\n", found, ok)
+	found, _ := c.getByTag(t).(Seeking)
 	return found
 }
 
@@ -71,7 +69,6 @@ func (tb *tagBase) addAllTags(in iter.Seq2[*tag, Element]) {
 
 func addTags[PT publicTag](tb *tagBase, e Element, pts ...PT) {
 	ptr := new(tag)
-	fmt.Printf("ptr: %p\n", ptr)
 	if tb.tagIndex == nil {
 		tb.tagIndex = make(map[*tag]Element)
 	}
