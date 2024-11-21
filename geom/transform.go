@@ -93,6 +93,18 @@ func Translate(dx, dy float64) Transformation {
 	}
 }
 
+type Direction bool
+const (
+	Clockwise Direction = true
+	CounterClockwise Direction = false
+)
+
+func Rotate(angle Angle, dir Direction) Transformation {
+	return func(e Element) {
+		e.rotate(angle, dir)
+	}
+}
+
 func Transform[E Element](in E, fns ...Transformation) E {
 	out := clone(in)
 	for _, fn := range fns {

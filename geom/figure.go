@@ -40,3 +40,7 @@ func (f *Figure) clone() Element {
 func (f *Figure) translate(dx, dy float64) {
 	f.mp.translate(dx, dy)
 }
+
+func (f *Figure) rotate(angle Angle, dir Direction) {
+	f.mp.rotate(angle, dir)
+}

@@ -57,4 +57,9 @@ func (l *Line) translate(dx, dy float64) {
 	l.p2.translate(dx, dy)
 }
 
+func (l *Line) rotate(angle Angle, dir Direction) {
+	l.p1.rotate(angle, dir)
+	l.p2.rotate(angle, dir)
+}
+
 func (l *Line) pathIsAClosedType() {}

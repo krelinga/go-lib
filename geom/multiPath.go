@@ -59,4 +59,10 @@ func (mp *MultiPath) translate(dx, dy float64) {
 	}
 }
 
+func (mp *MultiPath) rotate(angle Angle, dir Direction) {
+	for _, path := range mp.paths {
+		path.rotate(angle, dir)
+	}
+}
+
 func (mp *MultiPath) pathIsAClosedType() {}

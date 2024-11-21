@@ -10,4 +10,5 @@ type Element interface {
 
 	clone() Element
 	translate(dx, dy float64)
+	rotate(angle Angle, dir Direction)
 }

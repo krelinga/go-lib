@@ -44,4 +44,20 @@ func (p *Point) translate(dx, dy float64) {
 	p.y += dy
 }
 
+func (p *Point) rotate(angle Angle, dir Direction) {
+	cos := Cos(angle)
+	sin := Sin(angle)
+
+	if dir == Clockwise {
+		sin = -sin
+		cos = -cos
+	}
+
+	newX := p.x*cos - p.y*sin
+	newY := p.x*sin + p.y*cos
+
+	p.x = newX
+	p.y = newY
+}
+
 func (p *Point) pathIsAClosedType() {}
