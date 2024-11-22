@@ -34,3 +34,20 @@ func (r radians) Degrees() float64 {
 func (r radians) Radians() float64 {
 	return float64(r)
 }
+
+type AngleFromUp struct {
+	angle     Angle
+	direction Direction
+}
+
+func NewAngleFromUp(angle Angle, direction Direction) AngleFromUp {
+	return AngleFromUp{angle, direction}
+}
+
+func (a AngleFromUp) Angle() Angle {
+	return a.angle
+}
+
+func (a AngleFromUp) Direction() Direction {
+	return a.direction
+}
