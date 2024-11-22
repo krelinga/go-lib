@@ -51,6 +51,10 @@ func (r Ray) Equals(other Ray) bool {
 	return r.degrees == other.degrees
 }
 
+func (r Ray) DxDy(distance float64) (dx, dy float64) {
+	return distance * Sin(Degrees(r.degrees)), distance * Cos(Degrees(r.degrees))
+}
+
 // the returned angle will always be in the range [0, 360) degrees.
 func normalize(a Angle, d Direction) (Angle, Direction) {
 	if a.Degrees() < 0 {
@@ -98,4 +102,20 @@ func (r RayAngle) Reverse() RayAngle {
 	d := !r.direction
 	a, d = normalize(a, d)
 	return RayAngle{r.to, r.from, a, d}
+}
+
+func (r RayAngle) Includes(ray Ray) bool {
+	if r.direction == Clockwise {
+		return r.from.degrees <= ray.degrees && ray.degrees <= r.to.degrees
+	}
+	return r.to.degrees <= ray.degrees && ray.degrees <= r.from.degrees
+}
+
+func (r RayAngle) Rotate(angle Angle, d Direction) RayAngle {
+	return RayAngle{
+		from:      r.from.Offset(angle, d),
+		to:        r.to.Offset(angle, d),
+		angle:     r.angle,
+		direction: r.direction,
+	}
 }

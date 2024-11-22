@@ -60,6 +60,52 @@ func TestRayOffsets(t *testing.T) {
 	}
 }
 
+func TestRayDxDy(t *testing.T) {
+	tests := []struct {
+		name     string
+		ray      Ray
+		distance float64
+		wantDx   float64
+		wantDy   float64
+	}{
+		{
+			name:     "Up",
+			ray:      RayUp,
+			distance: 1,
+			wantDx:   0,
+			wantDy:   1,
+		},
+		{
+			name:     "Right",
+			ray:      RayRight,
+			distance: 1,
+			wantDx:   1,
+			wantDy:   0,
+		},
+		{
+			name:     "Down",
+			ray:      RayDown,
+			distance: 1,
+			wantDx:   0,
+			wantDy:   -1,
+		},
+		{
+			name:     "Left",
+			ray:      RayLeft,
+			distance: 1,
+			wantDx:   -1,
+			wantDy:   0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotDx, gotDy := tt.ray.DxDy(tt.distance)
+			assert.InDelta(t, tt.wantDx, gotDx, 1e-9)
+			assert.InDelta(t, tt.wantDy, gotDy, 1e-9)
+		})
+	}
+}
+
 func TestRayAngle(t *testing.T) {
 	tests := []struct {
 		name     string
