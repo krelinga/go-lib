@@ -5,6 +5,7 @@ import "math"
 type Angle interface {
 	Degrees() float64
 	Radians() float64
+	Equals(Angle) bool
 }
 
 func Degrees(d float64) Angle {
@@ -21,6 +22,10 @@ func (d degrees) Radians() float64 {
 	return float64(d) * math.Pi / 180
 }
 
+func (d degrees) Equals(other Angle) bool {
+	return d.Degrees() == other.Degrees()
+}
+
 func Radians(r float64) Angle {
 	return radians(r)
 }
@@ -33,6 +38,10 @@ func (r radians) Degrees() float64 {
 
 func (r radians) Radians() float64 {
 	return float64(r)
+}
+
+func (r radians) Equals(other Angle) bool {
+	return r.Radians() == other.Radians()
 }
 
 type AngleFromUp struct {
