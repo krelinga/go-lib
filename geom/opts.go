@@ -41,6 +41,18 @@ func TagTopLeftLine(t *LineTag) TopLeftLineTagOpt {
 	return TopLeftLineTagOpt{t}
 }
 
+type RightLineTagOpt lineTagOpt
+
+func TagRightLine(t *LineTag) RightLineTagOpt {
+	return RightLineTagOpt{t}
+}
+
+type LeftLineTagOpt lineTagOpt
+
+func TagLeftLine(t *LineTag) LeftLineTagOpt {
+	return LeftLineTagOpt{t}
+}
+
 // Add tags to specific points.
 type pointTagOpt struct {
 	pointTag *PointTag
@@ -80,4 +92,38 @@ type TopLeftPointTagOpt pointTagOpt
 
 func TagTopLeftPoint(t *PointTag) TopLeftPointTagOpt {
 	return TopLeftPointTagOpt{t}
+}
+
+// Options for rounding corners.
+
+type roundCornerOpt float64
+
+type RoundAllCornersOpt roundCornerOpt
+
+func RoundAllCorners(radius float64) RoundAllCornersOpt {
+	return RoundAllCornersOpt(radius)
+}
+
+type RoundTopLeftCornerOpt roundCornerOpt
+
+func RoundTopLeftCorner(radius float64) RoundTopLeftCornerOpt {
+	return RoundTopLeftCornerOpt(radius)
+}
+
+type RoundTopRightCornerOpt roundCornerOpt
+
+func RoundTopRightCorner(radius float64) RoundTopRightCornerOpt {
+	return RoundTopRightCornerOpt(radius)
+}
+
+type RoundBottomRightCornerOpt roundCornerOpt
+
+func RoundBottomRightCorner(radius float64) RoundBottomRightCornerOpt {
+	return RoundBottomRightCornerOpt(radius)
+}
+
+type RoundBottomLeftCornerOpt roundCornerOpt
+
+func RoundBottomLeftCorner(radius float64) RoundBottomLeftCornerOpt {
+	return RoundBottomLeftCornerOpt(radius)
 }
