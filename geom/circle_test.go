@@ -20,7 +20,7 @@ func TestNewCircle(t *testing.T) {
 		const radius = 5.0
 		circle := NewCircle(radius, TagCenterPoint(&pt))
 
-		tCircle := Transform(circle, Translate(1, 2))
+		tCircle := Transform(circle, TranslateXY(1, 2))
 		tCenter := pt.Get(tCircle)
 		assertXYEqual(t, NewPoint(1, 2), tCenter)
 		assert.Equal(t, radius, tCircle.Radius())

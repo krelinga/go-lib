@@ -9,7 +9,7 @@ func TestTransform(t *testing.T) {
 		t.Run("Point", func(t *testing.T) {
 			var inTag PointTag
 			in := NewPoint(1, 2, &inTag)
-			out := Transform(in, Translate(3, 4))
+			out := Transform(in, TranslateXY(3, 4))
 			assertXYEqual(t, NewPoint(4, 6), out)
 
 			outFromTag := inTag.Get(out)

@@ -83,3 +83,10 @@ func (opt RightPointTagOpt) Hexagon(h *hexagonTags) {
 func (opt LeftPointTagOpt) Hexagon(h *hexagonTags) {
 	h.leftPointTags = append(h.leftPointTags, opt.pointTag)
 }
+
+var (
+	RayHexTopRight = Ray{60}
+	RayHexTopLeft  = Ray{300}
+	RayHexBottomRight = Ray{120}
+	RayHexBottomLeft = Ray{240}
+)

@@ -87,15 +87,23 @@ func clone[E Element](in E) E {
 
 type Transformation func(Element)
 
-func Translate(dx, dy float64) Transformation {
+func TranslateXY(dx, dy float64) Transformation {
 	return func(e Element) {
 		e.translate(dx, dy)
 	}
 }
 
+func TranslateRay(ray Ray, distance float64) Transformation {
+	return func(e Element) {
+		dx, dy := ray.DxDy(distance)
+		e.translate(dx, dy)
+	}
+}
+
 type Direction bool
+
 const (
-	Clockwise Direction = true
+	Clockwise        Direction = true
 	CounterClockwise Direction = false
 )
 
