@@ -21,8 +21,18 @@ func NewMultiPath(paths ...Path) *MultiPath {
 }
 
 func (mp *MultiPath) BoundingBox() BoundingBox {
-	// TODO: implement this
-	return BoundingBox{}
+	minX := mp.paths[0].BoundingBox().BottomLeft().X()
+	minY := mp.paths[0].BoundingBox().BottomLeft().Y()
+	maxX := mp.paths[0].BoundingBox().TopRight().X()
+	maxY := mp.paths[0].BoundingBox().TopRight().Y()
+	for _, path := range mp.paths[1:] {
+		bb := path.BoundingBox()
+		minX = min(minX, bb.BottomLeft().X())
+		minY = min(minY, bb.BottomLeft().Y())
+		maxX = max(maxX, bb.TopRight().X())
+		maxY = max(maxY, bb.TopRight().Y())
+	}
+	return BoundingBox{Min: NewPoint(minX, minY), Max: NewPoint(maxX, maxY)}
 }
 
 func (mp *MultiPath) Endpoints() (*Point, *Point) {

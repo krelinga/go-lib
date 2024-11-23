@@ -94,6 +94,12 @@ func TagTopLeftPoint(t *PointTag) TopLeftPointTagOpt {
 	return TopLeftPointTagOpt{t}
 }
 
+type CenterPointTagOpt pointTagOpt
+
+func TagCenterPoint(t *PointTag) CenterPointTagOpt {
+	return CenterPointTagOpt{t}
+}
+
 // Options for rounding corners.
 
 type roundCornerOpt float64

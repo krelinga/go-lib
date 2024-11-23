@@ -42,18 +42,6 @@ func (lt *LineTag) set(t *tag) {
 	lt.t = t
 }
 
-type CircleTag struct {
-	t *tag
-}
-
-func (ct *CircleTag) Get(e Element) *Circle {
-	return getImpl[*Circle](e, ct.t)
-}
-
-func (ct *CircleTag) set(t *tag) {
-	ct.t = t
-}
-
 func toPublicTagArray[PT publicTag](pts []PT) []publicTag {
 	out := make([]publicTag, len(pts))
 	for i, pt := range pts {

@@ -6,10 +6,22 @@ type Circle struct {
 	radius float64
 }
 
-func NewCircle(center *Point, radius float64, tags ...*CircleTag) *Circle {
+type CircleOpt interface {
+	Circle(*circleOpts)
+}
+
+type circleOpts struct {
+	centerPointTags []*PointTag
+}
+
+func NewCircle(radius float64, inOpts... CircleOpt) *Circle {
+	opts := &circleOpts{}
+	for _, o := range inOpts {
+		o.Circle(opts)
+	}
+	center := NewPoint(0, 0, opts.centerPointTags...)
 	c := &Circle{center: center, radius: radius}
 	c.addChildTags(center.getTagIndex())
-	c.addPublicTags(c, toPublicTagArray(tags))
 	return c
 }
 
@@ -47,3 +59,7 @@ func (c *Circle) rotate(angle Angle, dir Direction) {
 }
 
 func (c *Circle) figureIsAClosedType() {}
+
+func (t CenterPointTagOpt) Circle(opts *circleOpts) {
+	opts.centerPointTags = append(opts.centerPointTags, t.pointTag)
+}
