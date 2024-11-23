@@ -2,6 +2,11 @@
 
 ## Releases
 
+### v0.4.0
+
+- total rewrite of `geom` library.  Biggest added feature is point & line tagging, to make it easy to follow
+elements of a figure across various transformations.
+
 ### v0.3.8
 
 - Add `HexagonTileOffset()` function.
