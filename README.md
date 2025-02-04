@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.4.1
+
+- Add `mac` library and `StayAwake()` function.
+
 ### v0.4.0
 
 - total rewrite of `geom` library.  Biggest added feature is point & line tagging, to make it easy to follow
