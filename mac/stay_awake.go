@@ -40,6 +40,7 @@ func StayAwake(opts StayAwakeOpts) (func() error, error) {
 	stopChan := make(chan struct{})
 	errChan := make(chan error)
 	go func() {
+		defer close(errChan)
 		<-stopChan
 		if err := cmd.Process.Kill(); err != nil {
 			errChan <- err
@@ -47,7 +48,6 @@ func StayAwake(opts StayAwakeOpts) (func() error, error) {
 		}
 		// No need to check the error returned by this command, we expect it to fail because we killed the process.
 		cmd.Wait()
-		close(errChan)
 	}()
 
 	stopFn := func() error {
