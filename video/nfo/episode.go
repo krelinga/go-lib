@@ -2,6 +2,7 @@ package nfo
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/beevik/etree"
@@ -75,7 +76,7 @@ func parseEpisode(doc *etree.Document) (*Episode, error) {
 	case 1:
 		episode.width = widths[0]
 		if i, err := strconv.Atoi(episode.width.Text()); err != nil || i <= 0 {
-			return nil, ErrInvalidWidth
+			return nil, fmt.Errorf("%w: %s", ErrInvalidWidth, episode.width.Text())
 		}
 	default:
 		return nil, ErrMultipleWidths
@@ -88,7 +89,7 @@ func parseEpisode(doc *etree.Document) (*Episode, error) {
 	case 1:
 		episode.height = heights[0]
 		if i, err := strconv.Atoi(episode.height.Text()); err != nil || i <= 0 {
-			return nil, ErrInvalidHeight
+			return nil, fmt.Errorf("%w: %s", ErrInvalidHeight, episode.height.Text())
 		}
 	default:
 		return nil, ErrMultipleHeights

@@ -20,21 +20,105 @@ func TestParseEpisode(t *testing.T) {
 		wantHeight int
 	}{
 		{
-			name:    "No title",
-			nfo:     `<episodedetails></episodedetails>`,
-			wantErr: ErrNoTitle,
-		},
-		{
-			name:       "Single title",
+			name:       "Happy Path",
 			nfoPath:    "testdata/episode.nfo",
 			wantTitle:  "Asteroid Blues",
 			wantWidth:  720,
 			wantHeight: 480,
 		},
 		{
+			name:    "No title",
+			nfo:     `<episodedetails></episodedetails>`,
+			wantErr: ErrNoTitle,
+		},
+		{
 			name:    "Multiple titles",
 			nfo:     `<episodedetails><title>Title 1</title><title>Title 2</title></episodedetails>`,
 			wantErr: ErrMultipleTitles,
+		},
+		{
+			name:    "No width",
+			nfo:     `<episodedetails><title>Title</title></episodedetails>`,
+			wantErr: ErrNoWidth,
+		},
+		{
+			name: "Invalid width",
+			nfo: `
+			<episodedetails>
+				<title>Title</title>
+				<fileinfo>
+					<streamdetails>
+						<video>
+							<width>invalid</width>
+						</video>
+					</streamdetails>
+				</fileinfo>
+			</episodedetails>`,
+			wantErr: ErrInvalidWidth,
+		},
+		{
+			name: "Multiple widths",
+			nfo: `
+			<episodedetails>
+				<title>Title</title>
+				<fileinfo>
+					<streamdetails>
+						<video>
+							<width>720</width>
+							<width>720</width>
+						</video>
+					</streamdetails>
+				</fileinfo>
+			</episodedetails>`,
+			wantErr: ErrMultipleWidths,
+		},
+		{
+			name: "No height",
+			nfo: `
+			<episodedetails>
+				<title>Title</title>
+				<fileinfo>
+					<streamdetails>
+						<video>
+							<width>720</width>
+						</video>
+					</streamdetails>
+				</fileinfo>
+			</episodedetails>`,
+			wantErr: ErrNoHeight,
+		},
+		{
+			name: "Invalid height",
+			nfo: `
+			<episodedetails>
+				<title>Title</title>
+				<fileinfo>
+					<streamdetails>
+						<video>
+							<width>720</width>
+							<height>invalid</height>
+						</video>
+					</streamdetails>
+				</fileinfo>
+			</episodedetails>`,
+			wantErr: ErrInvalidHeight,
+		},
+		{
+			name: "Multiple heights",
+			nfo: `
+			<episodedetails>
+				<title>Title</title>
+				<fileinfo>
+					<streamdetails>
+						<video>
+							<width>720</width>
+							<height>480</height>
+							<height>480</height>
+						</video>
+					</streamdetails>
+				</fileinfo>
+			</episodedetails>`,
+			wantErr: ErrMultipleHeights,
 		},
 	}
 
@@ -51,7 +135,7 @@ func TestParseEpisode(t *testing.T) {
 				r = strings.NewReader(tt.nfo)
 			}
 			out, err := Parse(r)
-			assert.Equal(t, tt.wantErr, err, "parseEpisode() error")
+			assert.ErrorIs(t, err, tt.wantErr)
 			if err != nil {
 				return
 			}
