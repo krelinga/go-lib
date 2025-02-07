@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--created on 2024-04-06 23:52:10 - tinyMediaManager 4.3.14-->
+<movie>
+  <title>Ghostbusters</title>
+  <originaltitle>Ghostbusters</originaltitle>
+  <sorttitle/>
+  <epbookmark/>
+  <year>1984</year>
+  <ratings>
+    <rating default="false" max="10" name="themoviedb">
+      <value>7.5</value>
+      <votes>8511</votes>
+    </rating>
+  </ratings>
+  <userrating>0.0</userrating>
+  <top250>0</top250>
+  <set>
+    <name>Ghostbusters Collection</name>
+    <overview>Ghostbusters is a 1984 American supernatural comedy film, directed and produced by Ivan Reitman and written by Dan Aykroyd and Harold Ramis. The film stars Bill Murray, Aykroyd, and Ramis as three eccentric parapsychologists in New York City who start a ghost-catching business. The second film, Ghostbusters II, was released in 1989.</overview>
+  </set>
+  <plot>After losing their academic posts at a prestigious university, a team of parapsychologists goes into business as proton-pack-toting "ghostbusters" who exterminate ghouls, hobgoblins and supernatural pests of all stripes. An ad campaign pays off when a knockout cellist hires the squad to purge her swanky digs of demons that appear to be living in her refrigerator.</plot>
+  <outline>After losing their academic posts at a prestigious university, a team of parapsychologists goes into business as proton-pack-toting "ghostbusters" who exterminate ghouls, hobgoblins and supernatural pests of all stripes. An ad campaign pays off when a knockout cellist hires the squad to purge her swanky digs of demons that appear to be living in her refrigerator.</outline>
+  <tagline>They're here to save the world.</tagline>
+  <runtime>107</runtime>
+  <thumb aspect="poster">https://image.tmdb.org/t/p/original/7E8nLijS9AwwUEPu2oFYOVKhdFA.jpg</thumb>
+  <thumb aspect="banner">http://assets.fanart.tv/fanart/movies/620/moviebanner/ghostbusters-514f72b10dbb6.jpg</thumb>
+  <thumb aspect="clearart">http://assets.fanart.tv/fanart/movies/620/hdmovieclearart/ghostbusters-514f72919d086.png</thumb>
+  <thumb aspect="clearlogo">http://assets.fanart.tv/fanart/movies/620/hdmovielogo/ghostbusters-51bd598497842.png</thumb>
+  <thumb aspect="discart">http://assets.fanart.tv/fanart/movies/620/moviedisc/ghostbusters-513210784d826.png</thumb>
+  <thumb aspect="landscape">http://assets.fanart.tv/fanart/movies/620/moviethumb/ghostbusters-535131f7d8f6a.jpg</thumb>
+  <thumb aspect="keyart">http://assets.fanart.tv/fanart/movies/620/movieposter/ghostbusters-5273c5f39b0ee.jpg</thumb>
+  <thumb aspect="logo">http://assets.fanart.tv/fanart/movies/620/hdmovielogo/ghostbusters-51bd598497842.png</thumb>
+  <fanart>
+    <thumb>https://image.tmdb.org/t/p/original/c6yfABGVKuB5cjoOwdX4AJMlzUz.jpg</thumb>
+  </fanart>
+  <mpaa>US:PG / US:Rated PG</mpaa>
+  <certification>US:PG / US:Rated PG</certification>
+  <id>tt0087332</id>
+  <tmdbid>620</tmdbid>
+  <uniqueid default="false" type="tmdb">620</uniqueid>
+  <uniqueid default="false" type="tmdbSet">2980</uniqueid>
+  <uniqueid default="true" type="imdb">tt0087332</uniqueid>
+  <country>United States</country>
+  <status/>
+  <code/>
+  <premiered>1984-06-08</premiered>
+  <watched>false</watched>
+  <playcount>0</playcount>
+  <genre>Comedy</genre>
+  <genre>Fantasy</genre>
+  <studio>Columbia Pictures</studio>
+  <studio>Delphi Films</studio>
+  <studio>Black Rhino Productions</studio>
+  <credits tmdbid="707">Dan Aykroyd</credits>
+  <credits tmdbid="1524">Harold Ramis</credits>
+  <director tmdbid="8858">Ivan Reitman</director>
+  <tag>new york city</tag>
+  <tag>environmental protection agency</tag>
+  <tag>library</tag>
+  <tag>supernatural</tag>
+  <tag>paranormal phenomena</tag>
+  <tag>loser</tag>
+  <tag>slime</tag>
+  <tag>gatekeeper</tag>
+  <tag>nerd</tag>
+  <tag>giant monster</tag>
+  <tag>haunting</tag>
+  <tag>hybrid</tag>
+  <tag>possession</tag>
+  <tag>mythology</tag>
+  <tag>horror spoof</tag>
+  <tag>paranormal investigation</tag>
+  <tag>urban setting</tag>
+  <tag>super power</tag>
+  <tag>receptionist</tag>
+  <tag>world trade center</tag>
+  <tag>ghost</tag>
+  <tag>duringcreditsstinger</tag>
+  <tag>ghostbusters</tag>
+  <actor>
+    <name>Bill Murray</name>
+    <role>Peter Venkman</role>
+    <thumb>https://image.tmdb.org/t/p/h632/nnCsJc9x3ZiG3AFyiyc3FPehppy.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1532</profile>
+    <tmdbid>1532</tmdbid>
+  </actor>
+  <actor>
+    <name>Dan Aykroyd</name>
+    <role>Ray Stantz</role>
+    <thumb>https://image.tmdb.org/t/p/h632/iVMmeVJx8IpCEjlGBZWzIWvX5Qo.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/707</profile>
+    <tmdbid>707</tmdbid>
+  </actor>
+  <actor>
+    <name>Sigourney Weaver</name>
+    <role>Dana Barrett</role>
+    <thumb>https://image.tmdb.org/t/p/h632/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10205</profile>
+    <tmdbid>10205</tmdbid>
+  </actor>
+  <actor>
+    <name>Harold Ramis</name>
+    <role>Egon Spengler</role>
+    <thumb>https://image.tmdb.org/t/p/h632/kmTMTxthkDAsygk3Am4IUSVYYRi.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1524</profile>
+    <tmdbid>1524</tmdbid>
+  </actor>
+  <actor>
+    <name>Rick Moranis</name>
+    <role>Louis Tully</role>
+    <thumb>https://image.tmdb.org/t/p/h632/nCIh203hALUsQW44x3dzpjSA4yf.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8872</profile>
+    <tmdbid>8872</tmdbid>
+  </actor>
+  <actor>
+    <name>Annie Potts</name>
+    <role>Janine Melnitz</role>
+    <thumb>https://image.tmdb.org/t/p/h632/tlGnlsTOLiGO5xNGEnTZI4psmEp.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8873</profile>
+    <tmdbid>8873</tmdbid>
+  </actor>
+  <actor>
+    <name>William Atherton</name>
+    <role>Walter Peck</role>
+    <thumb>https://image.tmdb.org/t/p/h632/S9W4deKuEa2K12ZiXwlvrC6J4U.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/7676</profile>
+    <tmdbid>7676</tmdbid>
+  </actor>
+  <actor>
+    <name>Ernie Hudson</name>
+    <role>Winston Zeddemore</role>
+    <thumb>https://image.tmdb.org/t/p/h632/kgAdQA2ItCDVvKXufeDHc6Omiso.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8874</profile>
+    <tmdbid>8874</tmdbid>
+  </actor>
+  <actor>
+    <name>Slavitza Jovan</name>
+    <role>Gozer</role>
+    <thumb>https://image.tmdb.org/t/p/h632/tdCiz0qgYkucQJAqGAoySdGrua6.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/562314</profile>
+    <tmdbid>562314</tmdbid>
+  </actor>
+  <actor>
+    <name>David Margulies</name>
+    <role>Mayor</role>
+    <thumb>https://image.tmdb.org/t/p/h632/lKXiPu99KCdETOH9XHMgVGg6z8G.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8875</profile>
+    <tmdbid>8875</tmdbid>
+  </actor>
+  <actor>
+    <name>Steven Tash</name>
+    <role>Male Student</role>
+    <thumb>https://image.tmdb.org/t/p/h632/uCax0ma1q9xJi0g2wQ0ARsZqZKZ.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/55930</profile>
+    <tmdbid>55930</tmdbid>
+  </actor>
+  <actor>
+    <name>Jennifer Runyon</name>
+    <role>Female Student</role>
+    <thumb>https://image.tmdb.org/t/p/h632/1j0Vt7pUROiNvI4ga0KfsNQnlWc.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/101652</profile>
+    <tmdbid>101652</tmdbid>
+  </actor>
+  <actor>
+    <name>Michael Ensign</name>
+    <role>Hotel Manager</role>
+    <thumb>https://image.tmdb.org/t/p/h632/kCFAgMTp7kHDN1YzrlIi1aBaaoF.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1080265</profile>
+    <tmdbid>1080265</tmdbid>
+  </actor>
+  <actor>
+    <name>Alice Drummond</name>
+    <role>Librarian</role>
+    <thumb>https://image.tmdb.org/t/p/h632/9YIxVH0oozCZalYW8lY5JAtfUvK.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/17488</profile>
+    <tmdbid>17488</tmdbid>
+  </actor>
+  <actor>
+    <name>Jordan Charney</name>
+    <role>Dean Yager</role>
+    <thumb>https://image.tmdb.org/t/p/h632/vdEyvpz09laussmoav4VPulgVG0.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/51549</profile>
+    <tmdbid>51549</tmdbid>
+  </actor>
+  <actor>
+    <name>Timothy Carhart</name>
+    <role>Violinist</role>
+    <thumb>https://image.tmdb.org/t/p/h632/jfEzqYXfX7sH0BFmmiXty6kB1Lq.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/17396</profile>
+    <tmdbid>17396</tmdbid>
+  </actor>
+  <actor>
+    <name>John Rothman</name>
+    <role>Library Administrator</role>
+    <thumb>https://image.tmdb.org/t/p/h632/k7Vdn2eArkvYCJllIOGPIjK9umK.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/60205</profile>
+    <tmdbid>60205</tmdbid>
+  </actor>
+  <actor>
+    <name>Tom McDermott</name>
+    <role>Archbishop</role>
+    <thumb>https://image.tmdb.org/t/p/h632/fhKInuR6Q2LBF43IzFdec4IxY3t.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1164427</profile>
+    <tmdbid>1164427</tmdbid>
+  </actor>
+  <actor>
+    <name>Roger Grimsby</name>
+    <role>Roger Grimsby</role>
+    <thumb>https://image.tmdb.org/t/p/h632/tvrjVDCxSKCI3P5nqa5ZYM5IuGp.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/950927</profile>
+    <tmdbid>950927</tmdbid>
+  </actor>
+  <actor>
+    <name>Larry King</name>
+    <role>Larry King</role>
+    <thumb>https://image.tmdb.org/t/p/h632/afNrrwBSbeFLrh0dVHvlMRRyont.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/44127</profile>
+    <tmdbid>44127</tmdbid>
+  </actor>
+  <actor>
+    <name>Joe Franklin</name>
+    <role>Joe Franklin</role>
+    <thumb>https://image.tmdb.org/t/p/h632/sKxm6ptzZEprsHiIBo27BaGVRXT.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/106223</profile>
+    <tmdbid>106223</tmdbid>
+  </actor>
+  <actor>
+    <name>Casey Kasem</name>
+    <role>Casey Kasem (voice)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/AfS9bEiKFAQ1rqtV2YXvnnDr9VD.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/16418</profile>
+    <tmdbid>16418</tmdbid>
+  </actor>
+  <actor>
+    <name>John Ring</name>
+    <role>Fire Commissioner</role>
+    <profile>https://www.themoviedb.org/person/80148</profile>
+    <tmdbid>80148</tmdbid>
+  </actor>
+  <actor>
+    <name>Norman Matlock</name>
+    <role>Police Commissioner</role>
+    <thumb>https://image.tmdb.org/t/p/h632/4qbEHM36nPvsdJwWDShJ92Tcg9r.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/84684</profile>
+    <tmdbid>84684</tmdbid>
+  </actor>
+  <actor>
+    <name>Joe Cirillo</name>
+    <role>Police Captain</role>
+    <thumb>https://image.tmdb.org/t/p/h632/pU7e8epd7NLTPNi4i7ICBigLt0n.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/189816</profile>
+    <tmdbid>189816</tmdbid>
+  </actor>
+  <actor>
+    <name>Joe Schmieg</name>
+    <role>Police Seargeant</role>
+    <profile>https://www.themoviedb.org/person/1164428</profile>
+    <tmdbid>1164428</tmdbid>
+  </actor>
+  <actor>
+    <name>Reginald VelJohnson</name>
+    <role>Jail Guard</role>
+    <thumb>https://image.tmdb.org/t/p/h632/r0F5y1PAQEDM08MBj3oI1IIX4gi.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/7672</profile>
+    <tmdbid>7672</tmdbid>
+  </actor>
+  <actor>
+    <name>Rhoda Gemignani</name>
+    <role>Real Estate Woman</role>
+    <thumb>https://image.tmdb.org/t/p/h632/bEjpDPNq2LBuA8Kde08acLQiZ4w.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/157996</profile>
+    <tmdbid>157996</tmdbid>
+  </actor>
+  <actor>
+    <name>Murray Rubin</name>
+    <role>Man at Elevator</role>
+    <thumb>https://image.tmdb.org/t/p/h632/aXEDHQId9pR1AqsZfZrDHMUsYkG.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/158287</profile>
+    <tmdbid>158287</tmdbid>
+  </actor>
+  <actor>
+    <name>Larry Dilg</name>
+    <role>Con Edison Man</role>
+    <profile>https://www.themoviedb.org/person/1164429</profile>
+    <tmdbid>1164429</tmdbid>
+  </actor>
+  <actor>
+    <name>Danny Stone</name>
+    <role>Coachman</role>
+    <profile>https://www.themoviedb.org/person/184770</profile>
+    <tmdbid>184770</tmdbid>
+  </actor>
+  <actor>
+    <name>Patty Dworkin</name>
+    <role>Woman at Party</role>
+    <profile>https://www.themoviedb.org/person/157512</profile>
+    <tmdbid>157512</tmdbid>
+  </actor>
+  <actor>
+    <name>Jean Kasem</name>
+    <role>Tall Woman at Party</role>
+    <thumb>https://image.tmdb.org/t/p/h632/4vTpbGhYofG8QYURSl8GXRSoebC.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/158765</profile>
+    <tmdbid>158765</tmdbid>
+  </actor>
+  <actor>
+    <name>Lenny Del Genio</name>
+    <role>Doorman</role>
+    <profile>https://www.themoviedb.org/person/1164430</profile>
+    <tmdbid>1164430</tmdbid>
+  </actor>
+  <actor>
+    <name>Frances E. Nealy</name>
+    <role>Chambermaid</role>
+    <profile>https://www.themoviedb.org/person/172538</profile>
+    <tmdbid>172538</tmdbid>
+  </actor>
+  <actor>
+    <name>Sam Moses</name>
+    <role>Hot Dog Vendor</role>
+    <thumb>https://image.tmdb.org/t/p/h632/huGipz3rKcNV9O19cSQjTNGz2d3.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/185147</profile>
+    <tmdbid>185147</tmdbid>
+  </actor>
+  <actor>
+    <name>Christopher Wynkoop</name>
+    <role>TV Reporter</role>
+    <thumb>https://image.tmdb.org/t/p/h632/2FX7SKOjdUb2vJTmJL2pwH1vgMW.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/65924</profile>
+    <tmdbid>65924</tmdbid>
+  </actor>
+  <actor>
+    <name>Winston May</name>
+    <role>Businessman in Cab</role>
+    <profile>https://www.themoviedb.org/person/1164431</profile>
+    <tmdbid>1164431</tmdbid>
+  </actor>
+  <actor>
+    <name>Tommy Hollis</name>
+    <role>Mayor's Aide</role>
+    <thumb>https://image.tmdb.org/t/p/h632/wfujtsSzR7NY4R0V2t0lFMl0UE1.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/159887</profile>
+    <tmdbid>159887</tmdbid>
+  </actor>
+  <actor>
+    <name>Eda Reiss Merin</name>
+    <role>Louis's Neighbor</role>
+    <profile>https://www.themoviedb.org/person/140796</profile>
+    <tmdbid>140796</tmdbid>
+  </actor>
+  <actor>
+    <name>Ric Mancini</name>
+    <role>Policeman at Apartment</role>
+    <profile>https://www.themoviedb.org/person/157121</profile>
+    <tmdbid>157121</tmdbid>
+  </actor>
+  <actor>
+    <name>Kathryn Janssen</name>
+    <role>Mrs. Van Hoffman</role>
+    <profile>https://www.themoviedb.org/person/1912387</profile>
+    <tmdbid>1912387</tmdbid>
+  </actor>
+  <actor>
+    <name>Stanley Grover</name>
+    <role>Reporter</role>
+    <profile>https://www.themoviedb.org/person/129458</profile>
+    <tmdbid>129458</tmdbid>
+  </actor>
+  <actor>
+    <name>Carol Ann Henry</name>
+    <role>Reporter</role>
+    <profile>https://www.themoviedb.org/person/158810</profile>
+    <tmdbid>158810</tmdbid>
+  </actor>
+  <actor>
+    <name>James Hardie</name>
+    <role>Reporter</role>
+    <profile>https://www.themoviedb.org/person/175011</profile>
+    <tmdbid>175011</tmdbid>
+  </actor>
+  <actor>
+    <name>Frantz Turner</name>
+    <role>Reporter</role>
+    <thumb>https://image.tmdb.org/t/p/h632/vXvhFA3iSCdlmdAYqJGBtO0WYCT.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/116536</profile>
+    <tmdbid>116536</tmdbid>
+  </actor>
+  <actor>
+    <name>Nancy Kelly</name>
+    <role>Reporter</role>
+    <profile>https://www.themoviedb.org/person/1430862</profile>
+    <tmdbid>1430862</tmdbid>
+  </actor>
+  <actor>
+    <name>Paul Trafas</name>
+    <role>Ted Fleming</role>
+    <profile>https://www.themoviedb.org/person/1164434</profile>
+    <tmdbid>1164434</tmdbid>
+  </actor>
+  <actor>
+    <name>Cheryl Birchenfield</name>
+    <role>Annette Fleming</role>
+    <profile>https://www.themoviedb.org/person/1164435</profile>
+    <tmdbid>1164435</tmdbid>
+  </actor>
+  <actor>
+    <name>Ruth Oliver</name>
+    <role>Library Ghost</role>
+    <profile>https://www.themoviedb.org/person/1164436</profile>
+    <tmdbid>1164436</tmdbid>
+  </actor>
+  <actor>
+    <name>Kymberly Herrin</name>
+    <role>Dream Ghost</role>
+    <thumb>https://image.tmdb.org/t/p/h632/gYvGuzvM4Sg8NmcsjnuxPgpwKmM.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/175055</profile>
+    <tmdbid>175055</tmdbid>
+  </actor>
+  <actor>
+    <name>Billy Bryan</name>
+    <role>Stay Puft Marshmallow Man (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/1506253</profile>
+    <tmdbid>1506253</tmdbid>
+  </actor>
+  <actor>
+    <name>Matteo Cafiso</name>
+    <role>Boy at Hot Dog Stand (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/2541006</profile>
+    <tmdbid>2541006</tmdbid>
+  </actor>
+  <actor>
+    <name>Frankie Como</name>
+    <role>T-Shirt Vendor (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/1762965</profile>
+    <tmdbid>1762965</tmdbid>
+  </actor>
+  <actor>
+    <name>Peter Costanza</name>
+    <role>Man Fleeing Marshmallow Man (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/2755358</profile>
+    <tmdbid>2755358</tmdbid>
+  </actor>
+  <actor>
+    <name>John De Bello</name>
+    <role>Patrolman Matthews (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/r7yqinkZjnck3nSb60DeTnHKsfE.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1676998</profile>
+    <tmdbid>1676998</tmdbid>
+  </actor>
+  <actor>
+    <name>Paddi Edwards</name>
+    <role>Gozer (voice) (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/wr99k21kIYDoZvH5gXH81fDKChL.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/157660</profile>
+    <tmdbid>157660</tmdbid>
+  </actor>
+  <actor>
+    <name>Eldo Ray Estes</name>
+    <role>Redheaded Man (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/5cI6xCxdbe48R2hMqBGuzLAPxYB.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1414918</profile>
+    <tmdbid>1414918</tmdbid>
+  </actor>
+  <actor>
+    <name>Brute Force</name>
+    <role>Hare Krishna acolyte (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/1172144</profile>
+    <tmdbid>1172144</tmdbid>
+  </actor>
+  <actor>
+    <name>Debbie Gibson</name>
+    <role>Birthday Girl in Tavern on the Green (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/e9467e7TTRDH1JwZt73V2kRW2w0.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/82497</profile>
+    <tmdbid>82497</tmdbid>
+  </actor>
+  <actor>
+    <name>Willow Hale</name>
+    <role>Student at Columbia University (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/7dB3ZX1cTJtd8blZTCn2vR28RnR.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/101054</profile>
+    <tmdbid>101054</tmdbid>
+  </actor>
+  <actor>
+    <name>Jon Hayden</name>
+    <role>Library Patron (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/aWIUfm5jz1Swd2ngmMm4DAlyPId.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1743088</profile>
+    <tmdbid>1743088</tmdbid>
+  </actor>
+  <actor>
+    <name>Ron Jeremy</name>
+    <role>Man Behind Barricade (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/bzScScJbTOeB3Wz5DSXPQTJbL8s.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/42545</profile>
+    <tmdbid>42545</tmdbid>
+  </actor>
+  <actor>
+    <name>Joseph Marzano</name>
+    <role>Man in Taxi (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/1163945</profile>
+    <tmdbid>1163945</tmdbid>
+  </actor>
+  <actor>
+    <name>Joe Medjuck</name>
+    <role>Man at Library (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/lAtOa7hkX2pDNqpQ6cZgTwqgsGy.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/57601</profile>
+    <tmdbid>57601</tmdbid>
+  </actor>
+  <actor>
+    <name>Danny Nero</name>
+    <role>Reporter (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/1828992</profile>
+    <tmdbid>1828992</tmdbid>
+  </actor>
+  <actor>
+    <name>Frank Patton III</name>
+    <role>City Hall Cop (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/mXecGGfDwiQsnxd9pxCRMtbHLkc.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2524604</profile>
+    <tmdbid>2524604</tmdbid>
+  </actor>
+  <actor>
+    <name>Harrison Ray</name>
+    <role>Terror Dog (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/106444</profile>
+    <tmdbid>106444</tmdbid>
+  </actor>
+  <actor>
+    <name>Ivan Reitman</name>
+    <role>Zuul / Slimer (voice) (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/qMyAjmRVihGFbJPhMTsqvpeOKfX.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8858</profile>
+    <tmdbid>8858</tmdbid>
+  </actor>
+  <actor>
+    <name>Frank Rivers</name>
+    <role>Prisoner (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/mpHmxkBW9iUCQDSvulN7M8dSEKI.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2755372</profile>
+    <tmdbid>2755372</tmdbid>
+  </actor>
+  <actor>
+    <name>Mario Todisco</name>
+    <role>Prisoner (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/paGo0TMKtKaCNu2LSjahYNz6UiK.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/176958</profile>
+    <tmdbid>176958</tmdbid>
+  </actor>
+  <actor>
+    <name>Bill Walton</name>
+    <role>Bill Walton (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/1WIPhh9323GoCRDWHUiD4Br9VDc.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/163554</profile>
+    <tmdbid>163554</tmdbid>
+  </actor>
+  <actor>
+    <name>Mark Bryan Wilson</name>
+    <role>Slimer (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/qfjp28Ay7XNkGkuavvpExeqY4s8.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1921139</profile>
+    <tmdbid>1921139</tmdbid>
+  </actor>
+  <producer tmdbid="8871">
+    <name>John G. Wilson</name>
+    <profile>https://www.themoviedb.org/person/8871</profile>
+  </producer>
+  <producer tmdbid="8860">
+    <name>Michael C. Gross</name>
+    <profile>https://www.themoviedb.org/person/8860</profile>
+  </producer>
+  <producer tmdbid="8864">
+    <name>Karen Rea</name>
+    <profile>https://www.themoviedb.org/person/8864</profile>
+  </producer>
+  <producer tmdbid="57601">
+    <name>Joe Medjuck</name>
+    <thumb>https://image.tmdb.org/t/p/h632/lAtOa7hkX2pDNqpQ6cZgTwqgsGy.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/57601</profile>
+  </producer>
+  <producer tmdbid="8858">
+    <name>Ivan Reitman</name>
+    <thumb>https://image.tmdb.org/t/p/h632/qMyAjmRVihGFbJPhMTsqvpeOKfX.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/8858</profile>
+  </producer>
+  <producer tmdbid="8859">
+    <name>Bernie Brillstein</name>
+    <profile>https://www.themoviedb.org/person/8859</profile>
+  </producer>
+  <trailer>https://edgecast-cf-prod.yahoo.net/yahoomovies/lotus/4f132074-47f7-42b1-90a3-3fd8a4c8fe36_TVP12-QmBMBM-Rnk83TkEzwAPvB5pSdLSrIEuHx4griw5qsj8IxjkwMPOXSMkEhMeIhI-XoxCHo-_10_0.mp4</trailer>
+  <languages>English</languages>
+  <dateadded>2024-04-06 23:51:39</dateadded>
+  <fileinfo>
+    <streamdetails>
+      <video>
+        <codec>HEVC</codec>
+        <aspect>1.78</aspect>
+        <width>3840</width>
+        <height>2160</height>
+        <durationinseconds>6308</durationinseconds>
+        <stereomode/>
+      </video>
+      <audio>
+        <codec>TrueHD/Atmos</codec>
+        <language>eng</language>
+        <channels>8</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>eng</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>ces</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>fra</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>deu</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>hun</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>ita</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>jpn</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>pol</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>por</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>rus</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>spa</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>spa</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>tha</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>eng</language>
+        <channels>2</channels>
+      </audio>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>zho</language>
+      </subtitle>
+      <subtitle>
+        <language>dan</language>
+      </subtitle>
+      <subtitle>
+        <language>nld</language>
+      </subtitle>
+      <subtitle>
+        <language>fin</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>hin</language>
+      </subtitle>
+      <subtitle>
+        <language>ita</language>
+      </subtitle>
+      <subtitle>
+        <language>ita</language>
+      </subtitle>
+      <subtitle>
+        <language>jpn</language>
+      </subtitle>
+      <subtitle>
+        <language>kor</language>
+      </subtitle>
+      <subtitle>
+        <language>nor</language>
+      </subtitle>
+      <subtitle>
+        <language>por</language>
+      </subtitle>
+      <subtitle>
+        <language>por</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+      <subtitle>
+        <language>swe</language>
+      </subtitle>
+      <subtitle>
+        <language>tha</language>
+      </subtitle>
+      <subtitle>
+        <language>tha</language>
+      </subtitle>
+      <subtitle>
+        <language>jpn</language>
+      </subtitle>
+      <subtitle>
+        <language>rus</language>
+      </subtitle>
+      <subtitle>
+        <language>rus</language>
+      </subtitle>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>nld</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>ita</language>
+      </subtitle>
+      <subtitle>
+        <language>jpn</language>
+      </subtitle>
+      <subtitle>
+        <language>kor</language>
+      </subtitle>
+      <subtitle>
+        <language>por</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+    </streamdetails>
+  </fileinfo>
+  <!--tinyMediaManager meta data-->
+  <source>UNKNOWN</source>
+  <edition>NONE</edition>
+  <original_filename>Ghostbusters_t00.mkv</original_filename>
+  <user_note/>
+</movie>
