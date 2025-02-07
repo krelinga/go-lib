@@ -11,11 +11,13 @@ import (
 
 func TestParseEpisode(t *testing.T) {
 	tests := []struct {
-		name      string
-		nfo       string
-		nfoPath   string
-		wantErr   error
-		wantTitle string
+		name       string
+		nfo        string
+		nfoPath    string
+		wantErr    error
+		wantTitle  string
+		wantWidth  int
+		wantHeight int
 	}{
 		{
 			name:    "No title",
@@ -23,9 +25,11 @@ func TestParseEpisode(t *testing.T) {
 			wantErr: ErrNoTitle,
 		},
 		{
-			name:      "Single title",
-			nfoPath:   "testdata/episode.nfo",
-			wantTitle: "Asteroid Blues2",
+			name:       "Single title",
+			nfoPath:    "testdata/episode.nfo",
+			wantTitle:  "Asteroid Blues",
+			wantWidth:  720,
+			wantHeight: 480,
 		},
 		{
 			name:    "Multiple titles",
@@ -57,6 +61,8 @@ func TestParseEpisode(t *testing.T) {
 				t.Fatal("Wrong type returned")
 			}
 			assert.Equal(t, tt.wantTitle, outEpisode.Title(), "title")
+			assert.Equal(t, tt.wantWidth, outEpisode.Width(), "width")
+			assert.Equal(t, tt.wantHeight, outEpisode.GetHeight(), "height")
 		})
 	}
 }
