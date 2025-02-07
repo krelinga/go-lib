@@ -6,6 +6,8 @@ type Show struct {
 	// TODO
 }
 
+func (*Show) validNfoSubtype() {}
+
 func parseShow(_ *etree.Document) (*Show, error) {
 	return &Show{}, nil
 }

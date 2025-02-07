@@ -8,7 +8,9 @@ import (
 	"github.com/beevik/etree"
 )
 
-type Nfo interface{}
+type Nfo interface {
+	validNfoSubtype()
+}
 
 var (
 	ErrBadXml           = errors.New("invalid xml")
