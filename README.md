@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.4.3
+
+- Bug fix in `nfo` library to handle empty XML documents.
+
 ### v0.4.2
 
 - Add `nfo` library.
