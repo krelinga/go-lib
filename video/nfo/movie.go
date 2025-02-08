@@ -10,14 +10,40 @@ import (
 type Movie struct {
 	title         *etree.Element
 	width, height *etree.Element
+	genres        []*etree.Element
 }
 
 func (*Movie) validNfoSubtype() {}
+
+func (e *Movie) Title() string {
+	return e.title.Text()
+}
+
+func (e *Movie) SetTitle(title string) {
+	e.title.SetText(title)
+}
+
+func (e *Movie) Width() int {
+	i, err := strconv.Atoi(e.width.Text())
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
+func (e *Movie) GetHeight() int {
+	i, err := strconv.Atoi(e.height.Text())
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
 
 var (
 	pathMovieTitle  = etree.MustCompilePath("/movie/title")
 	pathMovieWidth  = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/width")
 	pathMovieHeight = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/height")
+	pathMovieGenre  = etree.MustCompilePath("/movie/genre")
 )
 
 func parseMovie(doc *etree.Document) (*Movie, error) {
@@ -58,6 +84,8 @@ func parseMovie(doc *etree.Document) (*Movie, error) {
 	default:
 		return nil, ErrMultipleHeights
 	}
+
+	movie.genres = doc.FindElementsPath(pathMovieGenre)
 
 	return movie, nil
 }

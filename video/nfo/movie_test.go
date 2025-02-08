@@ -11,20 +11,22 @@ import (
 
 func TestParseMovie(t *testing.T) {
 	tests := []struct {
-		name       string
-		nfo        string
-		nfoPath    string
-		wantErr    error
-		wantTitle  string
-		wantWidth  int
-		wantHeight int
+		name        string
+		nfo         string
+		nfoPath     string
+		wantErr     error
+		wantTitle   string
+		wantWidth   int
+		wantHeight  int
+		wantGeneres []string
 	}{
 		{
-			name:       "Happy Path",
-			nfoPath:    "testdata/episode.nfo",
-			wantTitle:  "Asteroid Blues",
-			wantWidth:  720,
-			wantHeight: 480,
+			name:        "Happy Path",
+			nfoPath:     "testdata/movie.nfo",
+			wantTitle:   "Ghostbusters",
+			wantWidth:   3840,
+			wantHeight:  2160,
+			wantGeneres: []string{"Comedy", "Fantasy"},
 		},
 		{
 			name:    "No title",
@@ -140,13 +142,13 @@ func TestParseMovie(t *testing.T) {
 				return
 			}
 
-			outEpisode, ok := out.(*Episode)
+			outMovie, ok := out.(*Movie)
 			if !ok {
 				t.Fatal("Wrong type returned")
 			}
-			assert.Equal(t, tt.wantTitle, outEpisode.Title(), "title")
-			assert.Equal(t, tt.wantWidth, outEpisode.Width(), "width")
-			assert.Equal(t, tt.wantHeight, outEpisode.GetHeight(), "height")
+			assert.Equal(t, tt.wantTitle, outMovie.Title(), "title")
+			assert.Equal(t, tt.wantWidth, outMovie.Width(), "width")
+			assert.Equal(t, tt.wantHeight, outMovie.GetHeight(), "height")
 		})
 	}
 }
