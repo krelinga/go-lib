@@ -16,24 +16,8 @@ type DirEntry interface {
 }
 
 type dirEntry struct {
-	base fs.DirEntry
+	fs.DirEntry
 	path string
-}
-
-func (de *dirEntry) Name() string {
-	return de.base.Name()
-}
-
-func (de *dirEntry) IsDir() bool {
-	return de.base.IsDir()
-}
-
-func (de *dirEntry) Type() fs.FileMode {
-	return de.base.Type()
-}
-
-func (de *dirEntry) Info() (fs.FileInfo, error) {
-	return de.base.Info()
 }
 
 func (de *dirEntry) Path() string {
@@ -66,7 +50,7 @@ func WalkAll(ctx context.Context, root string) (<-chan DirEntry, <-chan error) {
 			}
 
 			var result DirEntry = &dirEntry{
-				base: d,
+				DirEntry: d,
 				path: path,
 			}
 			if (!pipe.TryWrite(ctx, out, result)) {

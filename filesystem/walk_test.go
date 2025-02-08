@@ -44,6 +44,11 @@ func TestWalkAll(t *testing.T) {
 		assert.Len(t, entries, len(expectedPaths))
 
 		for _, entry := range entries {
+			_ = entry.Path()    // Ensure the method is implemented.
+			_ = entry.IsDir()   // Ensure the method is implemented.
+			_ = entry.Name()    // Ensure the method is implemented.
+			_ = entry.Type()    // Ensure the method is implemented.
+			_, _ = entry.Info() // Ensure the method is implemented.
 			assert.Contains(t, expectedPaths, entry.Path())
 		}
 	})
