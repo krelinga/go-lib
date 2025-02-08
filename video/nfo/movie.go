@@ -1,7 +1,6 @@
 package nfo
 
 import (
-	"fmt"
 	"iter"
 	"strconv"
 
@@ -10,9 +9,9 @@ import (
 
 type Movie struct {
 	withTitle
-	width, height *etree.Element
-	genres        []*etree.Element
-	tags          []*etree.Element
+	withDimensions
+	genres []*etree.Element
+	tags   []*etree.Element
 }
 
 func (*Movie) validNfoSubtype() {}
@@ -64,34 +63,11 @@ var (
 func readMovie(doc *etree.Document) (*Movie, error) {
 	movie := &Movie{}
 
-	if err := movie.withTitle.init(doc, pathMovieTitle, ErrNoTitle, ErrMultipleTitles); err != nil {
+	if err := movie.withTitle.init(doc, pathMovieTitle); err != nil {
 		return nil, err
 	}
-
-	widths := doc.FindElementsPath(pathMovieWidth)
-	switch len(widths) {
-	case 0:
-		return nil, ErrNoWidth
-	case 1:
-		movie.width = widths[0]
-		if i, err := strconv.Atoi(movie.width.Text()); err != nil || i <= 0 {
-			return nil, fmt.Errorf("%w: %s", ErrInvalidWidth, movie.width.Text())
-		}
-	default:
-		return nil, ErrMultipleWidths
-	}
-
-	heights := doc.FindElementsPath(pathMovieHeight)
-	switch len(heights) {
-	case 0:
-		return nil, ErrNoHeight
-	case 1:
-		movie.height = heights[0]
-		if i, err := strconv.Atoi(movie.height.Text()); err != nil || i <= 0 {
-			return nil, fmt.Errorf("%w: %s", ErrInvalidHeight, movie.height.Text())
-		}
-	default:
-		return nil, ErrMultipleHeights
+	if err := movie.withDimensions.init(doc, pathMovieWidth, pathMovieHeight); err != nil {
+		return nil, err
 	}
 
 	movie.genres = doc.FindElementsPath(pathMovieGenre)

@@ -2,7 +2,6 @@ package nfo
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 
 	"github.com/beevik/etree"
@@ -10,7 +9,7 @@ import (
 
 type Episode struct {
 	withTitle
-	width, height *etree.Element
+	withDimensions
 }
 
 func (*Episode) validNfoSubtype() {}
@@ -51,35 +50,11 @@ var (
 func readEpisode(doc *etree.Document) (*Episode, error) {
 	episode := &Episode{}
 
-	err := episode.withTitle.init(doc, pathEpisodeTitle, ErrNoTitle, ErrMultipleTitles)
-	if err != nil {
+	if err := episode.withTitle.init(doc, pathEpisodeTitle); err != nil {
 		return nil, err
 	}
-
-	widths := doc.FindElementsPath(pathEpisodeWidth)
-	switch len(widths) {
-	case 0:
-		return nil, ErrNoWidth
-	case 1:
-		episode.width = widths[0]
-		if i, err := strconv.Atoi(episode.width.Text()); err != nil || i <= 0 {
-			return nil, fmt.Errorf("%w: %s", ErrInvalidWidth, episode.width.Text())
-		}
-	default:
-		return nil, ErrMultipleWidths
-	}
-
-	heights := doc.FindElementsPath(pathEpisodeHeight)
-	switch len(heights) {
-	case 0:
-		return nil, ErrNoHeight
-	case 1:
-		episode.height = heights[0]
-		if i, err := strconv.Atoi(episode.height.Text()); err != nil || i <= 0 {
-			return nil, fmt.Errorf("%w: %s", ErrInvalidHeight, episode.height.Text())
-		}
-	default:
-		return nil, ErrMultipleHeights
+	if err := episode.withDimensions.init(doc, pathEpisodeWidth, pathEpisodeHeight); err != nil {
+		return nil, err
 	}
 
 	return episode, nil
