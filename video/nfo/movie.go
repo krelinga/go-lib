@@ -69,7 +69,7 @@ var (
 	pathMovieTag    = etree.MustCompilePath("/movie/tag")
 )
 
-func parseMovie(doc *etree.Document) (*Movie, error) {
+func readMovie(doc *etree.Document) (*Movie, error) {
 	movie := &Movie{}
 
 	titles := doc.FindElementsPath(pathMovieTitle)

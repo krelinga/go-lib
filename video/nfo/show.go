@@ -8,6 +8,6 @@ type Show struct {
 
 func (*Show) validNfoSubtype() {}
 
-func parseShow(_ *etree.Document) (*Show, error) {
+func readShow(_ *etree.Document) (*Show, error) {
 	return &Show{}, nil
 }

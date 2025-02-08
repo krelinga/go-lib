@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseEpisode(t *testing.T) {
+func TestReadEpisode(t *testing.T) {
 	tests := []struct {
 		name       string
 		nfo        string

@@ -30,11 +30,11 @@ func ReadFrom(in io.Reader) (Nfo, error) {
 	}
 	switch root.Tag {
 	case "movie":
-		return parseMovie(doc)
+		return readMovie(doc)
 	case "tvshow":
-		return parseShow(doc)
+		return readShow(doc)
 	case "episodedetails":
-		return parseEpisode(doc)
+		return readEpisode(doc)
 	default:
 		return nil, fmt.Errorf("%w: %s", ErrBadRootTag, root.Tag)
 	}

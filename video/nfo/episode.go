@@ -56,7 +56,7 @@ var (
 	ErrInvalidHeight   = errors.New("invalid height, must be a positive integer")
 )
 
-func parseEpisode(doc *etree.Document) (*Episode, error) {
+func readEpisode(doc *etree.Document) (*Episode, error) {
 	episode := &Episode{}
 
 	titles := doc.FindElementsPath(pathEpisodeTitle)

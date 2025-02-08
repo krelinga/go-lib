@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParse(t *testing.T) {
+func TestReadFrom(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     string

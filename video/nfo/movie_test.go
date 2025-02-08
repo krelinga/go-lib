@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParseMovie(t *testing.T) {
+func TestReadMovie(t *testing.T) {
 	tests := []struct {
 		name        string
 		nfo         string
