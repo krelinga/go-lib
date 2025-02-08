@@ -88,3 +88,9 @@ func (wd *withDimensions) init(in *etree.Document, widthPath, heightPath etree.P
 
 	return nil
 }
+
+type WithDimensions interface {
+	Nfo
+	Width() int
+	Height() int
+}
