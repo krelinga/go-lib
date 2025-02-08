@@ -16,24 +16,24 @@ type Movie struct {
 
 func (*Movie) validNfoSubtype() {}
 
-func (e *Movie) Title() string {
-	return e.title.Text()
+func (m *Movie) Title() string {
+	return m.title.Text()
 }
 
-func (e *Movie) SetTitle(title string) {
-	e.title.SetText(title)
+func (m *Movie) SetTitle(title string) {
+	m.title.SetText(title)
 }
 
-func (e *Movie) Width() int {
-	i, err := strconv.Atoi(e.width.Text())
+func (m *Movie) Width() int {
+	i, err := strconv.Atoi(m.width.Text())
 	if err != nil {
 		panic(err)
 	}
 	return i
 }
 
-func (e *Movie) GetHeight() int {
-	i, err := strconv.Atoi(e.height.Text())
+func (m *Movie) GetHeight() int {
+	i, err := strconv.Atoi(m.height.Text())
 	if err != nil {
 		panic(err)
 	}
