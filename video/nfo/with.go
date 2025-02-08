@@ -1,12 +1,45 @@
 package nfo
 
 import (
-	"fmt"
 	"iter"
 	"strconv"
 
 	"github.com/beevik/etree"
 )
+
+type findExactlyOne struct {
+	doc               *etree.Document
+	path              etree.Path
+	missing, multiple error
+	validate          func(*etree.Element) error
+	out               **etree.Element
+}
+
+func (feo findExactlyOne) find() error {
+	found := feo.doc.FindElementsPath(feo.path)
+	switch len(found) {
+	case 0:
+		return feo.missing
+	case 1:
+		*feo.out = found[0]
+		if feo.validate != nil {
+			return feo.validate(*feo.out)
+		}
+		return nil
+	default:
+		return feo.multiple
+	}
+}
+
+func isPositiveInt(returnIfFailed error) func(*etree.Element) error {
+	return func(e *etree.Element) error {
+		i, err := strconv.Atoi(e.Text())
+		if err != nil || i <= 0 {
+			return returnIfFailed
+		}
+		return nil
+	}
+}
 
 type withTitle struct {
 	e *etree.Element
@@ -21,16 +54,13 @@ func (wt *withTitle) SetTitle(title string) {
 }
 
 func (wt *withTitle) init(in *etree.Document, path etree.Path) error {
-	found := in.FindElementsPath(path)
-	switch len(found) {
-	case 0:
-		return ErrNoTitle
-	case 1:
-		wt.e = found[0]
-	default:
-		return ErrMultipleTitles
-	}
-	return nil
+	return findExactlyOne{
+		doc:      in,
+		path:     path,
+		missing:  ErrNoTitle,
+		multiple: ErrMultipleTitles,
+		out:      &wt.e,
+	}.find()
 }
 
 type WithTitle interface {
@@ -61,33 +91,26 @@ func (wd *withDimensions) Height() int {
 }
 
 func (wd *withDimensions) init(in *etree.Document, widthPath, heightPath etree.Path) error {
-	widths := in.FindElementsPath(widthPath)
-	switch len(widths) {
-	case 0:
-		return ErrNoWidth
-	case 1:
-		wd.width = widths[0]
-		if i, err := strconv.Atoi(wd.width.Text()); err != nil || i <= 0 {
-			return fmt.Errorf("%w: %s", ErrInvalidWidth, wd.width.Text())
-		}
-	default:
-		return ErrMultipleWidths
+	err := findExactlyOne{
+		doc:      in,
+		path:     widthPath,
+		missing:  ErrNoWidth,
+		multiple: ErrMultipleWidths,
+		validate: isPositiveInt(ErrInvalidWidth),
+		out:      &wd.width,
+	}.find()
+	if err != nil {
+		return err
 	}
 
-	heights := in.FindElementsPath(heightPath)
-	switch len(heights) {
-	case 0:
-		return ErrNoHeight
-	case 1:
-		wd.height = heights[0]
-		if i, err := strconv.Atoi(wd.height.Text()); err != nil || i <= 0 {
-			return fmt.Errorf("%w: %s", ErrInvalidHeight, wd.height.Text())
-		}
-	default:
-		return ErrMultipleHeights
-	}
-
-	return nil
+	return findExactlyOne{
+		doc:      in,
+		path:     heightPath,
+		missing:  ErrNoHeight,
+		multiple: ErrMultipleHeights,
+		validate: isPositiveInt(ErrInvalidHeight),
+		out:      &wd.height,
+	}.find()
 }
 
 type WithDimensions interface {
@@ -96,18 +119,22 @@ type WithDimensions interface {
 	Height() int
 }
 
+func elementIter(elems []*etree.Element) iter.Seq[string] {
+	return func(yield func(v string) bool) {
+		for _, elem := range elems {
+			if !yield(elem.Text()) {
+				return
+			}
+		}
+	}
+}
+
 type withGenres struct {
 	genres []*etree.Element
 }
 
 func (wg *withGenres) Genres() iter.Seq[string] {
-	return func(yield func(v string) bool) {
-		for _, genre := range wg.genres {
-			if !yield(genre.Text()) {
-				return
-			}
-		}
-	}
+	return elementIter(wg.genres)
 }
 
 func (wg *withGenres) init(in *etree.Document, path etree.Path) {
@@ -124,13 +151,7 @@ type withTags struct {
 }
 
 func (wt *withTags) Tags() iter.Seq[string] {
-	return func(yield func(v string) bool) {
-		for _, tag := range wt.tags {
-			if !yield(tag.Text()) {
-				return
-			}
-		}
-	}
+	return elementIter(wt.tags)
 }
 
 func (wt *withTags) init(in *etree.Document, path etree.Path) {

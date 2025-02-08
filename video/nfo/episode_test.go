@@ -51,6 +51,7 @@ func TestReadEpisode(t *testing.T) {
 					<streamdetails>
 						<video>
 							<width>invalid</width>
+							<height>480</height>
 						</video>
 					</streamdetails>
 				</fileinfo>
@@ -67,6 +68,7 @@ func TestReadEpisode(t *testing.T) {
 						<video>
 							<width>720</width>
 							<width>720</width>
+							<height>480</height>
 						</video>
 					</streamdetails>
 				</fileinfo>
