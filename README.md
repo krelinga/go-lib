@@ -2,6 +2,11 @@
 
 ## Releases
 
+### v0.4.2
+
+- Add `nfo` library.
+- minor tweak to implementation of `mac.StayAwake()` function.
+
 ### v0.4.1
 
 - Add `mac` library and `StayAwake()` function.
