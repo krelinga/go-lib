@@ -3,6 +3,7 @@ package nfo
 import (
 	"io"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 
@@ -149,6 +150,7 @@ func TestParseMovie(t *testing.T) {
 			assert.Equal(t, tt.wantTitle, outMovie.Title(), "title")
 			assert.Equal(t, tt.wantWidth, outMovie.Width(), "width")
 			assert.Equal(t, tt.wantHeight, outMovie.GetHeight(), "height")
+			assert.Equal(t, tt.wantGeneres, slices.Collect(outMovie.Genres()), "genres")
 		})
 	}
 }

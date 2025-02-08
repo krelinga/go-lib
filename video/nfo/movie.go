@@ -2,6 +2,7 @@ package nfo
 
 import (
 	"fmt"
+	"iter"
 	"strconv"
 
 	"github.com/beevik/etree"
@@ -37,6 +38,16 @@ func (e *Movie) GetHeight() int {
 		panic(err)
 	}
 	return i
+}
+
+func (m *Movie) Genres() iter.Seq[string] {
+	return func(yield func(v string) bool) {
+		for _, genre := range m.genres {
+			if !yield(genre.Text()) {
+				return
+			}
+		}
+	}
 }
 
 var (
