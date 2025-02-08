@@ -51,6 +51,11 @@ func TestReadFrom(t *testing.T) {
 			input:   `<movie>`,
 			wantErr: ErrBadXml,
 		},
+		{
+			name:    "Empty XML",
+			input:   ``,
+			wantErr: ErrBadXml,
+		},
 	}
 
 	for _, tt := range tests {

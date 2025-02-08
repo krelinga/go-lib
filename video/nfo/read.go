@@ -28,6 +28,9 @@ func ReadFrom(in io.Reader) (Nfo, error) {
 	}
 
 	root := doc.Root()
+	if root == nil {
+		return nil, fmt.Errorf("%w: %s", ErrBadXml, "empty")
+	}
 	if root.Space != "" {
 		return nil, fmt.Errorf("%w: %s", ErrBadRootNamespace, root.Space)
 	}
