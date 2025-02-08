@@ -20,6 +20,7 @@ func TestParseMovie(t *testing.T) {
 		wantWidth   int
 		wantHeight  int
 		wantGeneres []string
+		wantTags    []string
 	}{
 		{
 			name:        "Happy Path",
@@ -28,6 +29,31 @@ func TestParseMovie(t *testing.T) {
 			wantWidth:   3840,
 			wantHeight:  2160,
 			wantGeneres: []string{"Comedy", "Fantasy"},
+			wantTags: []string{
+				"new york city",
+				"environmental protection agency",
+				"library",
+				"supernatural",
+				"paranormal phenomena",
+				"loser",
+				"slime",
+				"gatekeeper",
+				"nerd",
+				"giant monster",
+				"haunting",
+				"hybrid",
+				"possession",
+				"mythology",
+				"horror spoof",
+				"paranormal investigation",
+				"urban setting",
+				"super power",
+				"receptionist",
+				"world trade center",
+				"ghost",
+				"duringcreditsstinger",
+				"ghostbusters",
+			},
 		},
 		{
 			name:    "No title",
@@ -151,6 +177,7 @@ func TestParseMovie(t *testing.T) {
 			assert.Equal(t, tt.wantWidth, outMovie.Width(), "width")
 			assert.Equal(t, tt.wantHeight, outMovie.GetHeight(), "height")
 			assert.Equal(t, tt.wantGeneres, slices.Collect(outMovie.Genres()), "genres")
+			assert.Equal(t, tt.wantTags, slices.Collect(outMovie.Tags()), "tags")
 		})
 	}
 }

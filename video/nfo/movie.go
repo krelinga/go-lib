@@ -12,6 +12,7 @@ type Movie struct {
 	title         *etree.Element
 	width, height *etree.Element
 	genres        []*etree.Element
+	tags          []*etree.Element
 }
 
 func (*Movie) validNfoSubtype() {}
@@ -50,11 +51,22 @@ func (m *Movie) Genres() iter.Seq[string] {
 	}
 }
 
+func (m *Movie) Tags() iter.Seq[string] {
+	return func(yield func(v string) bool) {
+		for _, tag := range m.tags {
+			if !yield(tag.Text()) {
+				return
+			}
+		}
+	}
+}
+
 var (
 	pathMovieTitle  = etree.MustCompilePath("/movie/title")
 	pathMovieWidth  = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/width")
 	pathMovieHeight = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/height")
 	pathMovieGenre  = etree.MustCompilePath("/movie/genre")
+	pathMovieTag    = etree.MustCompilePath("/movie/tag")
 )
 
 func parseMovie(doc *etree.Document) (*Movie, error) {
@@ -97,6 +109,7 @@ func parseMovie(doc *etree.Document) (*Movie, error) {
 	}
 
 	movie.genres = doc.FindElementsPath(pathMovieGenre)
+	movie.tags = doc.FindElementsPath(pathMovieTag)
 
 	return movie, nil
 }
