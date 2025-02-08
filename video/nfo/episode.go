@@ -25,14 +25,15 @@ var (
 )
 
 var (
-	ErrNoTitle         = errors.New("no title found")
-	ErrMultipleTitles  = errors.New("multiple titles found")
-	ErrNoWidth         = errors.New("no width found")
-	ErrMultipleWidths  = errors.New("multiple widths found")
-	ErrInvalidWidth    = errors.New("invalid width, must be a positive integer")
-	ErrNoHeight        = errors.New("no height found")
-	ErrMultipleHeights = errors.New("multiple heights found")
-	ErrInvalidHeight   = errors.New("invalid height, must be a positive integer")
+	ErrNoTitle          = errors.New("no title found")
+	ErrMultipleTitles   = errors.New("multiple titles found")
+	ErrNoWidth          = errors.New("no width found")
+	ErrMultipleWidths   = errors.New("multiple widths found")
+	ErrInvalidWidth     = errors.New("invalid width, must be a positive integer")
+	ErrNoHeight         = errors.New("no height found")
+	ErrMultipleHeights  = errors.New("multiple heights found")
+	ErrInvalidHeight    = errors.New("invalid height, must be a positive integer")
+	ErrMultipleEditions = errors.New("multiple editions found")
 )
 
 func readEpisode(doc *etree.Document) (*Episode, error) {

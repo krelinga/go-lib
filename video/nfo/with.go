@@ -31,6 +31,31 @@ func (feo findExactlyOne) find() error {
 	}
 }
 
+type findAtMostOne struct {
+	doc      *etree.Document
+	path     etree.Path
+	multiple error
+	validate func(*etree.Element) error
+	out      **etree.Element
+}
+
+func (fao findAtMostOne) find() error {
+	found := fao.doc.FindElementsPath(fao.path)
+	switch len(found) {
+	case 0:
+		*fao.out = nil
+		return nil
+	case 1:
+		*fao.out = found[0]
+		if fao.validate != nil {
+			return fao.validate(*fao.out)
+		}
+		return nil
+	default:
+		return fao.multiple
+	}
+}
+
 func isPositiveInt(returnIfFailed error) func(*etree.Element) error {
 	return func(e *etree.Element) error {
 		i, err := strconv.Atoi(e.Text())
@@ -165,4 +190,30 @@ func (wt *withTags) init(in *etree.Document, path etree.Path) {
 type WithTags interface {
 	Nfo
 	Tags() iter.Seq[string]
+}
+
+type withEdition struct {
+	edition *etree.Element
+}
+
+func (we *withEdition) Edition() (string, bool) {
+	if we.edition == nil || we.edition.Text() == "NONE" {
+		return "", false
+	}
+	return we.edition.Text(), true
+}
+
+func (we *withEdition) init(in *etree.Document, path etree.Path) {
+	findAtMostOne{
+		doc:      in,
+		path:     path,
+		multiple: ErrMultipleEditions,
+		out:      &we.edition,
+	}.find()
+}
+
+// An NFO file that (optionally) contains an edition.
+type WithEdition interface {
+	Nfo
+	Edition() (string, bool)
 }

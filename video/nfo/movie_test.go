@@ -13,15 +13,17 @@ import (
 
 func TestReadMovie(t *testing.T) {
 	tests := []struct {
-		name        string
-		nfo         string
-		nfoPath     string
-		wantErr     error
-		wantTitle   string
-		wantWidth   int
-		wantHeight  int
-		wantGeneres []string
-		wantTags    []string
+		name          string
+		nfo           string
+		nfoPath       string
+		wantErr       error
+		wantTitle     string
+		wantWidth     int
+		wantHeight    int
+		wantGeneres   []string
+		wantTags      []string
+		wantEditionOk bool
+		wantEdition   string
 	}{
 		{
 			name:        "Happy Path",
@@ -55,6 +57,38 @@ func TestReadMovie(t *testing.T) {
 				"duringcreditsstinger",
 				"ghostbusters",
 			},
+		},
+		{
+			name:        "Happy Path With Edition",
+			nfoPath:     "testdata/movie_extended_cut.nfo",
+			wantTitle:   "Aliens - Extended Edition",
+			wantWidth:   1920,
+			wantHeight:  1080,
+			wantGeneres: []string{"Action", "Thriller", "Science Fiction"},
+			wantTags: []string{
+				"android",
+				"space marine",
+				"extraterrestrial technology",
+				"spaceman",
+				"space travel",
+				"settler",
+				"colony",
+				"cryogenics",
+				"vacuum",
+				"space colony",
+				"warrior woman",
+				"alien",
+				"space",
+				"female protagonist",
+				"creature",
+				"desolate",
+				"female hero",
+				"xenomorph",
+				"desolate planet",
+				"strong female protagonist",
+			},
+			wantEditionOk: true,
+			wantEdition:   "EXTENDED_EDITION",
 		},
 		{
 			name:    "No title",
@@ -179,6 +213,11 @@ func TestReadMovie(t *testing.T) {
 			assert.Equal(t, tt.wantHeight, outMovie.Height(), "height")
 			assert.Equal(t, tt.wantGeneres, slices.Collect(outMovie.Genres()), "genres")
 			assert.Equal(t, tt.wantTags, slices.Collect(outMovie.Tags()), "tags")
+			edition, editionOk := outMovie.Edition()
+			assert.Equal(t, tt.wantEditionOk, editionOk, "editionOk")
+			if tt.wantEditionOk {
+				assert.Equal(t, tt.wantEdition, edition, "edition")
+			}
 		})
 	}
 }

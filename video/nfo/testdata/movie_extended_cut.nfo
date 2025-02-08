@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--created on 2024-07-22 00:56:06 - tinyMediaManager 4.3.16-->
+<movie>
+  <title>Aliens - Extended Edition</title>
+  <originaltitle>Aliens</originaltitle>
+  <sorttitle/>
+  <epbookmark/>
+  <year>1986</year>
+  <ratings>
+    <rating default="false" max="10" name="themoviedb">
+      <value>7.9</value>
+      <votes>9342</votes>
+    </rating>
+  </ratings>
+  <userrating>0</userrating>
+  <top250>0</top250>
+  <set>
+    <name>Alien Collection</name>
+    <overview>A science fiction horror film franchise, focusing on Lieutenant Ellen Ripley (Sigourney Weaver) and her battle with an extraterrestrial life-form, commonly referred to as "the Alien". Produced by 20th Century Fox, the series started with the 1979 film Alien, then Aliens in 1986, Alien³ in 1992, and Alien: Resurrection in 1997.</overview>
+  </set>
+  <plot>Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.</plot>
+  <outline>Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.</outline>
+  <tagline>This time it's war.</tagline>
+  <runtime>154</runtime>
+  <thumb aspect="poster">https://image.tmdb.org/t/p/original/r1x5JGpyqZU8PYhbs4UcrO1Xb6x.jpg</thumb>
+  <thumb aspect="banner">http://assets.fanart.tv/fanart/movies/679/moviebanner/aliens-51a91e3027992.jpg</thumb>
+  <thumb aspect="clearart">http://assets.fanart.tv/fanart/movies/679/hdmovieclearart/aliens-596fd427127b9.png</thumb>
+  <thumb aspect="clearlogo">http://assets.fanart.tv/fanart/movies/679/hdmovielogo/aliens-5175ccc6be1b1.png</thumb>
+  <thumb aspect="discart">http://assets.fanart.tv/fanart/movies/679/moviedisc/aliens-51162e9ab945f.png</thumb>
+  <thumb aspect="landscape">http://assets.fanart.tv/fanart/movies/679/moviethumb/aliens-5199be82096dd.jpg</thumb>
+  <thumb aspect="keyart">http://assets.fanart.tv/fanart/movies/679/movieposter/aliens-5645f94469fff.jpg</thumb>
+  <thumb aspect="logo">http://assets.fanart.tv/fanart/movies/679/hdmovielogo/aliens-5175ccc6be1b1.png</thumb>
+  <fanart>
+    <thumb>https://image.tmdb.org/t/p/original/jMBpJFRtrtIXymer93XLavPwI3P.jpg</thumb>
+  </fanart>
+  <mpaa>US:R / US:Rated R</mpaa>
+  <certification>US:R / US:Rated R</certification>
+  <id>tt0090605</id>
+  <tmdbid>679</tmdbid>
+  <uniqueid default="false" type="tmdb">679</uniqueid>
+  <uniqueid default="false" type="tmdbSet">8091</uniqueid>
+  <uniqueid default="true" type="imdb">tt0090605</uniqueid>
+  <country>United States</country>
+  <status/>
+  <code/>
+  <premiered>1986-07-18</premiered>
+  <watched>false</watched>
+  <playcount>0</playcount>
+  <genre>Action</genre>
+  <genre>Thriller</genre>
+  <genre>Science Fiction</genre>
+  <studio>SLM Production Group</studio>
+  <studio>20th Century Fox</studio>
+  <studio>Brandywine Productions</studio>
+  <credits tmdbid="2710">James Cameron</credits>
+  <credits tmdbid="915">David Giler</credits>
+  <credits tmdbid="5045">Dan O'Bannon</credits>
+  <credits tmdbid="5046">Ronald Shusett</credits>
+  <credits tmdbid="1723">Walter Hill</credits>
+  <director tmdbid="2710">James Cameron</director>
+  <tag>android</tag>
+  <tag>space marine</tag>
+  <tag>extraterrestrial technology</tag>
+  <tag>spaceman</tag>
+  <tag>space travel</tag>
+  <tag>settler</tag>
+  <tag>colony</tag>
+  <tag>cryogenics</tag>
+  <tag>vacuum</tag>
+  <tag>space colony</tag>
+  <tag>warrior woman</tag>
+  <tag>alien</tag>
+  <tag>space</tag>
+  <tag>female protagonist</tag>
+  <tag>creature</tag>
+  <tag>desolate</tag>
+  <tag>female hero</tag>
+  <tag>xenomorph</tag>
+  <tag>desolate planet</tag>
+  <tag>strong female protagonist</tag>
+  <actor>
+    <name>Sigourney Weaver</name>
+    <role>Ripley</role>
+    <thumb>https://image.tmdb.org/t/p/h632/flfhep27iBxseZIlxOMHt6zJFX1.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10205</profile>
+    <tmdbid>10205</tmdbid>
+  </actor>
+  <actor>
+    <name>Carrie Henn</name>
+    <role>Newt</role>
+    <thumb>https://image.tmdb.org/t/p/h632/iNaYp4liKvKsEZp5g5xjd94OFCz.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10206</profile>
+    <tmdbid>10206</tmdbid>
+  </actor>
+  <actor>
+    <name>Michael Biehn</name>
+    <role>Corporal Hicks</role>
+    <thumb>https://image.tmdb.org/t/p/h632/9oFLsADWQm2TvU8XzLIzBbjdMkU.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2712</profile>
+    <tmdbid>2712</tmdbid>
+  </actor>
+  <actor>
+    <name>Paul Reiser</name>
+    <role>Burke</role>
+    <thumb>https://image.tmdb.org/t/p/h632/v3e5TClep4ugMdU4qSRiKbvLr3B.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/781</profile>
+    <tmdbid>781</tmdbid>
+  </actor>
+  <actor>
+    <name>Lance Henriksen</name>
+    <role>Bishop</role>
+    <thumb>https://image.tmdb.org/t/p/h632/5F8cHWGlo2NIiswSn5ymL5ukgxG.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2714</profile>
+    <tmdbid>2714</tmdbid>
+  </actor>
+  <actor>
+    <name>Bill Paxton</name>
+    <role>Private Hudson</role>
+    <thumb>https://image.tmdb.org/t/p/h632/aLdNe6mt1cSi2zWlUYRregzfis5.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2053</profile>
+    <tmdbid>2053</tmdbid>
+  </actor>
+  <actor>
+    <name>William Hope</name>
+    <role>Lieutenant Gorman</role>
+    <thumb>https://image.tmdb.org/t/p/h632/blKMEeCftWVBPI2hqvzycmdE9nS.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10207</profile>
+    <tmdbid>10207</tmdbid>
+  </actor>
+  <actor>
+    <name>Jenette Goldstein</name>
+    <role>Private Vasquez</role>
+    <thumb>https://image.tmdb.org/t/p/h632/4YZVLLWEFtxPLaOAlndfzxH1WG1.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/3981</profile>
+    <tmdbid>3981</tmdbid>
+  </actor>
+  <actor>
+    <name>Al Matthews</name>
+    <role>Sergeant Apone</role>
+    <thumb>https://image.tmdb.org/t/p/h632/ugW320vaF9XdIaowEDIwcF3CXyU.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10208</profile>
+    <tmdbid>10208</tmdbid>
+  </actor>
+  <actor>
+    <name>Mark Rolston</name>
+    <role>Private Drake</role>
+    <thumb>https://image.tmdb.org/t/p/h632/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/6576</profile>
+    <tmdbid>6576</tmdbid>
+  </actor>
+  <actor>
+    <name>Ricco Ross</name>
+    <role>Private Frost</role>
+    <thumb>https://image.tmdb.org/t/p/h632/uXnxQldNApoiTJMecHA5xbi222S.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10212</profile>
+    <tmdbid>10212</tmdbid>
+  </actor>
+  <actor>
+    <name>Colette Hiller</name>
+    <role>Corporal Ferro</role>
+    <thumb>https://image.tmdb.org/t/p/h632/oOF8jmi10ZuwkUDOobGmYGfjOIt.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10209</profile>
+    <tmdbid>10209</tmdbid>
+  </actor>
+  <actor>
+    <name>Daniel Kash</name>
+    <role>Private Spunkmeyer</role>
+    <thumb>https://image.tmdb.org/t/p/h632/v8xa3aFbdk0t7RXpXiLlXI7QepH.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10210</profile>
+    <tmdbid>10210</tmdbid>
+  </actor>
+  <actor>
+    <name>Cynthia Dale Scott</name>
+    <role>Corporal Dietrich</role>
+    <thumb>https://image.tmdb.org/t/p/h632/320o5vqAhKMt2U7SDNcU4pPiXJ3.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10211</profile>
+    <tmdbid>10211</tmdbid>
+  </actor>
+  <actor>
+    <name>Tip Tipping</name>
+    <role>Private Crowe</role>
+    <thumb>https://image.tmdb.org/t/p/h632/vf6pIofI1U77O1GGk2I8yLEWgXL.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/10213</profile>
+    <tmdbid>10213</tmdbid>
+  </actor>
+  <actor>
+    <name>Trevor Steedman</name>
+    <role>Private Wierzbowski</role>
+    <profile>https://www.themoviedb.org/person/1340211</profile>
+    <tmdbid>1340211</tmdbid>
+  </actor>
+  <actor>
+    <name>Paul Maxwell</name>
+    <role>Van Leuwen</role>
+    <profile>https://www.themoviedb.org/person/748</profile>
+    <tmdbid>748</tmdbid>
+  </actor>
+  <actor>
+    <name>Valerie Colgan</name>
+    <role>ECA Rep</role>
+    <thumb>https://image.tmdb.org/t/p/h632/qVrWdI8cpkAnB7j8t6t4Th6I64Y.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1653085</profile>
+    <tmdbid>1653085</tmdbid>
+  </actor>
+  <actor>
+    <name>Alan Polonsky</name>
+    <role>Insurance Man</role>
+    <thumb>https://image.tmdb.org/t/p/h632/mX7V29fZjWVrP0cWHBNM8uiklrF.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/84890</profile>
+    <tmdbid>84890</tmdbid>
+  </actor>
+  <actor>
+    <name>Alibe Parsons</name>
+    <role>Med Tech</role>
+    <thumb>https://image.tmdb.org/t/p/h632/flcGz17vn1sEo6UzwSEroDw5XPE.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/190455</profile>
+    <tmdbid>190455</tmdbid>
+  </actor>
+  <actor>
+    <name>Blain Fairman</name>
+    <role>Doctor</role>
+    <profile>https://www.themoviedb.org/person/1179692</profile>
+    <tmdbid>1179692</tmdbid>
+  </actor>
+  <actor>
+    <name>Barbara Coles</name>
+    <role>Cocooned Woman</role>
+    <profile>https://www.themoviedb.org/person/96991</profile>
+    <tmdbid>96991</tmdbid>
+  </actor>
+  <actor>
+    <name>Carl Toop</name>
+    <role>Alien Warrior</role>
+    <profile>https://www.themoviedb.org/person/1817689</profile>
+    <tmdbid>1817689</tmdbid>
+  </actor>
+  <actor>
+    <name>John Lees</name>
+    <role>Power Loader Operator</role>
+    <profile>https://www.themoviedb.org/person/1494026</profile>
+    <tmdbid>1494026</tmdbid>
+  </actor>
+  <actor>
+    <name>Holly De Jong</name>
+    <role>Newt's Mother</role>
+    <thumb>https://image.tmdb.org/t/p/h632/3UtwsSuOaDueUg5iWOxX8KJw58p.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/84893</profile>
+    <tmdbid>84893</tmdbid>
+  </actor>
+  <actor>
+    <name>Christopher Henn</name>
+    <role>Newt's Brother</role>
+    <profile>https://www.themoviedb.org/person/3032600</profile>
+    <tmdbid>3032600</tmdbid>
+  </actor>
+  <actor>
+    <name>Jay Benedict</name>
+    <role>Newt's Father</role>
+    <thumb>https://image.tmdb.org/t/p/h632/egmUxHP7CUIK0GhdEVhjkS1fa8e.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/141014</profile>
+    <tmdbid>141014</tmdbid>
+  </actor>
+  <actor>
+    <name>William Armstrong</name>
+    <role>Lydecker</role>
+    <thumb>https://image.tmdb.org/t/p/h632/lW4dqrVuKKi3CK094JBJedSH6Qz.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/29616</profile>
+    <tmdbid>29616</tmdbid>
+  </actor>
+  <actor>
+    <name>Mac McDonald</name>
+    <role>Simpson</role>
+    <thumb>https://image.tmdb.org/t/p/h632/gejehuptBzsJlPiWKU8B9TTrc7r.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/33403</profile>
+    <tmdbid>33403</tmdbid>
+  </actor>
+  <actor>
+    <name>Eddie Powell</name>
+    <role>Alien Warrior (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/rdrJbQxIokXxiBHCJuAsqTKFbXH.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1077325</profile>
+    <tmdbid>1077325</tmdbid>
+  </actor>
+  <actor>
+    <name>Jill Goldston</name>
+    <role>Worker in Corridor (Special Edition) (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/9DcoU2J3OvunNAUTj94dCI6bYru.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/2462366</profile>
+    <tmdbid>2462366</tmdbid>
+  </actor>
+  <actor>
+    <name>Elizabeth Inglis</name>
+    <role>Amanda Ripley-Mclaren (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/geKNfejtiMClQxX5FmPUKk954xe.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/3678</profile>
+    <tmdbid>3678</tmdbid>
+  </actor>
+  <actor>
+    <name>Stuart Milligan</name>
+    <role>Salvage Team Leader (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/gFZCxMayTR1xdS2m16QNbecY3I4.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/96895</profile>
+    <tmdbid>96895</tmdbid>
+  </actor>
+  <actor>
+    <name>Bob Sherman</name>
+    <role>Salvage Team Leader (voice) (uncredited)</role>
+    <profile>https://www.themoviedb.org/person/74762</profile>
+    <tmdbid>74762</tmdbid>
+  </actor>
+  <actor>
+    <name>Chris Webb</name>
+    <role>Alien Warrior (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/ynXbiAuNnQ7VrZOX0P1mkdG2l9E.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1902347</profile>
+    <tmdbid>1902347</tmdbid>
+  </actor>
+  <actor>
+    <name>Tom Woodruff Jr.</name>
+    <role>Salvager (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/o5MW7KiROaA5uf9zzJmpHJfUjh3.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/109870</profile>
+    <tmdbid>109870</tmdbid>
+  </actor>
+  <actor>
+    <name>Alec Gillis</name>
+    <role>Alien (uncredited)</role>
+    <thumb>https://image.tmdb.org/t/p/h632/3pglJqJepYKuE8B9aIAd4Z3qX0y.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/958540</profile>
+    <tmdbid>958540</tmdbid>
+  </actor>
+  <producer tmdbid="869">
+    <name>Gale Anne Hurd</name>
+    <thumb>https://image.tmdb.org/t/p/h632/zQtqYXqna1DyIMX3TrY0UytNgoO.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/869</profile>
+  </producer>
+  <producer tmdbid="598">
+    <name>Mike Fenton</name>
+    <thumb>https://image.tmdb.org/t/p/h632/oIKCBb2w47iZps9neDo2GY29g1y.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/598</profile>
+  </producer>
+  <producer tmdbid="752">
+    <name>Judy Taylor</name>
+    <profile>https://www.themoviedb.org/person/752</profile>
+  </producer>
+  <producer tmdbid="668">
+    <name>Mary Selway</name>
+    <thumb>https://image.tmdb.org/t/p/h632/9dP8WP2KF9TERPLQkaXDwzi3Tjc.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/668</profile>
+  </producer>
+  <producer tmdbid="597">
+    <name>Jane Feinberg</name>
+    <profile>https://www.themoviedb.org/person/597</profile>
+  </producer>
+  <producer tmdbid="5053">
+    <name>Gordon Carroll</name>
+    <profile>https://www.themoviedb.org/person/5053</profile>
+  </producer>
+  <producer tmdbid="1723">
+    <name>Walter Hill</name>
+    <thumb>https://image.tmdb.org/t/p/h632/3CiICrmhaYnirmOMHEaFXYTbsnT.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/1723</profile>
+  </producer>
+  <producer tmdbid="915">
+    <name>David Giler</name>
+    <thumb>https://image.tmdb.org/t/p/h632/mKsyy0SS0YNWBgDQp2Hse3i9g2h.jpg</thumb>
+    <profile>https://www.themoviedb.org/person/915</profile>
+  </producer>
+  <producer tmdbid="1580875">
+    <name>Gil Whelan</name>
+    <profile>https://www.themoviedb.org/person/1580875</profile>
+  </producer>
+  <producer tmdbid="958768">
+    <name>Hugh Harlow</name>
+    <profile>https://www.themoviedb.org/person/958768</profile>
+  </producer>
+  <producer tmdbid="2550220">
+    <name>Mo Coppitters</name>
+    <profile>https://www.themoviedb.org/person/2550220</profile>
+  </producer>
+  <producer tmdbid="2550262">
+    <name>Joyce Turner</name>
+    <profile>https://www.themoviedb.org/person/2550262</profile>
+  </producer>
+  <trailer>plugin://plugin.video.youtube/?action=play_video&amp;videoid=8OxirbuHsBA</trailer>
+  <languages>English</languages>
+  <dateadded>2024-07-22 00:52:58</dateadded>
+  <fileinfo>
+    <streamdetails>
+      <video>
+        <codec>h264</codec>
+        <aspect>1.78</aspect>
+        <width>1920</width>
+        <height>1080</height>
+        <durationinseconds>9267</durationinseconds>
+        <stereomode/>
+      </video>
+      <audio>
+        <codec>DTSHD_MA</codec>
+        <language>eng</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>DTS</codec>
+        <language>eng</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>eng</language>
+        <channels>2</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>por</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>DTS</codec>
+        <language>fra</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>DTS</codec>
+        <language>deu</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>spa</language>
+        <channels>6</channels>
+      </audio>
+      <audio>
+        <codec>AC3</codec>
+        <language>eng</language>
+        <channels>2</channels>
+      </audio>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>por</language>
+      </subtitle>
+      <subtitle>
+        <language>por</language>
+      </subtitle>
+      <subtitle>
+        <language>dan</language>
+      </subtitle>
+      <subtitle>
+        <language>fin</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+      <subtitle>
+        <language>spa</language>
+      </subtitle>
+      <subtitle>
+        <language>nld</language>
+      </subtitle>
+      <subtitle>
+        <language>nor</language>
+      </subtitle>
+      <subtitle>
+        <language>swe</language>
+      </subtitle>
+      <subtitle>
+        <language>eng</language>
+      </subtitle>
+      <subtitle>
+        <language>dan</language>
+      </subtitle>
+      <subtitle>
+        <language>fin</language>
+      </subtitle>
+      <subtitle>
+        <language>fra</language>
+      </subtitle>
+      <subtitle>
+        <language>deu</language>
+      </subtitle>
+      <subtitle>
+        <language>nld</language>
+      </subtitle>
+      <subtitle>
+        <language>nor</language>
+      </subtitle>
+      <subtitle>
+        <language>swe</language>
+      </subtitle>
+    </streamdetails>
+  </fileinfo>
+  <!--tinyMediaManager meta data-->
+  <source>UNKNOWN</source>
+  <edition>EXTENDED_EDITION</edition>
+  <original_filename>ef2fb1f8-14c5-4d3d-a91a-369e5eb42406-Aliens (1986) - Director's Cut.mkv</original_filename>
+  <user_note/>
+</movie>

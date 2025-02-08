@@ -9,6 +9,7 @@ type Movie struct {
 	withDimensions
 	withGenres
 	withTags
+	withEdition
 	document *etree.Document
 }
 
@@ -19,11 +20,12 @@ func (m *Movie) getDocument() *etree.Document {
 }
 
 var (
-	pathMovieTitle  = etree.MustCompilePath("/movie/title")
-	pathMovieWidth  = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/width")
-	pathMovieHeight = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/height")
-	pathMovieGenre  = etree.MustCompilePath("/movie/genre")
-	pathMovieTag    = etree.MustCompilePath("/movie/tag")
+	pathMovieTitle   = etree.MustCompilePath("/movie/title")
+	pathMovieWidth   = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/width")
+	pathMovieHeight  = etree.MustCompilePath("/movie/fileinfo/streamdetails/video/height")
+	pathMovieGenre   = etree.MustCompilePath("/movie/genre")
+	pathMovieTag     = etree.MustCompilePath("/movie/tag")
+	pathMovieEdition = etree.MustCompilePath("/movie/edition")
 )
 
 func readMovie(doc *etree.Document) (*Movie, error) {
@@ -39,6 +41,7 @@ func readMovie(doc *etree.Document) (*Movie, error) {
 	}
 	movie.withGenres.init(doc, pathMovieGenre)
 	movie.withTags.init(doc, pathMovieTag)
+	movie.withEdition.init(doc, pathMovieEdition)
 
 	return movie, nil
 }
