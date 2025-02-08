@@ -2,6 +2,10 @@
 
 ## Releases
 
+### v0.4.4
+
+- support reading edition from movie `.nfo` files.
+
 ### v0.4.3
 
 - Bug fix in `nfo` library to handle empty XML documents.
