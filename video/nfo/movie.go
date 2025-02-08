@@ -10,8 +10,8 @@ import (
 type Movie struct {
 	withTitle
 	withDimensions
-	genres []*etree.Element
-	tags   []*etree.Element
+	withGenres
+	withTags
 }
 
 func (*Movie) validNfoSubtype() {}
@@ -69,9 +69,8 @@ func readMovie(doc *etree.Document) (*Movie, error) {
 	if err := movie.withDimensions.init(doc, pathMovieWidth, pathMovieHeight); err != nil {
 		return nil, err
 	}
-
-	movie.genres = doc.FindElementsPath(pathMovieGenre)
-	movie.tags = doc.FindElementsPath(pathMovieTag)
+	movie.withGenres.init(doc, pathMovieGenre)
+	movie.withTags.init(doc, pathMovieTag)
 
 	return movie, nil
 }

@@ -2,6 +2,7 @@ package nfo
 
 import (
 	"fmt"
+	"iter"
 	"strconv"
 
 	"github.com/beevik/etree"
@@ -93,4 +94,50 @@ type WithDimensions interface {
 	Nfo
 	Width() int
 	Height() int
+}
+
+type withGenres struct {
+	genres []*etree.Element
+}
+
+func (wg *withGenres) Genres() iter.Seq[string] {
+	return func(yield func(v string) bool) {
+		for _, genre := range wg.genres {
+			if !yield(genre.Text()) {
+				return
+			}
+		}
+	}
+}
+
+func (wg *withGenres) init(in *etree.Document, path etree.Path) {
+	wg.genres = in.FindElementsPath(path)
+}
+
+type WithGeneres interface {
+	Nfo
+	Genres() iter.Seq[string]
+}
+
+type withTags struct {
+	tags []*etree.Element
+}
+
+func (wt *withTags) Tags() iter.Seq[string] {
+	return func(yield func(v string) bool) {
+		for _, tag := range wt.tags {
+			if !yield(tag.Text()) {
+				return
+			}
+		}
+	}
+}
+
+func (wt *withTags) init(in *etree.Document, path etree.Path) {
+	wt.tags = in.FindElementsPath(path)
+}
+
+type WithTags interface {
+	Nfo
+	Tags() iter.Seq[string]
 }
