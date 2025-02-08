@@ -65,7 +65,7 @@ func TestParse(t *testing.T) {
 			} else {
 				r = strings.NewReader(tt.input)
 			}
-			nfo, err := Parse(r)
+			nfo, err := ReadFrom(r)
 			if tt.wantErr != nil {
 				assert.ErrorIs(t, err, tt.wantErr)
 			} else {

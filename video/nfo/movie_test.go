@@ -163,7 +163,7 @@ func TestParseMovie(t *testing.T) {
 			} else {
 				r = strings.NewReader(tt.nfo)
 			}
-			out, err := Parse(r)
+			out, err := ReadFrom(r)
 			assert.ErrorIs(t, err, tt.wantErr)
 			if err != nil {
 				return

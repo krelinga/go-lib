@@ -18,7 +18,7 @@ var (
 	ErrBadRootTag       = errors.New("unexpected root tag")
 )
 
-func Parse(in io.Reader) (Nfo, error) {
+func ReadFrom(in io.Reader) (Nfo, error) {
 	doc := etree.NewDocument()
 	if _, err := doc.ReadFrom(in); err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrBadXml, err)
