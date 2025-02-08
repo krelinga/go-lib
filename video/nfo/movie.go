@@ -9,21 +9,13 @@ import (
 )
 
 type Movie struct {
-	title         *etree.Element
+	withTitle
 	width, height *etree.Element
 	genres        []*etree.Element
 	tags          []*etree.Element
 }
 
 func (*Movie) validNfoSubtype() {}
-
-func (m *Movie) Title() string {
-	return m.title.Text()
-}
-
-func (m *Movie) SetTitle(title string) {
-	m.title.SetText(title)
-}
 
 func (m *Movie) Width() int {
 	i, err := strconv.Atoi(m.width.Text())
@@ -72,14 +64,8 @@ var (
 func readMovie(doc *etree.Document) (*Movie, error) {
 	movie := &Movie{}
 
-	titles := doc.FindElementsPath(pathMovieTitle)
-	switch len(titles) {
-	case 0:
-		return nil, ErrNoTitle
-	case 1:
-		movie.title = titles[0]
-	default:
-		return nil, ErrMultipleTitles
+	if err := movie.withTitle.init(doc, pathMovieTitle, ErrNoTitle, ErrMultipleTitles); err != nil {
+		return nil, err
 	}
 
 	widths := doc.FindElementsPath(pathMovieWidth)

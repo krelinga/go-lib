@@ -9,19 +9,11 @@ import (
 )
 
 type Episode struct {
-	title         *etree.Element
+	withTitle
 	width, height *etree.Element
 }
 
 func (*Episode) validNfoSubtype() {}
-
-func (e *Episode) Title() string {
-	return e.title.Text()
-}
-
-func (e *Episode) SetTitle(title string) {
-	e.title.SetText(title)
-}
 
 func (e *Episode) Width() int {
 	i, err := strconv.Atoi(e.width.Text())
@@ -59,14 +51,9 @@ var (
 func readEpisode(doc *etree.Document) (*Episode, error) {
 	episode := &Episode{}
 
-	titles := doc.FindElementsPath(pathEpisodeTitle)
-	switch len(titles) {
-	case 0:
-		return nil, ErrNoTitle
-	case 1:
-		episode.title = titles[0]
-	default:
-		return nil, ErrMultipleTitles
+	err := episode.withTitle.init(doc, pathEpisodeTitle, ErrNoTitle, ErrMultipleTitles)
+	if err != nil {
+		return nil, err
 	}
 
 	widths := doc.FindElementsPath(pathEpisodeWidth)
