@@ -25,10 +25,10 @@ func TestReadFrom(t *testing.T) {
 			typeTest:  func(n Nfo) bool { _, ok := n.(*Movie); return ok },
 		},
 		{
-			name:      "Valid show XML",
-			inputFile: "testdata/show.nfo",
+			name:      "Valid tvshow XML",
+			inputFile: "testdata/tvshow.nfo",
 			wantErr:   nil,
-			typeTest:  func(n Nfo) bool { _, ok := n.(*Show); return ok },
+			typeTest:  func(n Nfo) bool { _, ok := n.(*TvShow); return ok },
 		},
 		{
 			name:      "Valid episode XML",

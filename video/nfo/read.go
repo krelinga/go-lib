@@ -33,7 +33,7 @@ func ReadFrom(in io.Reader) (Nfo, error) {
 	case "movie":
 		return readMovie(doc)
 	case "tvshow":
-		return readShow(doc)
+		return readTvShow(doc)
 	case "episodedetails":
 		return readEpisode(doc)
 	default:
