@@ -1,9 +1,6 @@
 package nfo
 
 import (
-	"iter"
-	"strconv"
-
 	"github.com/beevik/etree"
 )
 
@@ -12,44 +9,13 @@ type Movie struct {
 	withDimensions
 	withGenres
 	withTags
+	document *etree.Document
 }
 
 func (*Movie) validNfoSubtype() {}
 
-func (m *Movie) Width() int {
-	i, err := strconv.Atoi(m.width.Text())
-	if err != nil {
-		panic(err)
-	}
-	return i
-}
-
-func (m *Movie) GetHeight() int {
-	i, err := strconv.Atoi(m.height.Text())
-	if err != nil {
-		panic(err)
-	}
-	return i
-}
-
-func (m *Movie) Genres() iter.Seq[string] {
-	return func(yield func(v string) bool) {
-		for _, genre := range m.genres {
-			if !yield(genre.Text()) {
-				return
-			}
-		}
-	}
-}
-
-func (m *Movie) Tags() iter.Seq[string] {
-	return func(yield func(v string) bool) {
-		for _, tag := range m.tags {
-			if !yield(tag.Text()) {
-				return
-			}
-		}
-	}
+func (m *Movie) getDocument() *etree.Document {
+	return m.document
 }
 
 var (
@@ -61,7 +27,9 @@ var (
 )
 
 func readMovie(doc *etree.Document) (*Movie, error) {
-	movie := &Movie{}
+	movie := &Movie{
+		document: doc,
+	}
 
 	if err := movie.withTitle.init(doc, pathMovieTitle); err != nil {
 		return nil, err

@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestReadEpisode(t *testing.T) {
@@ -146,7 +147,45 @@ func TestReadEpisode(t *testing.T) {
 			}
 			assert.Equal(t, tt.wantTitle, outEpisode.Title(), "title")
 			assert.Equal(t, tt.wantWidth, outEpisode.Width(), "width")
-			assert.Equal(t, tt.wantHeight, outEpisode.GetHeight(), "height")
+			assert.Equal(t, tt.wantHeight, outEpisode.Height(), "height")
 		})
 	}
+}
+
+func TestSetEpisodeTitle(t *testing.T) {
+	nfoString := `
+		<episodedetails>
+			<title>Title</title>
+			<fileinfo>
+				<streamdetails>
+					<video>
+						<width>720</width>
+						<height>480</height>
+					</video>
+				</streamdetails>
+			</fileinfo>
+			<unrelated>Unrelated</unrelated>
+		</episodedetails>`
+	nfo, err := ReadFrom(strings.NewReader(nfoString))
+	require.NoError(t, err)
+	episodeNfo, ok := nfo.(*Episode)
+	require.True(t, ok, "unexpected type")
+	episodeNfo.SetTitle("New Title")
+	builder := &strings.Builder{}
+	err = WriteTo(nfo, builder)
+	require.NoError(t, err)
+	wantNfoString := `
+		<episodedetails>
+			<title>New Title</title>
+			<fileinfo>
+				<streamdetails>
+					<video>
+						<width>720</width>
+						<height>480</height>
+					</video>
+				</streamdetails>
+			</fileinfo>
+			<unrelated>Unrelated</unrelated>
+		</episodedetails>`
+	assert.Equal(t, wantNfoString, builder.String())
 }

@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestReadMovie(t *testing.T) {
@@ -175,9 +176,47 @@ func TestReadMovie(t *testing.T) {
 			}
 			assert.Equal(t, tt.wantTitle, outMovie.Title(), "title")
 			assert.Equal(t, tt.wantWidth, outMovie.Width(), "width")
-			assert.Equal(t, tt.wantHeight, outMovie.GetHeight(), "height")
+			assert.Equal(t, tt.wantHeight, outMovie.Height(), "height")
 			assert.Equal(t, tt.wantGeneres, slices.Collect(outMovie.Genres()), "genres")
 			assert.Equal(t, tt.wantTags, slices.Collect(outMovie.Tags()), "tags")
 		})
 	}
+}
+
+func TestSetMovieTitle(t *testing.T) {
+	nfoString := `
+		<movie>
+			<title>Title</title>
+			<fileinfo>
+				<streamdetails>
+					<video>
+						<width>720</width>
+						<height>480</height>
+					</video>
+				</streamdetails>
+			</fileinfo>
+			<unrelated>Unrelated</unrelated>
+		</movie>`
+	nfo, err := ReadFrom(strings.NewReader(nfoString))
+	require.NoError(t, err)
+	movieNfo, ok := nfo.(*Movie)
+	require.True(t, ok, "unexpected type")
+	movieNfo.SetTitle("New Title")
+	builder := &strings.Builder{}
+	err = WriteTo(nfo, builder)
+	require.NoError(t, err)
+	wantNfoString := `
+		<movie>
+			<title>New Title</title>
+			<fileinfo>
+				<streamdetails>
+					<video>
+						<width>720</width>
+						<height>480</height>
+					</video>
+				</streamdetails>
+			</fileinfo>
+			<unrelated>Unrelated</unrelated>
+		</movie>`
+	assert.Equal(t, wantNfoString, builder.String())
 }

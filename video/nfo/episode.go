@@ -2,7 +2,6 @@ package nfo
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/beevik/etree"
 )
@@ -10,24 +9,13 @@ import (
 type Episode struct {
 	withTitle
 	withDimensions
+	document *etree.Document
 }
 
 func (*Episode) validNfoSubtype() {}
 
-func (e *Episode) Width() int {
-	i, err := strconv.Atoi(e.width.Text())
-	if err != nil {
-		panic(err)
-	}
-	return i
-}
-
-func (e *Episode) GetHeight() int {
-	i, err := strconv.Atoi(e.height.Text())
-	if err != nil {
-		panic(err)
-	}
-	return i
+func (e *Episode) getDocument() *etree.Document {
+	return e.document
 }
 
 var (
@@ -48,7 +36,9 @@ var (
 )
 
 func readEpisode(doc *etree.Document) (*Episode, error) {
-	episode := &Episode{}
+	episode := &Episode{
+		document: doc,
+	}
 
 	if err := episode.withTitle.init(doc, pathEpisodeTitle); err != nil {
 		return nil, err

@@ -9,6 +9,7 @@ import (
 )
 
 type Nfo interface {
+	getDocument() *etree.Document
 	validNfoSubtype()
 }
 
