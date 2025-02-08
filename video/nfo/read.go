@@ -8,6 +8,7 @@ import (
 	"github.com/beevik/etree"
 )
 
+// Nfo will always be an instance of *Movie, *TvShow, or *Episode.
 type Nfo interface {
 	getDocument() *etree.Document
 	validNfoSubtype()
@@ -19,6 +20,7 @@ var (
 	ErrBadRootTag       = errors.New("unexpected root tag")
 )
 
+// ReadFrom reads an NFO file from the given reader and returns the parsed data.
 func ReadFrom(in io.Reader) (Nfo, error) {
 	doc := etree.NewDocument()
 	if _, err := doc.ReadFrom(in); err != nil {

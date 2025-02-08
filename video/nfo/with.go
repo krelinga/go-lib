@@ -63,6 +63,7 @@ func (wt *withTitle) init(in *etree.Document, path etree.Path) error {
 	}.find()
 }
 
+// An NFO file with a title.
 type WithTitle interface {
 	Nfo
 
@@ -113,6 +114,7 @@ func (wd *withDimensions) init(in *etree.Document, widthPath, heightPath etree.P
 	}.find()
 }
 
+// An NFO file with dimensions.
 type WithDimensions interface {
 	Nfo
 	Width() int
@@ -141,6 +143,7 @@ func (wg *withGenres) init(in *etree.Document, path etree.Path) {
 	wg.genres = in.FindElementsPath(path)
 }
 
+// An NFO file with genres.
 type WithGeneres interface {
 	Nfo
 	Genres() iter.Seq[string]
@@ -158,6 +161,7 @@ func (wt *withTags) init(in *etree.Document, path etree.Path) {
 	wt.tags = in.FindElementsPath(path)
 }
 
+// An NFO file with tags.
 type WithTags interface {
 	Nfo
 	Tags() iter.Seq[string]
