@@ -15,7 +15,7 @@ type testDifferString struct {
 func (tds testDifferString) Diff(other interface{}, reporter base.DiffReporter) {
 	typedOther, ok := other.(testDifferString)
 	if !ok {
-		reporter.ReportTypeDiff(tds, other)
+		reporter.TypeDiff(tds, other)
 		return
 	}
 
@@ -31,7 +31,7 @@ type testDifferInt struct {
 func (tdi testDifferInt) Diff(other interface{}, reporter base.DiffReporter) {
 	typedOther, ok := other.(testDifferInt)
 	if !ok {
-		reporter.ReportTypeDiff(tdi, other)
+		reporter.TypeDiff(tdi, other)
 		return
 	}
 
@@ -42,11 +42,11 @@ func (tdi testDifferInt) Diff(other interface{}, reporter base.DiffReporter) {
 
 func TestSameAndDiff(t *testing.T) {
 	tests := []struct {
-		name            string
-		a, b            base.Differ
-		wantSame        bool
-		wantTypeDiffs   []basetest.ReportedTypeDiff
-		wantValueDiffs  []basetest.ReportedValueDiff
+		name           string
+		a, b           base.Differ
+		wantSame       bool
+		wantTypeDiffs  []basetest.ReportedTypeDiff
+		wantValueDiffs []basetest.ReportedValueDiff
 	}{
 		{
 			name:     "Same String",

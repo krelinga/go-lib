@@ -20,7 +20,7 @@ func TestMockDiffReporter(t *testing.T) {
 		{
 			name: "TypeDiff",
 			init: func(mdr *basetest.MockDiffReporter) {
-				mdr.ReportTypeDiff(1, "1")
+				mdr.TypeDiff(1, "1")
 			},
 			wantTypeDiffs: []basetest.ReportedTypeDiff{
 				{A: 1, B: "1"},
@@ -39,11 +39,11 @@ func TestMockDiffReporter(t *testing.T) {
 			name: "Child",
 			init: func(mdr *basetest.MockDiffReporter) {
 				child := mdr.ChildField("child")
-				child.ReportTypeDiff(1, "1")
+				child.TypeDiff(1, "1")
 				child.ReportDiffValues(1, 2)
 
 				grandchild := child.ChildField("grandchild")
-				grandchild.ReportTypeDiff(10, "10")
+				grandchild.TypeDiff(10, "10")
 				grandchild.ReportDiffValues(10, 20)
 			},
 			wantTypeDiffs: []basetest.ReportedTypeDiff{

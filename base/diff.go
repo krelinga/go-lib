@@ -5,7 +5,7 @@ type Differ interface {
 }
 
 type DiffReporter interface {
-	ReportTypeDiff(a, b interface{})
+	TypeDiff(a, b interface{})
 	ReportDiffValues(a, b interface{})
 	ChildField(name string) DiffReporter
 }
@@ -24,7 +24,7 @@ type boolDiffReporter struct {
 	HadDiffs bool
 }
 
-func (bdr *boolDiffReporter) ReportTypeDiff(a, b interface{}) {
+func (bdr *boolDiffReporter) TypeDiff(a, b interface{}) {
 	bdr.HadDiffs = true
 }
 

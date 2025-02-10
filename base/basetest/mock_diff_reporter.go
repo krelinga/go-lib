@@ -7,7 +7,7 @@ type MockDiffReporter struct {
 	ReportedValueDiffs []ReportedValueDiff
 }
 
-func (mdr *MockDiffReporter) ReportTypeDiff(a, b interface{}) {
+func (mdr *MockDiffReporter) TypeDiff(a, b interface{}) {
 	mdr.ReportedTypeDiffs = append(mdr.ReportedTypeDiffs, ReportedTypeDiff{A: a, B: b})
 }
 
@@ -34,7 +34,7 @@ type mockChildFieldDiffReporter struct {
 	path   string
 }
 
-func (mcd *mockChildFieldDiffReporter) ReportTypeDiff(a, b interface{}) {
+func (mcd *mockChildFieldDiffReporter) TypeDiff(a, b interface{}) {
 	mcd.parent.ReportedTypeDiffs = append(mcd.parent.ReportedTypeDiffs, ReportedTypeDiff{Path: mcd.path, A: a, B: b})
 }
 
