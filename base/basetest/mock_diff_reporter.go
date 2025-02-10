@@ -3,8 +3,8 @@ package basetest
 import "github.com/krelinga/go-lib/base"
 
 type MockDiffReporter struct {
-	ReportedTypeDiffs []ReportedTypeDiff
-	ReportedValueDiffs []ReportedValueDiff
+	ReportedTypeDiffs   []ReportedTypeDiff
+	ReportedValueDiffs  []ReportedValueDiff
 	ReportedStringDiffs []ReportedStringDiff
 }
 
@@ -20,8 +20,8 @@ func (mdr *MockDiffReporter) ReportDiffStrings(a, b string) {
 	mdr.ReportedStringDiffs = append(mdr.ReportedStringDiffs, ReportedStringDiff{A: a, B: b})
 }
 
-func (mdr *MockDiffReporter) Child(name string) base.DiffReporter {
-	return &mockChildDiffReporter{parent: mdr, path: name}
+func (mdr *MockDiffReporter) ChildField(name string) base.DiffReporter {
+	return &mockChildFieldDiffReporter{parent: mdr, path: name}
 }
 
 type ReportedTypeDiff struct {
@@ -39,23 +39,23 @@ type ReportedStringDiff struct {
 	A, B string
 }
 
-type mockChildDiffReporter struct {
+type mockChildFieldDiffReporter struct {
 	parent *MockDiffReporter
-	path string
+	path   string
 }
 
-func (mcd *mockChildDiffReporter) ReportTypeDiff(a, b interface{}) {
+func (mcd *mockChildFieldDiffReporter) ReportTypeDiff(a, b interface{}) {
 	mcd.parent.ReportedTypeDiffs = append(mcd.parent.ReportedTypeDiffs, ReportedTypeDiff{Path: mcd.path, A: a, B: b})
 }
 
-func (mcd *mockChildDiffReporter) ReportDiffValues(a, b interface{}) {
+func (mcd *mockChildFieldDiffReporter) ReportDiffValues(a, b interface{}) {
 	mcd.parent.ReportedValueDiffs = append(mcd.parent.ReportedValueDiffs, ReportedValueDiff{Path: mcd.path, A: a, B: b})
 }
 
-func (mcd *mockChildDiffReporter) ReportDiffStrings(a, b string) {
+func (mcd *mockChildFieldDiffReporter) ReportDiffStrings(a, b string) {
 	mcd.parent.ReportedStringDiffs = append(mcd.parent.ReportedStringDiffs, ReportedStringDiff{Path: mcd.path, A: a, B: b})
 }
 
-func (mcd *mockChildDiffReporter) Child(name string) base.DiffReporter {
-	return &mockChildDiffReporter{parent: mcd.parent, path: mcd.path + "." + name}
+func (mcd *mockChildFieldDiffReporter) ChildField(name string) base.DiffReporter {
+	return &mockChildFieldDiffReporter{parent: mcd.parent, path: mcd.path + "." + name}
 }

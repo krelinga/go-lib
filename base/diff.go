@@ -8,7 +8,7 @@ type DiffReporter interface {
 	ReportTypeDiff(a, b interface{})
 	ReportDiffValues(a, b interface{})
 	ReportDiffStrings(a, b string)
-	Child(name string) DiffReporter
+	ChildField(name string) DiffReporter
 }
 
 func Diff[D Differ](a, b D, reporter DiffReporter) {
@@ -37,6 +37,6 @@ func (bdr *boolDiffReporter) ReportDiffStrings(a, b string) {
 	bdr.HadDiffs = true
 }
 
-func (bdr *boolDiffReporter) Child(name string) DiffReporter {
+func (bdr *boolDiffReporter) ChildField(name string) DiffReporter {
 	return bdr
 }

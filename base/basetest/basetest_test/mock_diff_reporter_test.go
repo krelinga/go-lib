@@ -48,12 +48,12 @@ func TestMockDiffReporter(t *testing.T) {
 		{
 			name: "Child",
 			init: func(mdr *basetest.MockDiffReporter) {
-				child := mdr.Child("child")
+				child := mdr.ChildField("child")
 				child.ReportTypeDiff(1, "1")
 				child.ReportDiffValues(1, 2)
 				child.ReportDiffStrings("1", "2")
 
-				grandchild := child.Child("grandchild")
+				grandchild := child.ChildField("grandchild")
 				grandchild.ReportTypeDiff(10, "10")
 				grandchild.ReportDiffValues(10, 20)
 				grandchild.ReportDiffStrings("10", "20")
