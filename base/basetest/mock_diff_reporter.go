@@ -11,7 +11,7 @@ func (mdr *MockDiffReporter) TypeDiff(a, b interface{}) {
 	mdr.ReportedTypeDiffs = append(mdr.ReportedTypeDiffs, ReportedTypeDiff{A: a, B: b})
 }
 
-func (mdr *MockDiffReporter) ReportDiffValues(a, b interface{}) {
+func (mdr *MockDiffReporter) ValueDiff(a, b interface{}) {
 	mdr.ReportedValueDiffs = append(mdr.ReportedValueDiffs, ReportedValueDiff{A: a, B: b})
 }
 
@@ -38,7 +38,7 @@ func (mcd *mockChildFieldDiffReporter) TypeDiff(a, b interface{}) {
 	mcd.parent.ReportedTypeDiffs = append(mcd.parent.ReportedTypeDiffs, ReportedTypeDiff{Path: mcd.path, A: a, B: b})
 }
 
-func (mcd *mockChildFieldDiffReporter) ReportDiffValues(a, b interface{}) {
+func (mcd *mockChildFieldDiffReporter) ValueDiff(a, b interface{}) {
 	mcd.parent.ReportedValueDiffs = append(mcd.parent.ReportedValueDiffs, ReportedValueDiff{Path: mcd.path, A: a, B: b})
 }
 

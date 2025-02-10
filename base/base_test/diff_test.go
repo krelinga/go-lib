@@ -20,7 +20,7 @@ func (tds testDifferString) Diff(other interface{}, reporter base.DiffReporter) 
 	}
 
 	if tds.data != typedOther.data {
-		reporter.ChildField("data").ReportDiffValues(tds.data, typedOther.data)
+		reporter.ChildField("data").ValueDiff(tds.data, typedOther.data)
 	}
 }
 
@@ -36,7 +36,7 @@ func (tdi testDifferInt) Diff(other interface{}, reporter base.DiffReporter) {
 	}
 
 	if tdi.data != typedOther.data {
-		reporter.ChildField("data").ReportDiffValues(tdi.data, typedOther.data)
+		reporter.ChildField("data").ValueDiff(tdi.data, typedOther.data)
 	}
 }
 
