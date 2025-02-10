@@ -47,7 +47,6 @@ func TestSameAndDiff(t *testing.T) {
 		wantSame        bool
 		wantTypeDiffs   []basetest.ReportedTypeDiff
 		wantValueDiffs  []basetest.ReportedValueDiff
-		wantStringDiffs []basetest.ReportedStringDiff
 	}{
 		{
 			name:     "Same String",
@@ -103,7 +102,6 @@ func TestSameAndDiff(t *testing.T) {
 			base.Diff(tt.a, tt.b, mdr)
 			assert.Equal(t, tt.wantTypeDiffs, mdr.ReportedTypeDiffs, "ReportedTypeDiffs mismatch")
 			assert.Equal(t, tt.wantValueDiffs, mdr.ReportedValueDiffs, "ReportedValueDiffs mismatch")
-			assert.Equal(t, tt.wantStringDiffs, mdr.ReportedStringDiffs, "ReportedStringDiffs mismatch")
 		})
 	}
 }

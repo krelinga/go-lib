@@ -7,7 +7,6 @@ type Differ interface {
 type DiffReporter interface {
 	ReportTypeDiff(a, b interface{})
 	ReportDiffValues(a, b interface{})
-	ReportDiffStrings(a, b string)
 	ChildField(name string) DiffReporter
 }
 
