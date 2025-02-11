@@ -49,3 +49,16 @@ func TestCollectErrors(t *testing.T) {
 	}, &reporter)
 	assert.ElementsMatch(t, reporter.Errs, []error{errA, errB})
 }
+
+func TestValidationConfig(t *testing.T) {
+	config := podreflect.StructConfig[testStruct](
+		podreflect.FieldConfig[int]("A",
+			podreflect.WithExtraValidator(func(a int, reporter podreflect.ErrorReporter) {
+				if a <= 0 {
+					reporter.Err(errA)
+				}
+			}),
+		),
+	)
+	assert.Equal(t, 1, len(config.FieldConfigs))
+}
