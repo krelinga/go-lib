@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/krelinga/go-lib/podreflect"
+	pod "github.com/krelinga/go-lib/podreflect"
 	"github.com/krelinga/go-lib/podreflect/podmock"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,25 +15,25 @@ var (
 )
 
 type testStruct struct {
-	podreflect.Struct
+	pod.Struct
 
 	A      int
 	Nested *testStruct2
 }
 
-func (ts testStruct) PODLocalValidate(reporter podreflect.ErrorReporter) {
+func (ts testStruct) PODLocalValidate(reporter pod.ErrorReporter) {
 	if ts.A <= 0 {
 		reporter.Err(errA)
 	}
 }
 
 type testStruct2 struct {
-	podreflect.Struct
+	pod.Struct
 
 	B string
 }
 
-func (ts *testStruct2) PODLocalValidate(reporter podreflect.ErrorReporter) {
+func (ts *testStruct2) PODLocalValidate(reporter pod.ErrorReporter) {
 	if ts.B == "" {
 		reporter.Err(errB)
 	}
@@ -41,7 +41,7 @@ func (ts *testStruct2) PODLocalValidate(reporter podreflect.ErrorReporter) {
 
 func TestCollectErrors(t *testing.T) {
 	reporter := podmock.ErrorReporter{}
-	podreflect.CollectErrors(testStruct{
+	pod.CollectErrors(testStruct{
 		A: -1,
 		Nested: &testStruct2{
 			B: "",
@@ -51,9 +51,9 @@ func TestCollectErrors(t *testing.T) {
 }
 
 func TestValidationConfig(t *testing.T) {
-	config := podreflect.StructConfig[testStruct](
-		podreflect.FieldConfig[int]("A",
-			podreflect.WithExtraValidator(func(a int, reporter podreflect.ErrorReporter) {
+	config := pod.StructConfig[testStruct](
+		pod.FieldConfig[int]("A",
+			pod.WithExtraValidator(func(a int, reporter pod.ErrorReporter) {
 				if a <= 0 {
 					reporter.Err(errA)
 				}
