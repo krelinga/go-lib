@@ -11,7 +11,26 @@ func (wmc wrappedMapComp[K, V]) InternalValidate(reporter ErrorReporter) {
 }
 
 func (wmc wrappedMapComp[K, V]) InternalDiff(rhs POD, reporter DiffReporter) {
-	// TODO: implement
+	typedRhs, ok := rhs.(wrappedMapComp[K, V])
+	if !ok {
+		reporter.TypeDiff(wmc, rhs)
+		return
+	}
+	for k, lhsV := range wmc {
+		rhsV, ok := typedRhs[k]
+		if !ok {
+			reporter.ChildKey(k).Missing(lhsV)
+			continue
+		}
+		if lhsV != rhsV {
+			reporter.ChildKey(k).ValueDiff(lhsV, rhsV)
+		}
+	}
+	for k, rhsV := range typedRhs {
+		if _, ok := wmc[k]; !ok {
+			reporter.ChildKey(k).Extra(rhsV)
+		}
+	}
 }
 
 func (wmc wrappedMapComp[K, V]) InternalDeepCopyTo(out POD) {
@@ -29,7 +48,24 @@ func (wmp wrappedMapPOD[K, V]) InternalValidate(reporter ErrorReporter) {
 }
 
 func (wmp wrappedMapPOD[K, V]) InternalDiff(rhs POD, reporter DiffReporter) {
-	// TODO: Implement
+	typedRhs, ok := rhs.(wrappedMapPOD[K, V])
+	if !ok {
+		reporter.TypeDiff(wmp, rhs)
+		return
+	}
+	for k, lhsV := range wmp {
+		rhsV, ok := typedRhs[k]
+		if !ok {
+			reporter.ChildKey(k).Missing(lhsV)
+			continue
+		}
+		Diff(lhsV, rhsV, reporter.ChildKey(k))
+	}
+	for k, rhsV := range typedRhs {
+		if _, ok := wmp[k]; !ok {
+			reporter.ChildKey(k).Extra(rhsV)
+		}
+	}
 }
 
 func (wmp wrappedMapPOD[K, V]) InternalDeepCopyTo(out POD) {
