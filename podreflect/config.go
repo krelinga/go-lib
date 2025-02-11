@@ -30,6 +30,14 @@ func FieldConfig[T any](fieldName string, setters ...fieldConfigSetter) structCo
 	}
 }
 
+func StructValidator[T any](val func(T, ErrorReporter)) structConfigSetter {
+	return func(sc *structConfig) {
+		sc.validator = func(v any, reporter ErrorReporter) {
+			val(v.(T), reporter)
+		}
+	}
+}
+
 func StructConfig[T any](setters ...structConfigSetter) structConfig {
 	sc := structConfig{
 		structType: reflect.TypeFor[T](),
@@ -49,4 +57,5 @@ type fieldConfig struct {
 type structConfig struct {
 	structType   reflect.Type
 	FieldConfigs []fieldConfig
+	validator    func(any, ErrorReporter)
 }

@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	errA = errors.New("a must be greater than 0")
-	errB = errors.New("b must be nonempty")
+	errA      = errors.New("a must be greater than 0")
+	errB      = errors.New("b must be nonempty")
+	errStruct = errors.New("nested.b and a cannot both be 0")
 )
 
 type testStruct struct {
@@ -59,6 +60,11 @@ func TestValidationConfig(t *testing.T) {
 				}
 			}),
 		),
+		pod.StructValidator(func(in testStruct, reporter pod.ErrorReporter) {
+			if in.Nested.B == "0" && in.A == 0 {
+				reporter.Err(errStruct)
+			}
+		}),
 	)
 	assert.Equal(t, 1, len(config.FieldConfigs))
 }
