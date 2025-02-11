@@ -53,7 +53,7 @@ func TestCollectErrors(t *testing.T) {
 func TestValidationConfig(t *testing.T) {
 	config := pod.StructConfig[testStruct](
 		pod.FieldConfig[int]("A",
-			pod.WithExtraValidator(func(a int, reporter pod.ErrorReporter) {
+			pod.WithFieldValidator(func(a int, reporter pod.ErrorReporter) {
 				if a <= 0 {
 					reporter.Err(errA)
 				}

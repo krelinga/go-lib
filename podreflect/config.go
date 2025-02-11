@@ -4,7 +4,7 @@ import "reflect"
 
 type fieldConfigSetter func(*fieldConfig)
 
-func WithExtraValidator[T any](val func(T, ErrorReporter)) fieldConfigSetter {
+func WithFieldValidator[T any](val func(T, ErrorReporter)) fieldConfigSetter {
 	return func(fc *fieldConfig) {
 		if fc.fieldType != reflect.TypeFor[T]() {
 			panic("WithExtraValidator: type mismatch")
@@ -15,22 +15,28 @@ func WithExtraValidator[T any](val func(T, ErrorReporter)) fieldConfigSetter {
 	}
 }
 
-func FieldConfig[T any](fieldName string, setters ...fieldConfigSetter) fieldConfig {
-	fc := fieldConfig{
-		fieldName: fieldName,
-		fieldType: reflect.TypeFor[T](),
+type structConfigSetter func(*structConfig)
+
+func FieldConfig[T any](fieldName string, setters ...fieldConfigSetter) structConfigSetter {
+	return func(sc *structConfig) {
+		fc := fieldConfig{
+			fieldName: fieldName,
+			fieldType: reflect.TypeFor[T](),
+		}
+		for _, setter := range setters {
+			setter(&fc)
+		}
+		sc.FieldConfigs = append(sc.FieldConfigs, fc)
 	}
-	for _, setter := range setters {
-		setter(&fc)
-	}
-	return fc
 }
 
-func StructConfig[T any](fieldConfigs ...fieldConfig) structConfig {
+func StructConfig[T any](setters ...structConfigSetter) structConfig {
 	sc := structConfig{
 		structType: reflect.TypeFor[T](),
 	}
-	sc.FieldConfigs = append(sc.FieldConfigs, fieldConfigs...)
+	for _, setter := range setters {
+		setter(&sc)
+	}
 	return sc
 }
 
