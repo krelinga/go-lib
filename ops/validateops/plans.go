@@ -1,0 +1,59 @@
+package validateops
+
+func ByMethod[T ValidateOper](op T, sink Sink) {
+	// TODO: check that op is not nil before calling this.
+	op.ValidateOp(sink)
+}
+
+func MapOf[K comparable, V any](in map[K]V, p Plan[KV[K, V]]) Plan[map[K]V] {
+	return func(in map[K]V, sink Sink) {
+		for k, v := range in {
+			if !sink.WantMore() {
+				break
+			}
+			p(KV[K, V]{k, v}, sink.Key(k))
+		}
+	}
+}
+
+func SliceOf[V any](in []V, p Plan[KV[int, V]]) Plan[[]V] {
+	return func(in []V, sink Sink) {
+		for i, v := range in {
+			if !sink.WantMore() {
+				break
+			}
+			p(KV[int, V]{i, v}, sink.Key(i))
+		}
+	}
+}
+
+func AllOf[T any](p ...Plan[T]) Plan[T] {
+	return func(in T, sink Sink) {
+		for _, pp := range p {
+			if !sink.WantMore() {
+				break
+			}
+			pp(in, sink)
+		}
+	}
+}
+
+func Keys[K comparable, V any](p Plan[K]) Plan[KV[K, V]] {
+	return func(in KV[K, V], sink Sink) {
+		if !sink.WantMore() {
+			return
+		}
+		// TODO: what sink should be passed here?
+		p(in.K, sink.Field("key"))
+	}
+}
+
+func Values[K comparable, V any](p Plan[V]) Plan[KV[K, V]] {
+	return func(in KV[K, V], sink Sink) {
+		if !sink.WantMore() {
+			return
+		}
+		// TODO: what sink should be passed here?
+		p(in.V, sink.Field("value"))
+	}
+}
