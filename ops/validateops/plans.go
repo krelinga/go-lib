@@ -1,8 +1,10 @@
 package validateops
 
-func ByMethod[T ValidateOper](op T, sink Sink) {
-	// TODO: check that op is not nil before calling this.
-	op.ValidateOp(sink)
+func ByMethod[T ValidateOper]() Plan[T] {
+	return func(op T, sink Sink) {
+		// TODO: check that op is not nil before calling this.
+		op.ValidateOp(sink)
+	}
 }
 
 func MapOf[K comparable, V any](in map[K]V, p Plan[KV[K, V]]) Plan[map[K]V] {
