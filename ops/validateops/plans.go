@@ -44,7 +44,7 @@ func Keys[K comparable, V any](p Plan[K]) Plan[KV[K, V]] {
 			return
 		}
 		// TODO: what sink should be passed here?
-		p(in.K, sink.Field("key"))
+		p(in.K, sink.Note("key"))
 	}
 }
 
@@ -54,6 +54,6 @@ func Values[K comparable, V any](p Plan[V]) Plan[KV[K, V]] {
 			return
 		}
 		// TODO: what sink should be passed here?
-		p(in.V, sink.Field("value"))
+		p(in.V, sink.Note("value"))
 	}
 }

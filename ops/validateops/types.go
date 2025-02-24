@@ -7,6 +7,7 @@ type Sink interface {
 
 	Field(string) Sink
 	Key(any) Sink
+	Note(string) Sink
 
 	WantMore() bool
 }
