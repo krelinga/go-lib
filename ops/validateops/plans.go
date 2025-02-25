@@ -1,5 +1,7 @@
 package validateops
 
+import "errors"
+
 func ByMethod[T ValidateOper]() Plan[T] {
 	return func(op T, sink Sink) {
 		// TODO: check that op is not nil before calling this.
@@ -57,5 +59,19 @@ func Values[K comparable, V any](p Plan[V]) Plan[KV[K, V]] {
 		}
 		// TODO: what sink should be passed here?
 		p(in.V, sink.Note("value"))
+	}
+}
+
+var ErrWantNonZero = errors.New("want non-zero value")
+
+func NonZero[T comparable]() Plan[T] {
+	return func(in T, sink Sink) {
+		if !sink.WantMore() {
+			return
+		}
+		var zero T
+		if in == zero {
+			sink.Error(ErrWantNonZero)
+		}
 	}
 }
