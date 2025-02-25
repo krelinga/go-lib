@@ -11,15 +11,15 @@ import (
 func TestSink(t *testing.T) {
 	wantError := errors.New("want error")
 	tests := []struct {
-		name string
-		setup func(*validateopsmock.Sink)
-		want []validateopsmock.Entry
+		name         string
+		setup        func(*validateopsmock.Sink)
+		want         []validateopsmock.Entry
 		wantWantMore bool
 	}{
 		{
-			name: "no errors",
-			setup: func(s *validateopsmock.Sink) {},
-			want: nil,
+			name:         "no errors",
+			setup:        func(s *validateopsmock.Sink) {},
+			want:         nil,
 			wantWantMore: true,
 		},
 		{
@@ -84,6 +84,18 @@ func TestSink(t *testing.T) {
 				{Err: wantError},
 			},
 			wantWantMore: false,
+		},
+		{
+			name: "multiple errors with lots of nesting",
+			setup: func(s *validateopsmock.Sink) {
+				s.Field("foo").Key(10).Field("bar").Note("note").Error(wantError)
+				s.Field("biff").Key(20).Field("zip").Note("another note").Error(wantError)
+			},
+			want: []validateopsmock.Entry{
+				{Context: "foo[10].bar(note)", Err: wantError},
+				{Context: "biff[20].zip(another note)", Err: wantError},
+			},
+			wantWantMore: true,
 		},
 	}
 	for _, tt := range tests {
