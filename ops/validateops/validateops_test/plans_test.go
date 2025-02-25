@@ -278,4 +278,62 @@ func TestPlans(t *testing.T) {
 			})
 		}
 	})
+
+	t.Run("MapOf", func(t *testing.T) {
+		valueGreaterThanTen := func(in validateops.KV[int, int], sink validateops.Sink) {
+			if in.V <= 10 {
+				sink.Error(e1)
+			}
+		}
+		tests := []struct {
+			name     string
+			in       map[int]int
+			sinkInit func(*validateopsmock.Sink)
+			want     []validateopsmock.Entry
+		}{
+			{
+				name: "no error",
+				in:   map[int]int{1: 11, 2: 12},
+				want: nil,
+			},
+			{
+				name: "one error",
+				in:   map[int]int{1: 11, 2: 10},
+				want: []validateopsmock.Entry{
+					{Context: "[2]", Err: e1},
+				},
+			},
+			{
+				name: "two errors",
+				in:   map[int]int{1: 11, 2: 10, 3: 9},
+				want: []validateopsmock.Entry{
+					{Context: "[2]", Err: e1},
+					{Context: "[3]", Err: e1},
+				},
+			},
+			{
+				name: "only one error recorded when no more wanted",
+				in:   map[int]int{1: 11, 2: 10, 3: 9},
+				sinkInit: func(s *validateopsmock.Sink) {
+					// Bypassing the input altogether because we can't control
+					// map itration order.
+					s.MaxErrors = 1
+					s.Error(e2)
+				},
+				want: []validateopsmock.Entry{
+					{Err: e2},
+				},
+			},
+		}
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				s := &validateopsmock.Sink{}
+				if tt.sinkInit != nil {
+					tt.sinkInit(s)
+				}
+				validateops.MapOf[int, int](tt.in, valueGreaterThanTen)(tt.in, s)
+				assert.Equal(t, tt.want, s.Errors)
+			})
+		}
+	})
 }
