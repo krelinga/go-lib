@@ -75,3 +75,17 @@ func NonZero[T comparable]() Plan[T] {
 		}
 	}
 }
+
+var ErrWantZero = errors.New("want zero value")
+
+func Zero[T comparable]() Plan[T] {
+	return func(in T, sink Sink) {
+		if !sink.WantMore() {
+			return
+		}
+		var zero T
+		if in != zero {
+			sink.Error(ErrWantZero)
+		}
+	}
+}
