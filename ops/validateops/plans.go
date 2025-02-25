@@ -4,6 +4,9 @@ import "errors"
 
 func ByMethod[T ValidateOper]() Plan[T] {
 	return func(op T, sink Sink) {
+		if !sink.WantMore() {
+			return
+		}
 		// TODO: check that op is not nil before calling this.
 		op.ValidateOp(sink)
 	}

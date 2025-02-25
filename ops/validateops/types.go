@@ -13,7 +13,7 @@ type Sink interface {
 }
 
 type ValidateOper interface {
-	ValidateOp(Sink) error
+	ValidateOp(Sink)
 }
 
 type KV[K comparable, V any] struct {
