@@ -195,8 +195,8 @@ func TestPlans(t *testing.T) {
 				},
 			},
 			{
-				name: "only one error recorded when no more wanted",
-				in:   0,
+				name:  "only one error recorded when no more wanted",
+				in:    0,
 				plans: []validateops.Plan[int]{greaterThanTen, greaterThanTwenty},
 				sinkInit: func(s *validateopsmock.Sink) {
 					s.MaxErrors = 1
@@ -219,6 +219,61 @@ func TestPlans(t *testing.T) {
 					tt.sinkInit(s)
 				}
 				validateops.AllOf[int](tt.plans...)(tt.in, s)
+				assert.Equal(t, tt.want, s.Errors)
+			})
+		}
+	})
+
+	t.Run("SliceOf", func(t *testing.T) {
+		valueGreaterThanTen := func(in validateops.KV[int, int], sink validateops.Sink) {
+			if in.V <= 10 {
+				sink.Error(e1)
+			}
+		}
+		tests := []struct {
+			name     string
+			in       []int
+			sinkInit func(*validateopsmock.Sink)
+			want     []validateopsmock.Entry
+		}{
+			{
+				name: "no error",
+				in:   []int{11, 12},
+				want: nil,
+			},
+			{
+				name: "one error",
+				in:   []int{11, 10},
+				want: []validateopsmock.Entry{
+					{Context: "[1]", Err: e1},
+				},
+			},
+			{
+				name: "two errors",
+				in:   []int{11, 10, 9},
+				want: []validateopsmock.Entry{
+					{Context: "[1]", Err: e1},
+					{Context: "[2]", Err: e1},
+				},
+			},
+			{
+				name: "only one error recorded when no more wanted",
+				in:   []int{11, 10, 9},
+				sinkInit: func(s *validateopsmock.Sink) {
+					s.MaxErrors = 1
+				},
+				want: []validateopsmock.Entry{
+					{Context: "[1]", Err: e1},
+				},
+			},
+		}
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				s := &validateopsmock.Sink{}
+				if tt.sinkInit != nil {
+					tt.sinkInit(s)
+				}
+				validateops.SliceOf[int](tt.in, valueGreaterThanTen)(tt.in, s)
 				assert.Equal(t, tt.want, s.Errors)
 			})
 		}
