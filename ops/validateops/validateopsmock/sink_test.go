@@ -14,11 +14,13 @@ func TestSink(t *testing.T) {
 		name string
 		setup func(*validateopsmock.Sink)
 		want []validateopsmock.Entry
+		wantWantMore bool
 	}{
 		{
 			name: "no errors",
 			setup: func(s *validateopsmock.Sink) {},
 			want: nil,
+			wantWantMore: true,
 		},
 		{
 			name: "single root error",
@@ -28,6 +30,7 @@ func TestSink(t *testing.T) {
 			want: []validateopsmock.Entry{
 				{Err: wantError},
 			},
+			wantWantMore: true,
 		},
 		{
 			name: "single field error",
@@ -37,6 +40,7 @@ func TestSink(t *testing.T) {
 			want: []validateopsmock.Entry{
 				{Context: "foo", Err: wantError},
 			},
+			wantWantMore: true,
 		},
 		{
 			name: "single key error",
@@ -46,6 +50,7 @@ func TestSink(t *testing.T) {
 			want: []validateopsmock.Entry{
 				{Context: "[10]", Err: wantError},
 			},
+			wantWantMore: true,
 		},
 		{
 			name: "single note error",
@@ -55,6 +60,30 @@ func TestSink(t *testing.T) {
 			want: []validateopsmock.Entry{
 				{Context: "(note)", Err: wantError},
 			},
+			wantWantMore: true,
+		},
+		{
+			name: "errors above max are ignored",
+			setup: func(s *validateopsmock.Sink) {
+				s.MaxErrors = 1
+				s.Error(wantError)
+				s.Error(wantError)
+			},
+			want: []validateopsmock.Entry{
+				{Err: wantError},
+			},
+			wantWantMore: false,
+		},
+		{
+			name: "WantMore() becomes false after limit",
+			setup: func(s *validateopsmock.Sink) {
+				s.MaxErrors = 1
+				s.Error(wantError)
+			},
+			want: []validateopsmock.Entry{
+				{Err: wantError},
+			},
+			wantWantMore: false,
 		},
 	}
 	for _, tt := range tests {
@@ -62,6 +91,7 @@ func TestSink(t *testing.T) {
 			s := &validateopsmock.Sink{}
 			tt.setup(s)
 			assert.Equal(t, tt.want, s.Errors, "unexpected errors")
+			assert.Equal(t, tt.wantWantMore, s.WantMore(), "unexpected WantMore()")
 		})
 	}
 }
