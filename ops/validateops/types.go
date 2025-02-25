@@ -20,3 +20,8 @@ type KV[K comparable, V any] struct {
 	K K
 	V V
 }
+
+type Error struct {
+	Context string
+	Err     error
+}

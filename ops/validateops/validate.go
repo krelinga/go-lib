@@ -20,11 +20,6 @@ func ValidateAll(op ValidateOper) error {
 	return errors.Join(c.Errors...)
 }
 
-type Error struct {
-	Context string
-	Err     error
-}
-
 func (e *Error) Error() string {
 	var contextPart string
 	if e.Context != "" {
