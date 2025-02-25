@@ -23,7 +23,7 @@ func ByMethod[T ValidateOper]() Plan[T] {
 	}
 }
 
-func MapOf[K comparable, V any](in map[K]V, p Plan[KV[K, V]]) Plan[map[K]V] {
+func MapOf[K comparable, V any](p Plan[KV[K, V]]) Plan[map[K]V] {
 	return func(in map[K]V, sink Sink) {
 		for k, v := range in {
 			if !sink.WantMore() {
@@ -34,7 +34,7 @@ func MapOf[K comparable, V any](in map[K]V, p Plan[KV[K, V]]) Plan[map[K]V] {
 	}
 }
 
-func SliceOf[V any](in []V, p Plan[KV[int, V]]) Plan[[]V] {
+func SliceOf[V any](p Plan[KV[int, V]]) Plan[[]V] {
 	return func(in []V, sink Sink) {
 		for i, v := range in {
 			if !sink.WantMore() {
