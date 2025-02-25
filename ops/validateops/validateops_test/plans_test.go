@@ -109,4 +109,47 @@ func TestPlans(t *testing.T) {
 			})
 		}
 	})
+
+	t.Run("Zero", func(t *testing.T) {
+		tests := []struct {
+			name     string
+			in       int
+			sinkInit func(*validateopsmock.Sink)
+			want     []validateopsmock.Entry
+		}{
+			{
+				name: "no error",
+				in: 0,
+				want: nil,
+			},
+			{
+				name: "error",
+				in: 1,
+				want: []validateopsmock.Entry{
+					{Err: validateops.ErrWantZero},
+				},
+			},
+			{
+				name: "error when no more wanted",
+				in: 1,
+				sinkInit: func(s *validateopsmock.Sink) {
+					s.MaxErrors = 1
+					s.Error(e1)
+				},
+				want: []validateopsmock.Entry{
+					{Err: e1},
+				},
+			},
+		}
+		for _, tt := range tests {
+			t.Run(tt.name, func(t *testing.T) {
+				s := &validateopsmock.Sink{}
+				if tt.sinkInit != nil {
+					tt.sinkInit(s)
+				}
+				validateops.Zero[int]()(tt.in, s)
+				assert.Equal(t, tt.want, s.Errors)
+			})
+		}
+	})
 }
