@@ -42,6 +42,18 @@ func TestPlans(t *testing.T) {
 					{Err: e1},
 				},
 			},
+			{
+				name: "error with pointer receiver",
+				in: &PtrErrWrapper{Err: e1},
+				want: []validateopsmock.Entry{
+					{Err: e1},
+				},
+			},
+			{
+				name: "error with nil pointer receiver",
+				in: (*PtrErrWrapper)(nil),
+				want: nil,
+			},
 		}
 		for _, tt := range tests {
 			t.Run(tt.name, func(t *testing.T) {
@@ -49,7 +61,7 @@ func TestPlans(t *testing.T) {
 				if tt.sinkInit != nil {
 					tt.sinkInit(s)
 				}
-				tt.in.ValidateOp(s)
+				validateops.ByMethod[validateops.ValidateOper]()(tt.in, s)
 				assert.Equal(t, tt.want, s.Errors)
 			})
 		}

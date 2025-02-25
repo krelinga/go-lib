@@ -1,12 +1,24 @@
 package validateops
 
-import "errors"
+import (
+	"errors"
+	"reflect"
+)
 
 func ByMethod[T ValidateOper]() Plan[T] {
 	return func(op T, sink Sink) {
 		if !sink.WantMore() {
 			return
 		}
+
+		val := reflect.ValueOf(op)
+		if !val.IsValid() {
+			return
+		}
+		if val.Kind() == reflect.Ptr && val.IsNil() {
+			return
+		}
+
 		// TODO: check that op is not nil before calling this.
 		op.ValidateOp(sink)
 	}
