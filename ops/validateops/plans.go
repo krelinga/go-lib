@@ -19,7 +19,6 @@ func ByMethod[T ValidateOper]() Plan[T] {
 			return
 		}
 
-		// TODO: check that op is not nil before calling this.
 		op.ValidateOp(sink)
 	}
 }
