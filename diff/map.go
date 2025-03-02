@@ -9,6 +9,7 @@ type Map[K comparable, V any] struct {
 	Explicit bool
 	Entries map[K]TypedDiffer[V]
 	Methods map[string]AnyDiffer
+	EntryDiffer TypedDiffer[V]
 }
 
 func (m Map[K, V]) typedDiff(lhs, rhs map[K]V) Results {
@@ -23,6 +24,6 @@ func (m Map[K, V]) Validate() error {
 	return nil // TODO
 }
 
-func (m Map[K, V]) accepts(t reflect.Type) bool {
-	return false // TODO
+func (m Map[K, V]) accepts(t reflect.Type) error {
+	return nil // TODO
 }
