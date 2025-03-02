@@ -3,25 +3,27 @@ package diff
 import (
 	"reflect"
 
+	"github.com/krelinga/go-lib/datapath"
 	"github.com/krelinga/go-lib/valid"
 )
 
-type Path string
-
-// Entry will always be an instance of one of the following types:
+// Result will always be an instance of one of the following types:
 // - Extra
 // - Missing
-// - Different
-type Entry interface {
-	Path() Path
+// - ValueDiff
+// - TypeDiff
+type Result interface {
+	Path() datapath.Path
+
+	resultIsAClosedType()
 }
 
 type Extra struct {
-	path Path
+	path datapath.Path
 	rhs  any
 }
 
-func (e Extra) Path() Path {
+func (e Extra) Path() datapath.Path {
 	return e.path
 }
 
@@ -29,12 +31,14 @@ func (e Extra) Rhs() any {
 	return e.rhs
 }
 
+func (Extra) resultIsAClosedType() {}
+
 type Missing struct {
-	path Path
+	path datapath.Path
 	lhs  any
 }
 
-func (m Missing) Path() Path {
+func (m Missing) Path() datapath.Path {
 	return m.path
 }
 
@@ -42,35 +46,68 @@ func (m Missing) Lhs() any {
 	return m.lhs
 }
 
-type Different struct {
-	path Path
+func (Missing) resultIsAClosedType() {}
+
+type ValueDiff struct {
+	path datapath.Path
 	lhs  any
 	rhs  any
 }
 
-func (d Different) Path() Path {
+func (d ValueDiff) Path() datapath.Path {
 	return d.path
 }
 
-func (d Different) Lhs() any {
+func (d ValueDiff) Lhs() any {
 	return d.lhs
 }
 
-func (d Different) Rhs() any {
+func (d ValueDiff) Rhs() any {
 	return d.rhs
 }
 
-type AnyDiffer interface {
-	valid.Validator
+func (ValueDiff) resultIsAClosedType() {}
 
-	diffType() reflect.Type
-	anyDiff(lhs, rhs any) []Entry
+type TypeDiff struct {
+	path datapath.Path
+	lhs  reflect.Type
+	rhs  reflect.Type
+}
+
+func (d TypeDiff) Path() datapath.Path {
+	return d.path
+}
+
+func (d TypeDiff) Lhs() reflect.Type {
+	return d.lhs
+}
+
+func (d TypeDiff) Rhs() reflect.Type {
+	return d.rhs
+}
+
+func (TypeDiff) resultIsAClosedType() {}
+
+type Results []Result
+
+func (e Results) Equal() bool {
+	return len(e) == 0
+}
+
+type AnyDiffer interface {
+	supports(reflect.Type) error
+	anyDiff(lhs, rhs any) []Result
 }
 
 type TypedDiffer[T any] interface {
 	AnyDiffer
+	valid.Validator
 
-	typedDiff(lhs, rhs T) []Entry
+	typedDiff(lhs, rhs T) []Result
+}
+
+type DefaultDifferer[T any] interface {
+	DefaultDiffer() TypedDiffer[T]
 }
 
 // Start here:
