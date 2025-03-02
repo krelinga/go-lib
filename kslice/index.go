@@ -1,6 +1,11 @@
 package kslice
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+
+	"github.com/krelinga/go-lib/valid"
+)
 
 type Index int
 
@@ -11,4 +16,9 @@ func (i Index) Validate() error {
 		return ErrNegativeIndex
 	}
 	return nil
+}
+
+func (i Index) String() string {
+	valid.OrPanic(i)
+	return fmt.Sprintf("%d", int(i))
 }

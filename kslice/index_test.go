@@ -4,30 +4,47 @@ import (
 	"testing"
 
 	"github.com/krelinga/go-lib/kslice"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIndex(t *testing.T) {
 	tests := []struct {
-		name string
-		index kslice.Index
-		want error
+		name       string
+		index      kslice.Index
+		wantErr       error
+		wantString string
 	}{
 		{
-			name: "valid index",
+			name:  "zero index",
 			index: 0,
-			want: nil,
+			wantErr:  nil,
+			wantString: "0",
 		},
 		{
-			name: "negative index",
+			name:  "positive index",
+			index: 1,
+			wantErr:  nil,
+			wantString: "1",
+		},
+		{
+			name:  "negative index",
 			index: -1,
-			want: kslice.ErrNegativeIndex,
+			wantErr:  kslice.ErrNegativeIndex,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.index.Validate(); got != tt.want {
-				t.Errorf("Index.Validate() = %v, want %v", got, tt.want)
+			got := tt.index.Validate()
+			if got != tt.wantErr {
+				assert.ErrorIs(t, got, tt.wantErr)
+			}
+			if tt.wantErr == nil {
+				assert.Equal(t, tt.wantString, tt.index.String())
+			} else {
+				assert.PanicsWithError(t, tt.wantErr.Error(), func() {
+					_ = tt.index.String()
+				})
 			}
 		})
 	}
