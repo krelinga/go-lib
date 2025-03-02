@@ -18,7 +18,7 @@ type Entry interface {
 
 type Extra struct {
 	path Path
-	rhs any
+	rhs  any
 }
 
 func (e Extra) Path() Path {
@@ -31,7 +31,7 @@ func (e Extra) Rhs() any {
 
 type Missing struct {
 	path Path
-	lhs any
+	lhs  any
 }
 
 func (m Missing) Path() Path {
@@ -87,3 +87,7 @@ type TypedDiffer[T any] interface {
 // - If I do the above, consider adding a Diff() method at the top of this package that takes two values of the same type, randomly
 //   select the default differ for either value, and does the diff.  Randomness is important because it will help us catch cases
 //   where the default differ is not symmetric.
+// - If I can make generic differs work, then I can do things like:
+//   - have Default as a var, which diffs any two entries with some reasonable defaults.
+//   - have Skip as a var, which just skips the diff and always returns no differences.
+//   - have PtrEqual as a var, which ensures that two pointers point to the same address.
