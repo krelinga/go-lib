@@ -35,6 +35,8 @@ func TestDiff(t *testing.T) {
 		testDiffCase[int]{name: "int equal", lhs: 1, rhs: 1, want: false},
 		testDiffCase[*int]{name: "int ptr not equal", lhs: ptr(1), rhs: ptr(2), want: true},
 		testDiffCase[*int]{name: "int ptr equal", lhs: ptr(1), rhs: ptr(1), want: false},
+		testDiffCase[*int]{name: "int ptr nil", lhs: nil, rhs: nil, want: false},
+		testDiffCase[*int]{name: "int ptr one nil", lhs: nil, rhs: ptr(1), want: true},
 		testDiffCase[**int]{name: "int ptr ptr not equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(2)), want: true},
 		testDiffCase[**int]{name: "int ptr ptr equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(1)), want: false},
 		testDiffCase[string]{name: "string not equal", lhs: "a", rhs: "b", want: true},
