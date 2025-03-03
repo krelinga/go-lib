@@ -11,8 +11,8 @@ func (r Result) String() string {
 	switch r {
 	case Same:
 		return "Same"
-	case ValueDiff:
-		return "ValueDiff"
+	case Different:
+		return "Different"
 	case Missing:
 		return "Missing"
 	case Extra:
@@ -24,7 +24,7 @@ func (r Result) String() string {
 
 const (
 	Same Result = iota
-	ValueDiff
+	Different
 	Missing
 	Extra
 )
@@ -123,7 +123,7 @@ func diffWithReflection(lhs, rhs vt) Result {
 
 func diffComp(lhs, rhs vt) Result {
 	if !lhs.Value.Equal(rhs.Value) {
-		return ValueDiff
+		return Different
 	}
 	return Same
 }
@@ -137,7 +137,7 @@ func diffInterface(lhs, rhs vt) Result {
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
-		return ValueDiff
+		return Different
 	}
 	return diffWithReflection(lhs, rhs)
 }
@@ -145,7 +145,7 @@ func diffInterface(lhs, rhs vt) Result {
 func diffSlice(lhs, rhs vt) Result {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return ValueDiff
+		return Different
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
@@ -167,7 +167,7 @@ func diffSlice(lhs, rhs vt) Result {
 func diffMap(lhs, rhs vt) Result {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return ValueDiff
+		return Different
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
@@ -189,7 +189,7 @@ func diffMap(lhs, rhs vt) Result {
 func diffStruct(lhs, rhs vt) Result {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return ValueDiff
+		return Different
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
