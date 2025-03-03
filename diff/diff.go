@@ -36,18 +36,10 @@ func diffWithReflection(lhs, rhs vt) (bool, error) {
 	}
 
 	if lhs.Type.Kind() == reflect.Pointer {
-		return diffPointer(lhs, rhs)
+		return diffWithReflection(lhs.Elem(), rhs.Elem())
 	} else if lhs.Type.Comparable() {
-		return diffComparable(lhs, rhs), nil
+		return !lhs.Value.Equal(rhs.Value), nil
 	}
 
 	return false, ErrUnsupportedType
-}
-
-func diffPointer(lhs, rhs vt) (bool, error) {
-	return diffWithReflection(lhs.Elem(), rhs.Elem())
-}
-
-func diffComparable(lhs, rhs vt) bool {
-	return !lhs.Value.Equal(rhs.Value)
 }
