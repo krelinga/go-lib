@@ -22,12 +22,12 @@ func (c testDiffCase[T]) run(t *testing.T) {
 
 func TestDiff(t *testing.T) {
 	tests := []runner{
-		testDiffCase[int]{name: "int", lhs: 1, rhs: 2, want: true},
-		testDiffCase[int]{name: "int", lhs: 1, rhs: 1, want: false},
-		testDiffCase[string]{name: "string", lhs: "a", rhs: "b", want: true},
-		testDiffCase[string]{name: "string", lhs: "a", rhs: "a", want: false},
-		testDiffCase[float64]{name: "float64", lhs: 1.0, rhs: 2.0, want: true},
-		testDiffCase[float64]{name: "float64", lhs: 1.0, rhs: 1.0, want: false},
+		testDiffCase[int]{name: "int not equal", lhs: 1, rhs: 2, want: true},
+		testDiffCase[int]{name: "int equal", lhs: 1, rhs: 1, want: false},
+		testDiffCase[string]{name: "string not equal", lhs: "a", rhs: "b", want: true},
+		testDiffCase[string]{name: "string equal", lhs: "a", rhs: "a", want: false},
+		testDiffCase[float64]{name: "float64 not equal", lhs: 1.0, rhs: 2.0, want: true},
+		testDiffCase[float64]{name: "float64 equal", lhs: 1.0, rhs: 1.0, want: false},
 	}
 	for _, tt := range tests {
 		tt.run(t)
