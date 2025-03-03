@@ -13,8 +13,6 @@ func (r Result) String() string {
 		return "None"
 	case ValueDiff:
 		return "ValueDiff"
-	case TypeDiff:
-		return "TypeDiff"
 	case Missing:
 		return "Missing"
 	case Extra:
@@ -27,7 +25,6 @@ func (r Result) String() string {
 const (
 	None Result = iota
 	ValueDiff
-	TypeDiff
 	Missing
 	Extra
 )
@@ -140,7 +137,7 @@ func diffInterface(lhs, rhs vt) Result {
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
-		return TypeDiff
+		return ValueDiff
 	}
 	return diffWithReflection(lhs, rhs)
 }
