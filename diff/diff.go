@@ -9,8 +9,8 @@ type Result int
 
 func (r Result) String() string {
 	switch r {
-	case None:
-		return "None"
+	case Same:
+		return "Same"
 	case ValueDiff:
 		return "ValueDiff"
 	case Missing:
@@ -23,7 +23,7 @@ func (r Result) String() string {
 }
 
 const (
-	None Result = iota
+	Same Result = iota
 	ValueDiff
 	Missing
 	Extra
@@ -122,10 +122,10 @@ func diffWithReflection(lhs, rhs vt) Result {
 }
 
 func diffComp(lhs, rhs vt) Result {
-	if !lhs.Value.Equal(rhs.Value){
+	if !lhs.Value.Equal(rhs.Value) {
 		return ValueDiff
 	}
-	return None
+	return Same
 }
 
 func diffInterface(lhs, rhs vt) Result {
@@ -133,7 +133,7 @@ func diffInterface(lhs, rhs vt) Result {
 	rhs = rhs.ResolveInterface()
 	if lhs.Type == nil && rhs.Type == nil {
 		// This triggers if lhs and rhs were both nil interface values.
-		return None
+		return Same
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
@@ -149,7 +149,7 @@ func diffSlice(lhs, rhs vt) Result {
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return None
+		return Same
 	}
 	if lhs.Value.Len() < rhs.Value.Len() {
 		return Extra
@@ -157,11 +157,11 @@ func diffSlice(lhs, rhs vt) Result {
 		return Missing
 	}
 	for i := 0; i < lhs.Value.Len(); i++ {
-		if diff := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff != None {
+		if diff := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff != Same {
 			return diff
 		}
 	}
-	return None
+	return Same
 }
 
 func diffMap(lhs, rhs vt) Result {
@@ -171,7 +171,7 @@ func diffMap(lhs, rhs vt) Result {
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return None
+		return Same
 	}
 	if lhs.Value.Len() < rhs.Value.Len() {
 		return Extra
@@ -179,11 +179,11 @@ func diffMap(lhs, rhs vt) Result {
 		return Missing
 	}
 	for _, key := range lhs.Value.MapKeys() {
-		if diff := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff != None {
+		if diff := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff != Same {
 			return diff
 		}
 	}
-	return None
+	return Same
 }
 
 func diffStruct(lhs, rhs vt) Result {
@@ -193,7 +193,7 @@ func diffStruct(lhs, rhs vt) Result {
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return None
+		return Same
 	}
 	for _, f := range reflect.VisibleFields(lhs.Type) {
 		isFieldOfNestedStruct := len(f.Index) > 1
@@ -203,9 +203,9 @@ func diffStruct(lhs, rhs vt) Result {
 			// that corresponds to the nested struct.
 			continue
 		}
-		if diff := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff != None {
+		if diff := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff != Same {
 			return diff
 		}
 	}
-	return None
+	return Same
 }
