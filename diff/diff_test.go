@@ -29,7 +29,23 @@ func ptr[T any](v T) *T {
 	return &v
 }
 
+type getter interface {
+	Get() int
+}
+
+type ptrGetter interface {
+	GetPtr() int
+}
+
 type myInt int
+
+func (m myInt) Get() int {
+	return int(m)
+}
+
+func (m *myInt) GetPtr() int {
+	return int(*m)
+}
 
 func TestDiff(t *testing.T) {
 	tests := []runner{
@@ -37,6 +53,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[int]{name: "int equal", lhs: 1, rhs: 1, want: false},
 		testDiffCase[myInt]{name: "myInt not equal", lhs: 1, rhs: 2, want: true},
 		testDiffCase[myInt]{name: "myInt equal", lhs: 1, rhs: 1, want: false},
+		testDiffCase[getter]{name: "getter not equal", lhs: myInt(1), rhs: myInt(2), want: true},
+		testDiffCase[getter]{name: "getter equal", lhs: myInt(1), rhs: myInt(1), want: false},
+		testDiffCase[ptrGetter]{name: "ptrGetter not equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(2)), want: true},
+		testDiffCase[ptrGetter]{name: "ptrGetter equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(1)), want: false},
 		testDiffCase[*int]{name: "int ptr not equal", lhs: ptr(1), rhs: ptr(2), want: true},
 		testDiffCase[*int]{name: "int ptr equal", lhs: ptr(1), rhs: ptr(1), want: false},
 		testDiffCase[*int]{name: "int ptr nil", lhs: nil, rhs: nil, want: false},
