@@ -37,6 +37,13 @@ func (v vt) Index(i int) vt {
 	}
 }
 
+func (v vt) MapIndex(key reflect.Value) vt {
+	return vt{
+		Value: v.Value.MapIndex(key),
+		Type:  v.Type.Elem(),
+	}
+}
+
 func (v vt) ResolveInterface() vt {
 	// TODO: this needs more testing.
 	// It looks like a reflect.Value will never have Kind() == reflect.Interface?
@@ -74,6 +81,8 @@ func diffWithReflection(lhs, rhs vt) (bool, error) {
 		return diffWithReflection(lhs.Elem(), rhs.Elem())
 	} else if lhs.Type.Kind() == reflect.Slice {
 		return diffSlice(lhs, rhs)
+	} else if lhs.Type.Kind() == reflect.Map {
+		return diffMap(lhs, rhs)
 	} else if lhs.Type.Comparable() {
 		return !lhs.Value.Equal(rhs.Value), nil
 	}
@@ -109,6 +118,26 @@ func diffSlice(lhs, rhs vt) (bool, error) {
 	}
 	for i := 0; i < lhs.Value.Len(); i++ {
 		if diff, err := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff || err != nil {
+			return diff, err
+		}
+	}
+	return false, nil
+}
+
+func diffMap(lhs, rhs vt) (bool, error) {
+	if lhs.Value.IsValid() != rhs.Value.IsValid() {
+		// Only one of the instances is nil.
+		return true, nil
+	}
+	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
+		// Both instances are nil.
+		return false, nil
+	}
+	if lhs.Value.Len() != rhs.Value.Len() {
+		return true, nil
+	}
+	for _, key := range lhs.Value.MapKeys() {
+		if diff, err := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff || err != nil {
 			return diff, err
 		}
 	}

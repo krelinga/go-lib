@@ -98,8 +98,6 @@ func TestDiff(t *testing.T) {
 		testDiffCase[float64]{name: "float64 equal", lhs: 1.0, rhs: 1.0, want: false},
 		testDiffCase[*float64]{name: "float64 ptr not equal", lhs: ptr(1.0), rhs: ptr(2.0), want: true},
 		testDiffCase[*float64]{name: "float64 ptr equal", lhs: ptr(1.0), rhs: ptr(1.0), want: false},
-		testDiffCase[map[int]int]{name: "map not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
-		testDiffCase[*map[int]int]{name: "map ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[compStruct]{name: "compStruct not equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "b", Int: 2}, want: true},
 		testDiffCase[compStruct]{name: "compStruct equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "a", Int: 1}, want: false},
 		testDiffCase[*compStruct]{name: "compStruct ptr not equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "b", Int: 2}), want: true},
@@ -115,6 +113,12 @@ func TestDiff(t *testing.T) {
 		testDiffCase[[]int]{name: "slice equal", lhs: []int{1, 2}, rhs: []int{1, 2}, want: false},
 		testDiffCase[[]int]{name: "slice one nil", lhs: nil, rhs: []int{1, 2}, want: true},
 		testDiffCase[[]int]{name: "slice differnt lengths", lhs: []int{1, 2}, rhs: []int{1, 2, 3}, want: true},
+		testDiffCase[map[int]int]{name: "map nil", lhs: nil, rhs: nil, want: false},
+		testDiffCase[*map[int]int]{name: "map ptr nil", lhs: nil, rhs: nil, want: false},
+		testDiffCase[map[int]int]{name: "map not equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{2: 1, 1: 2}, want: true},
+		testDiffCase[map[int]int]{name: "map equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2}, want: false},
+		testDiffCase[map[int]int]{name: "map one nil", lhs: nil, rhs: map[int]int{1: 1, 2: 2}, want: true},
+		testDiffCase[map[int]int]{name: "map different lengths", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: true},
 	}
 	for _, tt := range tests {
 		tt.run(t)
