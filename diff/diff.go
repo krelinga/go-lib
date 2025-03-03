@@ -8,43 +8,46 @@ import (
 var ErrUnsupportedType = errors.New("unsupported type")
 
 func Diff[T any](lhs, rhs T) (bool, error) {
-	return diffWithReflection(lhs, rhs)
+	return diffWithReflection(newVt(lhs), newVt(rhs))
 }
 
-func diffWithReflection(lhs, rhs any) (bool, error) {
-	lhsType := reflect.TypeOf(lhs)
-	rhsType := reflect.TypeOf(rhs)
-	if lhsType != rhsType {
-		return true, nil
+type vt struct {
+	Value reflect.Value
+	Type  reflect.Type
+}
+
+func newVt[T any](v T) vt {
+	return vt{
+		Value: reflect.ValueOf(v),
+		Type:  reflect.TypeFor[T](),
 	}
-	
-	if lhsType.Kind() == reflect.Pointer {
+}
+
+func (v vt) Elem() vt {
+	return vt{
+		Value: v.Value.Elem(),
+		Type:  v.Type.Elem(),
+	}
+}
+
+func diffWithReflection(lhs, rhs vt) (bool, error) {
+	if lhs.Type != rhs.Type {
+		panic("lhs and rhs must be of the same type")
+	}
+
+	if lhs.Type.Kind() == reflect.Pointer {
 		return diffPointer(lhs, rhs)
-	} else if lhsType.Comparable() {
+	} else if lhs.Type.Comparable() {
 		return diffComparable(lhs, rhs), nil
 	}
 
 	return false, ErrUnsupportedType
 }
 
-func valueOk(value reflect.Value) bool {
-	return value.IsValid() && !value.IsNil()
+func diffPointer(lhs, rhs vt) (bool, error) {
+	return diffWithReflection(lhs.Elem(), rhs.Elem())
 }
 
-func diffPointer(lhs, rhs any) (bool, error) {
-	lhsValue := reflect.ValueOf(lhs)
-	rhsValue := reflect.ValueOf(rhs)
-	lhsOk := valueOk(lhsValue)
-	rhsOk := valueOk(rhsValue)
-	if !lhsOk && !rhsOk {
-		return false, nil
-	} else if lhsOk && rhsOk {
-		return diffWithReflection(lhsValue.Elem().Interface(), rhsValue.Elem().Interface())
-	}
-
-	return true, nil
-}
-
-func diffComparable(lhs, rhs any) bool {
-	return rhs != lhs
+func diffComparable(lhs, rhs vt) bool {
+	return !lhs.Value.Equal(rhs.Value)
 }

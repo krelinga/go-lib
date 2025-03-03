@@ -47,6 +47,8 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*float64]{name: "float64 ptr equal", lhs: ptr(1.0), rhs: ptr(1.0), want: false},
 		testDiffCase[map[int]int]{name: "map not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[[]int]{name: "slice not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
+		testDiffCase[*map[int]int]{name: "map ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
+		testDiffCase[*[]int]{name: "slice ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 	}
 	for _, tt := range tests {
 		tt.run(t)
