@@ -1,6 +1,9 @@
 package diff
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 type runner interface {
 	run(t *testing.T)
@@ -47,7 +50,20 @@ func (m *myInt) GetPtr() int {
 	return int(*m)
 }
 
+type compStruct struct {
+	Str string
+	Int int
+}
+
+func isComparable[T any]() bool {
+	return reflect.TypeFor[T]().Comparable()
+}
+
 func TestDiff(t *testing.T) {
+	if !isComparable[compStruct]() {
+		t.Fatal("compStruct is not comparable")
+	}
+
 	tests := []runner{
 		testDiffCase[int]{name: "int not equal", lhs: 1, rhs: 2, want: true},
 		testDiffCase[int]{name: "int equal", lhs: 1, rhs: 1, want: false},
@@ -79,6 +95,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[[]int]{name: "slice not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[*map[int]int]{name: "map ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[*[]int]{name: "slice ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
+		testDiffCase[compStruct]{name: "compStruct not equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "b", Int: 2}, want: true},
+		testDiffCase[compStruct]{name: "compStruct equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "a", Int: 1}, want: false},
+		testDiffCase[*compStruct]{name: "compStruct ptr not equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "b", Int: 2}), want: true},
+		testDiffCase[*compStruct]{name: "compStruct ptr equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "a", Int: 1}), want: false},
 	}
 	for _, tt := range tests {
 		tt.run(t)
