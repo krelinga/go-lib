@@ -60,6 +60,15 @@ type nonCompStruct struct {
 	pInt int
 }
 
+type ChildStruct struct {
+	Str string
+}
+
+type ParentStruct struct {
+	ChildStruct
+	Int int
+}
+
 func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
 }
@@ -122,6 +131,18 @@ func TestDiff(t *testing.T) {
 		testDiffCase[map[int]int]{name: "map equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2}, want: false},
 		testDiffCase[map[int]int]{name: "map one nil", lhs: nil, rhs: map[int]int{1: 1, 2: 2}, want: true},
 		testDiffCase[map[int]int]{name: "map different lengths", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: true},
+		testDiffCase[ParentStruct]{
+			name: "ChildStruct not equal",
+			lhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			rhs: ParentStruct{ChildStruct: ChildStruct{Str: "b"}, Int: 1},
+			want: true,
+		},
+		testDiffCase[ParentStruct]{
+			name: "ChildStruct equal",
+			lhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			rhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		tt.run(t)
