@@ -99,9 +99,7 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*float64]{name: "float64 ptr not equal", lhs: ptr(1.0), rhs: ptr(2.0), want: true},
 		testDiffCase[*float64]{name: "float64 ptr equal", lhs: ptr(1.0), rhs: ptr(1.0), want: false},
 		testDiffCase[map[int]int]{name: "map not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
-		testDiffCase[[]int]{name: "slice not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[*map[int]int]{name: "map ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
-		testDiffCase[*[]int]{name: "slice ptr not supported", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 		testDiffCase[compStruct]{name: "compStruct not equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "b", Int: 2}, want: true},
 		testDiffCase[compStruct]{name: "compStruct equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "a", Int: 1}, want: false},
 		testDiffCase[*compStruct]{name: "compStruct ptr not equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "b", Int: 2}), want: true},
@@ -111,6 +109,12 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr not equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{2, 1}}), wantErr: ErrUnsupportedType},
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), wantErr: ErrUnsupportedType},
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr nil", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
+		testDiffCase[[]int]{name: "slice nil", lhs: nil, rhs: nil, want: false},
+		testDiffCase[*[]int]{name: "slice ptr nil", lhs: nil, rhs: nil, want: false},
+		testDiffCase[[]int]{name: "slice not equal", lhs: []int{1, 2}, rhs: []int{2, 1}, want: true},
+		testDiffCase[[]int]{name: "slice equal", lhs: []int{1, 2}, rhs: []int{1, 2}, want: false},
+		testDiffCase[[]int]{name: "slice one nil", lhs: nil, rhs: []int{1, 2}, want: true},
+		testDiffCase[[]int]{name: "slice differnt lengths", lhs: []int{1, 2}, rhs: []int{1, 2, 3}, want: true},
 	}
 	for _, tt := range tests {
 		tt.run(t)
