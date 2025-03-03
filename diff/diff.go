@@ -50,6 +50,14 @@ func diffWithReflection(lhs, rhs vt) (bool, error) {
 	}
 
 	if lhs.Type.Kind() == reflect.Interface {
+		// This is really subtle. If I take this if condition out, then we only get into
+		// trouble because the interface type is comparable, and it happens by pointer
+		// instead of by value of thing pointed to.
+		//
+		// On the other hand, the rules for how reflect.Value.Equal() works are not very
+		// clear ... the docs say it will panic if the underlying types are not comparable,
+		// but then proceeds to describe how slice comparison works ... but slices are not
+		// comparable, so I don't know what to make of that.
 		return diffInterface(lhs, rhs)
 	} else if lhs.Type.Kind() == reflect.Pointer {
 		return diffWithReflection(lhs.Elem(), rhs.Elem())
