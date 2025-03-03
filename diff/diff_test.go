@@ -68,6 +68,8 @@ type ParentStruct struct {
 
 type mySlice []int
 
+type myMap map[int]int
+
 func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
 }
@@ -135,6 +137,11 @@ func TestDiff(t *testing.T) {
 		testDiffCase[map[int]int]{name: "map equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2}, want: false},
 		testDiffCase[map[int]int]{name: "map one nil", lhs: nil, rhs: map[int]int{1: 1, 2: 2}, want: true},
 		testDiffCase[map[int]int]{name: "map different lengths", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: true},
+		testDiffCase[myMap]{name: "myMap not equal", lhs: myMap{1: 1, 2: 2}, rhs: myMap{2: 1, 1: 2}, want: true},
+		testDiffCase[myMap]{name: "myMap equal", lhs: myMap{1: 1, 2: 2}, rhs: myMap{1: 1, 2: 2}, want: false},
+		testDiffCase[myMap]{name: "myMap one nil", lhs: nil, rhs: myMap{1: 1, 2: 2}, want: true},
+		testDiffCase[myMap]{name: "myMap different lengths", lhs: myMap{1: 1, 2: 2}, rhs: myMap{1: 1, 2: 2, 3: 3}, want: true},
+		testDiffCase[myMap]{name: "myMap nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[ParentStruct]{
 			name: "ChildStruct not equal",
 			lhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
