@@ -57,7 +57,7 @@ type compStruct struct {
 
 type nonCompStruct struct {
 	Slice []int
-	pInt int
+	pInt  int
 }
 
 type ChildStruct struct {
@@ -133,14 +133,14 @@ func TestDiff(t *testing.T) {
 		testDiffCase[map[int]int]{name: "map different lengths", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: true},
 		testDiffCase[ParentStruct]{
 			name: "ChildStruct not equal",
-			lhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
-			rhs: ParentStruct{ChildStruct: ChildStruct{Str: "b"}, Int: 1},
+			lhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			rhs:  ParentStruct{ChildStruct: ChildStruct{Str: "b"}, Int: 1},
 			want: true,
 		},
 		testDiffCase[ParentStruct]{
 			name: "ChildStruct equal",
-			lhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
-			rhs: ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			lhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
+			rhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
 			want: false,
 		},
 	}
