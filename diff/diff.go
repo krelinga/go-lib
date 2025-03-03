@@ -162,9 +162,12 @@ func diffStruct(lhs, rhs vt) (bool, error) {
 		// Both instances are nil.
 		return false, nil
 	}
-	// TODO: this needs more testing.  We might be doing extra work for embedded fields, i.e. visiting each member the struct that represents the field itself.
 	for _, f := range reflect.VisibleFields(lhs.Type) {
-		if !f.IsExported() {
+		isFieldOfNestedStruct := len(f.Index) > 1
+		if !f.IsExported() || isFieldOfNestedStruct {
+			// Skip non-exported fields since we can't access their contents.
+			// Skip fields of nested structs since we'll visit them when we visit the field
+			// that corresponds to the nested struct.
 			continue
 		}
 		if diff, err := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff || err != nil {
