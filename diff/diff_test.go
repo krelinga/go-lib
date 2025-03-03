@@ -29,10 +29,14 @@ func ptr[T any](v T) *T {
 	return &v
 }
 
+type myInt int
+
 func TestDiff(t *testing.T) {
 	tests := []runner{
 		testDiffCase[int]{name: "int not equal", lhs: 1, rhs: 2, want: true},
 		testDiffCase[int]{name: "int equal", lhs: 1, rhs: 1, want: false},
+		testDiffCase[myInt]{name: "myInt not equal", lhs: 1, rhs: 2, want: true},
+		testDiffCase[myInt]{name: "myInt equal", lhs: 1, rhs: 1, want: false},
 		testDiffCase[*int]{name: "int ptr not equal", lhs: ptr(1), rhs: ptr(2), want: true},
 		testDiffCase[*int]{name: "int ptr equal", lhs: ptr(1), rhs: ptr(1), want: false},
 		testDiffCase[*int]{name: "int ptr nil", lhs: nil, rhs: nil, want: false},
