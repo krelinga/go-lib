@@ -66,6 +66,8 @@ type ParentStruct struct {
 	Int int
 }
 
+type mySlice []int
+
 func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
 }
@@ -122,6 +124,11 @@ func TestDiff(t *testing.T) {
 		testDiffCase[[]int]{name: "slice equal", lhs: []int{1, 2}, rhs: []int{1, 2}, want: false},
 		testDiffCase[[]int]{name: "slice one nil", lhs: nil, rhs: []int{1, 2}, want: true},
 		testDiffCase[[]int]{name: "slice differnt lengths", lhs: []int{1, 2}, rhs: []int{1, 2, 3}, want: true},
+		testDiffCase[mySlice]{name: "mySlice not equal", lhs: mySlice{1, 2}, rhs: mySlice{2, 1}, want: true},
+		testDiffCase[mySlice]{name: "mySlice equal", lhs: mySlice{1, 2}, rhs: mySlice{1, 2}, want: false},
+		testDiffCase[mySlice]{name: "mySlice one nil", lhs: nil, rhs: mySlice{1, 2}, want: true},
+		testDiffCase[mySlice]{name: "mySlice different lengths", lhs: mySlice{1, 2}, rhs: mySlice{1, 2, 3}, want: true},
+		testDiffCase[mySlice]{name: "mySlice nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[map[int]int]{name: "map nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[*map[int]int]{name: "map ptr nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[map[int]int]{name: "map not equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{2: 1, 1: 2}, want: true},
