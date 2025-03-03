@@ -14,15 +14,12 @@ type testDiffCase[T any] struct {
 	lhs     T
 	rhs     T
 	want    bool
-	wantErr error
 }
 
 func (c testDiffCase[T]) run(t *testing.T) {
 	t.Run(c.name, func(t *testing.T) {
-		got, gotErr := Diff(c.lhs, c.rhs)
-		if gotErr != c.wantErr {
-			t.Errorf("Diff() error = %v, want %v", gotErr, c.wantErr)
-		} else if got != c.want {
+		got := Diff(c.lhs, c.rhs)
+		if got != c.want {
 			t.Errorf("Diff() = %v, want %v", got, c.want)
 		}
 	})

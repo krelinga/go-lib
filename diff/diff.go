@@ -1,13 +1,11 @@
 package diff
 
 import (
-	"errors"
+	"fmt"
 	"reflect"
 )
 
-var ErrUnsupportedType = errors.New("unsupported type")
-
-func Diff[T any](lhs, rhs T) (bool, error) {
+func Diff[T any](lhs, rhs T) bool {
 	return diffWithReflection(newVt(lhs), newVt(rhs))
 }
 
@@ -69,7 +67,7 @@ func (v vt) ResolveInterface() vt {
 	}
 }
 
-func diffWithReflection(lhs, rhs vt) (bool, error) {
+func diffWithReflection(lhs, rhs vt) bool {
 	if lhs.Type != rhs.Type {
 		panic("lhs and rhs must be of the same type")
 	}
@@ -93,74 +91,74 @@ func diffWithReflection(lhs, rhs vt) (bool, error) {
 	} else if lhs.Type.Kind() == reflect.Struct {
 		return diffStruct(lhs, rhs)
 	} else if lhs.Type.Comparable() {
-		return !lhs.Value.Equal(rhs.Value), nil
+		return !lhs.Value.Equal(rhs.Value)
 	}
 
-	return false, ErrUnsupportedType
+	panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
 }
 
-func diffInterface(lhs, rhs vt) (bool, error) {
+func diffInterface(lhs, rhs vt) bool {
 	lhs = lhs.ResolveInterface()
 	rhs = rhs.ResolveInterface()
 	if lhs.Type == nil && rhs.Type == nil {
 		// This triggers if lhs and rhs were both nil interface values.
-		return false, nil
+		return false
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
-		return true, nil
+		return true
 	}
 	return diffWithReflection(lhs, rhs)
 }
 
-func diffSlice(lhs, rhs vt) (bool, error) {
+func diffSlice(lhs, rhs vt) bool {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return true, nil
+		return true
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return false, nil
+		return false
 	}
 	if lhs.Value.Len() != rhs.Value.Len() {
-		return true, nil
+		return true
 	}
 	for i := 0; i < lhs.Value.Len(); i++ {
-		if diff, err := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff || err != nil {
-			return diff, err
+		if diff := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff {
+			return diff
 		}
 	}
-	return false, nil
+	return false
 }
 
-func diffMap(lhs, rhs vt) (bool, error) {
+func diffMap(lhs, rhs vt) bool {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return true, nil
+		return true
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return false, nil
+		return false
 	}
 	if lhs.Value.Len() != rhs.Value.Len() {
-		return true, nil
+		return true
 	}
 	for _, key := range lhs.Value.MapKeys() {
-		if diff, err := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff || err != nil {
-			return diff, err
+		if diff := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff {
+			return diff
 		}
 	}
-	return false, nil
+	return false
 }
 
-func diffStruct(lhs, rhs vt) (bool, error) {
+func diffStruct(lhs, rhs vt) bool {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return true, nil
+		return true
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return false, nil
+		return false
 	}
 	for _, f := range reflect.VisibleFields(lhs.Type) {
 		isFieldOfNestedStruct := len(f.Index) > 1
@@ -170,9 +168,9 @@ func diffStruct(lhs, rhs vt) (bool, error) {
 			// that corresponds to the nested struct.
 			continue
 		}
-		if diff, err := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff || err != nil {
-			return diff, err
+		if diff := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff {
+			return diff
 		}
 	}
-	return false, nil
+	return false
 }
