@@ -55,6 +55,10 @@ type compStruct struct {
 	Int int
 }
 
+type nonCompStruct struct {
+	Slice []int
+}
+
 func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
 }
@@ -62,6 +66,9 @@ func isComparable[T any]() bool {
 func TestDiff(t *testing.T) {
 	if !isComparable[compStruct]() {
 		t.Fatal("compStruct is not comparable")
+	}
+	if isComparable[nonCompStruct]() {
+		t.Fatal("nonCompStruct is comparable")
 	}
 
 	tests := []runner{
@@ -99,6 +106,11 @@ func TestDiff(t *testing.T) {
 		testDiffCase[compStruct]{name: "compStruct equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "a", Int: 1}, want: false},
 		testDiffCase[*compStruct]{name: "compStruct ptr not equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "b", Int: 2}), want: true},
 		testDiffCase[*compStruct]{name: "compStruct ptr equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "a", Int: 1}), want: false},
+		testDiffCase[nonCompStruct]{name: "nonCompStruct not equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{2, 1}}, wantErr: ErrUnsupportedType},
+		testDiffCase[nonCompStruct]{name: "nonCompStruct equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{1, 2}}, wantErr: ErrUnsupportedType},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr not equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{2, 1}}), wantErr: ErrUnsupportedType},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), wantErr: ErrUnsupportedType},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr nil", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
 	}
 	for _, tt := range tests {
 		tt.run(t)
