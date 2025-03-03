@@ -47,6 +47,12 @@ func (m *myInt) GetPtr() int {
 	return int(*m)
 }
 
+type myString string
+
+func (m myString) Get() int {
+	return len(m)
+}
+
 type compStruct struct {
 	Str string
 	Int int
@@ -91,6 +97,7 @@ func TestDiff(t *testing.T) {
 		testDiffCase[getter]{name: "getter equal", lhs: myInt(1), rhs: myInt(1), want: false},
 		testDiffCase[getter]{name: "gitter nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[getter]{name: "getter one nil", lhs: nil, rhs: myInt(1), want: true},
+		testDiffCase[getter]{name: "getter different underlying types", lhs: myInt(1), rhs: myString("a"), want: true},
 		testDiffCase[ptrGetter]{name: "ptrGetter not equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(2)), want: true},
 		testDiffCase[ptrGetter]{name: "ptrGetter equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(1)), want: false},
 		testDiffCase[ptrGetter]{name: "ptrGetter nil", lhs: nil, rhs: nil, want: false},
