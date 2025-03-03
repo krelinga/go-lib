@@ -38,9 +38,13 @@ func (v vt) ResolveInterface() vt {
 	if v.Type.Kind() != reflect.Interface {
 		panic("type is not an interface")
 	}
+	var newType reflect.Type
+	if v.Value.IsValid() {
+		newType = v.Value.Type()
+	}
 	return vt{
 		Value: v.Value,
-		Type:  v.Value.Type(),
+		Type:  newType,
 	}
 }
 
