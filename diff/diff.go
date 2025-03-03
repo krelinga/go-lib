@@ -44,6 +44,13 @@ func (v vt) MapIndex(key reflect.Value) vt {
 	}
 }
 
+func (v vt) StructField(sf reflect.StructField) vt {
+	return vt{
+		Value: v.Value.FieldByIndex(sf.Index),
+		Type:  sf.Type,
+	}
+}
+
 func (v vt) ResolveInterface() vt {
 	// TODO: this needs more testing.
 	// It looks like a reflect.Value will never have Kind() == reflect.Interface?
@@ -83,6 +90,8 @@ func diffWithReflection(lhs, rhs vt) (bool, error) {
 		return diffSlice(lhs, rhs)
 	} else if lhs.Type.Kind() == reflect.Map {
 		return diffMap(lhs, rhs)
+	} else if lhs.Type.Kind() == reflect.Struct {
+		return diffStruct(lhs, rhs)
 	} else if lhs.Type.Comparable() {
 		return !lhs.Value.Equal(rhs.Value), nil
 	}
@@ -138,6 +147,27 @@ func diffMap(lhs, rhs vt) (bool, error) {
 	}
 	for _, key := range lhs.Value.MapKeys() {
 		if diff, err := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff || err != nil {
+			return diff, err
+		}
+	}
+	return false, nil
+}
+
+func diffStruct(lhs, rhs vt) (bool, error) {
+	if lhs.Value.IsValid() != rhs.Value.IsValid() {
+		// Only one of the instances is nil.
+		return true, nil
+	}
+	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
+		// Both instances are nil.
+		return false, nil
+	}
+	// TODO: this needs more testing.  We might be doing extra work for embedded fields, i.e. visiting each member the struct that represents the field itself.
+	for _, f := range reflect.VisibleFields(lhs.Type) {
+		if !f.IsExported() {
+			continue
+		}
+		if diff, err := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff || err != nil {
 			return diff, err
 		}
 	}

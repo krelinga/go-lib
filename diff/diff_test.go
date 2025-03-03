@@ -57,6 +57,7 @@ type compStruct struct {
 
 type nonCompStruct struct {
 	Slice []int
+	pInt int
 }
 
 func isComparable[T any]() bool {
@@ -102,11 +103,13 @@ func TestDiff(t *testing.T) {
 		testDiffCase[compStruct]{name: "compStruct equal", lhs: compStruct{Str: "a", Int: 1}, rhs: compStruct{Str: "a", Int: 1}, want: false},
 		testDiffCase[*compStruct]{name: "compStruct ptr not equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "b", Int: 2}), want: true},
 		testDiffCase[*compStruct]{name: "compStruct ptr equal", lhs: ptr(compStruct{Str: "a", Int: 1}), rhs: ptr(compStruct{Str: "a", Int: 1}), want: false},
-		testDiffCase[nonCompStruct]{name: "nonCompStruct not equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{2, 1}}, wantErr: ErrUnsupportedType},
-		testDiffCase[nonCompStruct]{name: "nonCompStruct equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{1, 2}}, wantErr: ErrUnsupportedType},
-		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr not equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{2, 1}}), wantErr: ErrUnsupportedType},
-		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), wantErr: ErrUnsupportedType},
-		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr nil", lhs: nil, rhs: nil, wantErr: ErrUnsupportedType},
+		testDiffCase[nonCompStruct]{name: "nonCompStruct not equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{2, 1}}, want: true},
+		testDiffCase[nonCompStruct]{name: "nonCompStruct equal", lhs: nonCompStruct{Slice: []int{1, 2}}, rhs: nonCompStruct{Slice: []int{1, 2}}, want: false},
+		testDiffCase[nonCompStruct]{name: "nonCompStruct unexported field ignored", lhs: nonCompStruct{Slice: []int{1, 2}, pInt: 1}, rhs: nonCompStruct{Slice: []int{1, 2}, pInt: 2}, want: false},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr not equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{2, 1}}), want: true},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), want: false},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr one nil", lhs: nil, rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), want: true},
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[[]int]{name: "slice nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[*[]int]{name: "slice ptr nil", lhs: nil, rhs: nil, want: false},
 		testDiffCase[[]int]{name: "slice not equal", lhs: []int{1, 2}, rhs: []int{2, 1}, want: true},
