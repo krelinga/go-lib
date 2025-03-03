@@ -1,5 +1,5 @@
 package diff
 
-func Diff(lhs, rhs int) bool {
+func Diff[T comparable](lhs, rhs T) bool {
 	return lhs != rhs
 }
