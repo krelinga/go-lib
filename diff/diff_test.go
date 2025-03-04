@@ -81,6 +81,10 @@ func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
 }
 
+func nilPtr[T any]() *T {
+	return nil
+}
+
 func TestDiff(t *testing.T) {
 	if !isComparable[compStruct]() {
 		t.Fatal("compStruct is not comparable")
@@ -106,7 +110,7 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*int]{name: "int ptr not equal", lhs: ptr(1), rhs: ptr(2), want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different}},
 		testDiffCase[*int]{name: "int ptr equal", lhs: ptr(1), rhs: ptr(1), want: nil},
 		testDiffCase[*int]{name: "int ptr nil", lhs: nil, rhs: nil, want: nil},
-		// testDiffCase[*int]{name: "int ptr one nil", lhs: nil, rhs: ptr(1), want: &diff.Result{Lhs: nil, Rhs: ptr(int(1)), Kind: diff.Different}},  TODO: Fix this
+		testDiffCase[*int]{name: "int ptr one nil", lhs: nil, rhs: ptr(1), want: &diff.Result{Lhs: nilPtr[int](), Rhs: ptr(int(1)), Kind: diff.Different}},
 		testDiffCase[**int]{name: "int ptr ptr not equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(2)), want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different}},
 		testDiffCase[**int]{name: "int ptr ptr equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(1)), want: nil},
 		testDiffCase[string]{name: "string not equal", lhs: "a", rhs: "b", want: &diff.Result{Lhs: "a", Rhs: "b", Kind: diff.Different}},
@@ -126,7 +130,7 @@ func TestDiff(t *testing.T) {
 		testDiffCase[nonCompStruct]{name: "nonCompStruct unexported field ignored", lhs: nonCompStruct{Slice: []int{1, 2}, pInt: 1}, rhs: nonCompStruct{Slice: []int{1, 2}, pInt: 2}, want: nil},
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr not equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{2, 1}}), want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different}},
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr equal", lhs: ptr(nonCompStruct{Slice: []int{1, 2}}), rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), want: nil},
-		// testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr one nil", lhs: nil, rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), want: &diff.Result{Lhs: nil, Rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), Kind: diff.Different}},  TODO: Fix this
+		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr one nil", lhs: nil, rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), want: &diff.Result{Lhs: nilPtr[nonCompStruct](), Rhs: ptr(nonCompStruct{Slice: []int{1, 2}}), Kind: diff.Different}},
 		testDiffCase[*nonCompStruct]{name: "nonCompStruct ptr nil", lhs: nil, rhs: nil, want: nil},
 		testDiffCase[[]int]{name: "slice nil", lhs: nil, rhs: nil, want: nil},
 		testDiffCase[*[]int]{name: "slice ptr nil", lhs: nil, rhs: nil, want: nil},

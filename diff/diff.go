@@ -136,10 +136,20 @@ func diffWithReflection(lhs, rhs vt) *Result {
 
 func diffPointer(lhs, rhs vt) *Result {
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
-		// Both are nil
 		return nil
 	}
 	if !lhs.Value.IsValid() || !rhs.Value.IsValid() {
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
+	}
+	if lhs.Value.IsNil() && rhs.Value.IsNil() {
+		// Both are nil
+		return nil
+	}
+	if lhs.Value.IsNil() || rhs.Value.IsNil() {
 		return &Result{
 			Lhs:  lhs.Interface(),
 			Rhs:  rhs.Interface(),
@@ -194,12 +204,12 @@ func diffSlice(lhs, rhs vt) *Result {
 	}
 	if lhs.Value.Len() < rhs.Value.Len() {
 		return &Result{
-			Rhs: rhs.Index(lhs.Value.Len()).Interface(),
+			Rhs:  rhs.Index(lhs.Value.Len()).Interface(),
 			Kind: Extra,
 		}
 	} else if lhs.Value.Len() > rhs.Value.Len() {
 		return &Result{
-			Lhs: lhs.Index(rhs.Value.Len()).Interface(),
+			Lhs:  lhs.Index(rhs.Value.Len()).Interface(),
 			Kind: Missing,
 		}
 	}
