@@ -15,7 +15,7 @@ type testDiffCase[T any] struct {
 	name string
 	lhs  T
 	rhs  T
-	want diff.Result
+	want diff.Kind
 }
 
 func (c testDiffCase[T]) run(t *testing.T) {

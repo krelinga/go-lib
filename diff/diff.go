@@ -5,9 +5,9 @@ import (
 	"reflect"
 )
 
-type Result int
+type Kind int
 
-func (r Result) String() string {
+func (r Kind) String() string {
 	switch r {
 	case Same:
 		return "Same"
@@ -23,13 +23,13 @@ func (r Result) String() string {
 }
 
 const (
-	Same Result = iota
+	Same Kind = iota
 	Different
 	Missing
 	Extra
 )
 
-func Diff[T any](lhs, rhs T) Result {
+func Diff[T any](lhs, rhs T) Kind {
 	return diffWithReflection(newVt(lhs), newVt(rhs))
 }
 
@@ -91,7 +91,7 @@ func (v vt) ResolveInterface() vt {
 	}
 }
 
-func diffWithReflection(lhs, rhs vt) Result {
+func diffWithReflection(lhs, rhs vt) Kind {
 	if lhs.Type != rhs.Type {
 		panic("lhs and rhs must be of the same type")
 	}
@@ -121,14 +121,14 @@ func diffWithReflection(lhs, rhs vt) Result {
 	panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
 }
 
-func diffComp(lhs, rhs vt) Result {
+func diffComp(lhs, rhs vt) Kind {
 	if !lhs.Value.Equal(rhs.Value) {
 		return Different
 	}
 	return Same
 }
 
-func diffInterface(lhs, rhs vt) Result {
+func diffInterface(lhs, rhs vt) Kind {
 	lhs = lhs.ResolveInterface()
 	rhs = rhs.ResolveInterface()
 	if lhs.Type == nil && rhs.Type == nil {
@@ -142,7 +142,7 @@ func diffInterface(lhs, rhs vt) Result {
 	return diffWithReflection(lhs, rhs)
 }
 
-func diffSlice(lhs, rhs vt) Result {
+func diffSlice(lhs, rhs vt) Kind {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
 		return Different
@@ -164,7 +164,7 @@ func diffSlice(lhs, rhs vt) Result {
 	return Same
 }
 
-func diffMap(lhs, rhs vt) Result {
+func diffMap(lhs, rhs vt) Kind {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
 		return Different
@@ -186,7 +186,7 @@ func diffMap(lhs, rhs vt) Result {
 	return Same
 }
 
-func diffStruct(lhs, rhs vt) Result {
+func diffStruct(lhs, rhs vt) Kind {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
 		return Different
