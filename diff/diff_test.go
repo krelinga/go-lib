@@ -75,7 +75,7 @@ type ParentStruct struct {
 
 type mySlice []int
 
-type myMap map[int]int
+type myMap map[int]string
 
 func isComparable[T any]() bool {
 	return reflect.TypeFor[T]().Comparable()
@@ -154,15 +154,14 @@ func TestDiff(t *testing.T) {
 		testDiffCase[map[int]string]{name: "map lhs nil", lhs: nil, rhs: map[int]string{1: "1"}, want: &diff.Result{Lhs: nil, Rhs: "1", Kind: diff.Extra}},
 		testDiffCase[map[int]string]{name: "map rhs nil", lhs: map[int]string{1: "1"}, rhs: nil, want: &diff.Result{Lhs: "1", Rhs: nil, Kind: diff.Missing}},
 		// TODO: there's some potential confusion here.  For slices, lhs and rhs are the values that are missing or extra, but for maps lhs and rhs are the keys that are missing or extra(?)
-		// TODO: I should change the keys and values of maps in this test to be different types.
-		testDiffCase[map[int]int]{name: "map extra", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: &diff.Result{Rhs: int(3), Kind: diff.Extra}},
-		testDiffCase[map[int]int]{name: "map missing", lhs: map[int]int{1: 1, 2: 2, 3: 3}, rhs: map[int]int{1: 1, 2: 2}, want: &diff.Result{Lhs: int(3), Kind: diff.Missing}},
-		testDiffCase[myMap]{name: "myMap not equal", lhs: myMap{1: 1}, rhs: myMap{1: 2}, want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different}},
-		testDiffCase[myMap]{name: "myMap equal", lhs: myMap{1: 1, 2: 2}, rhs: myMap{1: 1, 2: 2}, want: nil},
-		testDiffCase[myMap]{name: "myMap lhs nil", lhs: nil, rhs: myMap{1: 1}, want: &diff.Result{Lhs: nil, Rhs: int(1), Kind: diff.Extra}},
-		testDiffCase[myMap]{name: "myMap rhs nil", lhs: myMap{1: 1}, rhs: nil, want: &diff.Result{Lhs: int(1), Rhs: nil, Kind: diff.Missing}},
-		testDiffCase[myMap]{name: "myMap extra", lhs: myMap{1: 1, 2: 2}, rhs: myMap{1: 1, 2: 2, 3: 3}, want: &diff.Result{Rhs: int(3), Kind: diff.Extra}},
-		testDiffCase[myMap]{name: "myMap missing", lhs: myMap{1: 1, 2: 2, 3: 3}, rhs: myMap{1: 1, 2: 2}, want: &diff.Result{Lhs: int(3), Kind: diff.Missing}},
+		testDiffCase[map[int]string]{name: "map extra", lhs: map[int]string{1: "1", 2: "2"}, rhs: map[int]string{1: "1", 2: "2", 3: "3"}, want: &diff.Result{Rhs: "3", Kind: diff.Extra}},
+		testDiffCase[map[int]string]{name: "map missing", lhs: map[int]string{1: "1", 2: "2", 3: "3"}, rhs: map[int]string{1: "1", 2: "2"}, want: &diff.Result{Lhs: "3", Kind: diff.Missing}},
+		testDiffCase[myMap]{name: "myMap not equal", lhs: myMap{1: "1"}, rhs: myMap{1: "2"}, want: &diff.Result{Lhs: "1", Rhs: "2", Kind: diff.Different}},
+		testDiffCase[myMap]{name: "myMap equal", lhs: myMap{1: "1", 2: "2"}, rhs: myMap{1: "1", 2: "2"}, want: nil},
+		testDiffCase[myMap]{name: "myMap lhs nil", lhs: nil, rhs: myMap{1: "1"}, want: &diff.Result{Lhs: nil, Rhs: "1", Kind: diff.Extra}},
+		testDiffCase[myMap]{name: "myMap rhs nil", lhs: myMap{1: "1"}, rhs: nil, want: &diff.Result{Lhs: "1", Rhs: nil, Kind: diff.Missing}},
+		testDiffCase[myMap]{name: "myMap extra", lhs: myMap{1: "1", 2: "2"}, rhs: myMap{1: "1", 2: "2", 3: "3"}, want: &diff.Result{Rhs: "3", Kind: diff.Extra}},
+		testDiffCase[myMap]{name: "myMap missing", lhs: myMap{1: "1", 2: "2", 3: "3"}, rhs: myMap{1: "1", 2: "2"}, want: &diff.Result{Lhs: "3", Kind: diff.Missing}},
 		testDiffCase[myMap]{name: "myMap nil", lhs: nil, rhs: nil, want: nil},
 		testDiffCase[ParentStruct]{
 			name: "ChildStruct not equal",
