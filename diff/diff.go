@@ -241,7 +241,7 @@ func diffMap(lhs, rhs vt) *Result {
 		rhsFound := rhs.MapIndex(key)
 		if !rhsFound.Value.IsValid() {
 			return &Result{
-				Lhs:  lhsFound.Interface(),
+				Lhs:  key.Interface(),
 				Kind: Missing,
 			}
 		} else if diff := diffWithReflection(lhsFound, rhsFound); diff != nil {
@@ -250,10 +250,9 @@ func diffMap(lhs, rhs vt) *Result {
 	}
 	for _, key := range rhs.Value.MapKeys() {
 		lhsFound := lhs.MapIndex(key)
-		rhsFound := rhs.MapIndex(key)
 		if !lhsFound.Value.IsValid() {
 			return &Result{
-				Rhs:  rhsFound.Interface(),
+				Rhs:  key.Interface(),
 				Kind: Extra,
 			}
 		}
