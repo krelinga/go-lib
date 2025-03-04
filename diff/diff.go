@@ -209,3 +209,8 @@ func diffStruct(lhs, rhs vt) Result {
 	}
 	return Same
 }
+
+// Next Steps:
+// - Change Result to a struct, and rename the enum to Kind.
+// - Result should surface Lhs and Rhs as any values, and Kind to indicate what sort of result it is.
+// - Get rid of Same, and just return nil if there are no differences.
