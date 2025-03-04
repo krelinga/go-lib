@@ -147,12 +147,12 @@ func TestDiff(t *testing.T) {
 		testDiffCase[mySlice]{name: "mySlice extra", lhs: mySlice{1, 2}, rhs: mySlice{1, 2, 3}, want: &diff.Result{Rhs: int(3), Kind: diff.Extra}},
 		testDiffCase[mySlice]{name: "mySlice missing", lhs: mySlice{1, 2, 3}, rhs: mySlice{1, 2}, want: &diff.Result{Lhs: int(3), Kind: diff.Missing}},
 		testDiffCase[mySlice]{name: "mySlice nil", lhs: nil, rhs: nil, want: nil},
-		testDiffCase[map[int]int]{name: "map nil", lhs: nil, rhs: nil, want: nil},
-		testDiffCase[*map[int]int]{name: "map ptr nil", lhs: nil, rhs: nil, want: nil},
-		testDiffCase[map[int]int]{name: "map not equal", lhs: map[int]int{1: 1}, rhs: map[int]int{1: 2}, want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different}},
-		testDiffCase[map[int]int]{name: "map equal", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2}, want: nil},
-		testDiffCase[map[int]int]{name: "map lhs nil", lhs: nil, rhs: map[int]int{1: 1}, want: &diff.Result{Lhs: nil, Rhs: int(1), Kind: diff.Extra}},
-		testDiffCase[map[int]int]{name: "map rhs nil", lhs: map[int]int{1: 1}, rhs: nil, want: &diff.Result{Lhs: int(1), Rhs: nil, Kind: diff.Missing}},
+		testDiffCase[map[int]string]{name: "map nil", lhs: nil, rhs: nil, want: nil},
+		testDiffCase[*map[int]string]{name: "map ptr nil", lhs: nil, rhs: nil, want: nil},
+		testDiffCase[map[int]string]{name: "map not equal", lhs: map[int]string{1: "1"}, rhs: map[int]string{1: "2"}, want: &diff.Result{Lhs: "1", Rhs: "2", Kind: diff.Different}},
+		testDiffCase[map[int]string]{name: "map equal", lhs: map[int]string{1: "1", 2: "2"}, rhs: map[int]string{1: "1", 2: "2"}, want: nil},
+		testDiffCase[map[int]string]{name: "map lhs nil", lhs: nil, rhs: map[int]string{1: "1"}, want: &diff.Result{Lhs: nil, Rhs: "1", Kind: diff.Extra}},
+		testDiffCase[map[int]string]{name: "map rhs nil", lhs: map[int]string{1: "1"}, rhs: nil, want: &diff.Result{Lhs: "1", Rhs: nil, Kind: diff.Missing}},
 		// TODO: there's some potential confusion here.  For slices, lhs and rhs are the values that are missing or extra, but for maps lhs and rhs are the keys that are missing or extra(?)
 		// TODO: I should change the keys and values of maps in this test to be different types.
 		testDiffCase[map[int]int]{name: "map extra", lhs: map[int]int{1: 1, 2: 2}, rhs: map[int]int{1: 1, 2: 2, 3: 3}, want: &diff.Result{Rhs: int(3), Kind: diff.Extra}},
