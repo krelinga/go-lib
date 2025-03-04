@@ -29,7 +29,13 @@ const (
 	Extra
 )
 
-func Diff[T any](lhs, rhs T) Kind {
+type Result struct {
+	Lhs  interface{}
+	Rhs  interface{}
+	Kind Kind
+}
+
+func Diff[T any](lhs, rhs T) *Result {
 	return diffWithReflection(newVt(lhs), newVt(rhs))
 }
 
@@ -91,7 +97,14 @@ func (v vt) ResolveInterface() vt {
 	}
 }
 
-func diffWithReflection(lhs, rhs vt) Kind {
+func (v vt) Interface() any {
+	if v.Value.IsValid() {
+		return v.Value.Interface()
+	}
+	return nil
+}
+
+func diffWithReflection(lhs, rhs vt) *Result {
 	if lhs.Type != rhs.Type {
 		panic("lhs and rhs must be of the same type")
 	}
@@ -107,7 +120,7 @@ func diffWithReflection(lhs, rhs vt) Kind {
 		// comparable, so I don't know what to make of that.
 		return diffInterface(lhs, rhs)
 	} else if lhs.Type.Kind() == reflect.Pointer {
-		return diffWithReflection(lhs.Elem(), rhs.Elem())
+		return diffPointer(lhs, rhs)
 	} else if lhs.Type.Kind() == reflect.Slice {
 		return diffSlice(lhs, rhs)
 	} else if lhs.Type.Kind() == reflect.Map {
@@ -121,79 +134,136 @@ func diffWithReflection(lhs, rhs vt) Kind {
 	panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
 }
 
-func diffComp(lhs, rhs vt) Kind {
-	if !lhs.Value.Equal(rhs.Value) {
-		return Different
+func diffPointer(lhs, rhs vt) *Result {
+	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
+		// Both are nil
+		return nil
 	}
-	return Same
+	if !lhs.Value.IsValid() || !rhs.Value.IsValid() {
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
+	}
+	return diffWithReflection(lhs.Elem(), rhs.Elem())
 }
 
-func diffInterface(lhs, rhs vt) Kind {
+func diffComp(lhs, rhs vt) *Result {
+	if !lhs.Value.Equal(rhs.Value) {
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
+	}
+	return nil
+}
+
+func diffInterface(lhs, rhs vt) *Result {
 	lhs = lhs.ResolveInterface()
 	rhs = rhs.ResolveInterface()
 	if lhs.Type == nil && rhs.Type == nil {
 		// This triggers if lhs and rhs were both nil interface values.
-		return Same
+		return nil
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
-		return Different
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
 	}
 	return diffWithReflection(lhs, rhs)
 }
 
-func diffSlice(lhs, rhs vt) Kind {
+func diffSlice(lhs, rhs vt) *Result {
+	// TODO: is this block actually needed?  These should probably be reported as extra/missing.
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return Different
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return Same
+		return nil
 	}
 	if lhs.Value.Len() < rhs.Value.Len() {
-		return Extra
+		return &Result{
+			Rhs: rhs.Index(lhs.Value.Len()).Interface(),
+			Kind: Extra,
+		}
 	} else if lhs.Value.Len() > rhs.Value.Len() {
-		return Missing
+		return &Result{
+			Lhs: lhs.Index(rhs.Value.Len()).Interface(),
+			Kind: Missing,
+		}
 	}
 	for i := 0; i < lhs.Value.Len(); i++ {
-		if diff := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff != Same {
+		if diff := diffWithReflection(lhs.Index(i), rhs.Index(i)); diff != nil {
 			return diff
 		}
 	}
-	return Same
+	return nil
 }
 
-func diffMap(lhs, rhs vt) Kind {
+func diffMap(lhs, rhs vt) *Result {
+	// TODO: is this block actually needed?  These should probably be reported as extra/missing.
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return Different
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return Same
+		return nil
 	}
-	if lhs.Value.Len() < rhs.Value.Len() {
-		return Extra
-	} else if lhs.Value.Len() > rhs.Value.Len() {
-		return Missing
-	}
+
 	for _, key := range lhs.Value.MapKeys() {
-		if diff := diffWithReflection(lhs.MapIndex(key), rhs.MapIndex(key)); diff != Same {
+		lhsFound := lhs.MapIndex(key)
+		rhsFound := rhs.MapIndex(key)
+		if !rhsFound.Value.IsValid() {
+			return &Result{
+				Lhs:  lhsFound.Interface(),
+				Kind: Missing,
+			}
+		} else if diff := diffWithReflection(lhsFound, rhsFound); diff != nil {
 			return diff
 		}
 	}
-	return Same
+	for _, key := range rhs.Value.MapKeys() {
+		lhsFound := lhs.MapIndex(key)
+		rhsFound := rhs.MapIndex(key)
+		if !lhsFound.Value.IsValid() {
+			return &Result{
+				Rhs:  rhsFound.Interface(),
+				Kind: Extra,
+			}
+		}
+	}
+
+	return nil
 }
 
-func diffStruct(lhs, rhs vt) Kind {
+func diffStruct(lhs, rhs vt) *Result {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return Different
+		return &Result{
+			Lhs:  lhs.Interface(),
+			Rhs:  rhs.Interface(),
+			Kind: Different,
+		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
-		return Same
+		return nil
 	}
 	for _, f := range reflect.VisibleFields(lhs.Type) {
 		isFieldOfNestedStruct := len(f.Index) > 1
@@ -203,14 +273,18 @@ func diffStruct(lhs, rhs vt) Kind {
 			// that corresponds to the nested struct.
 			continue
 		}
-		if diff := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff != Same {
+		if diff := diffWithReflection(lhs.StructField(f), rhs.StructField(f)); diff != nil {
 			return diff
 		}
 	}
-	return Same
+	return nil
 }
 
 // Next Steps:
 // - Change Result to a struct, and rename the enum to Kind.
 // - Result should surface Lhs and Rhs as any values, and Kind to indicate what sort of result it is.
 // - Get rid of Same, and just return nil if there are no differences.
+
+// There's some really subtle stuff going on between reflect.Value.IsNil() and reflect.Value.IsValid().
+// AFAICT the difference is that nil interface values and the literal nil are considered invalid (i.e. things where we have no way to tell their type), but
+// nil pointers are considered valid (i.e. we know their type, and we know they're nil).
