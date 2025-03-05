@@ -29,11 +29,11 @@ func AssertEqual[T any](t *testing.T, lhs, rhs T) bool {
 	}
 	switch diffResult.Kind {
 	case diff.Different:
-		t.Errorf(fmtDifferent, diffResult.Path, diffResult.Lhs, diffResult.Path, diffResult.Rhs)
+		t.Errorf(fmtDifferent, diffResult.Path.Basename("lhs"), diffResult.Lhs, diffResult.Path.Basename("rhs"), diffResult.Rhs)
 	case diff.Missing:
-		t.Errorf(fmtMissing, diffResult.Path, diffResult.Lhs)
+		t.Errorf(fmtMissing, diffResult.Path.Basename("lhs"), diffResult.Lhs)
 	case diff.Extra:
-		t.Errorf(fmtExtra, diffResult.Path, diffResult.Rhs)
+		t.Errorf(fmtExtra, diffResult.Path.Basename("rhs"), diffResult.Rhs)
 	default:
 		panic(fmt.Sprintf("unexpected diff kind: %v", diffResult.Kind))
 	}
