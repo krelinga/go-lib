@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -17,6 +18,7 @@ import (
 var updateFlag = flag.Bool("update", false, "update golden files")
 
 type TestCase interface {
+	Name() string
 	RunDiffTest(t *testing.T)
 	RunAssertEqualTest(t *testing.T)
 }
@@ -26,6 +28,10 @@ type testCase[T any] struct {
 	lhs  T
 	rhs  T
 	want *diff.Result
+}
+
+func (c testCase[T]) Name() string {
+	return c.name
 }
 
 func (c testCase[T]) RunDiffTest(t *testing.T) {
@@ -461,4 +467,25 @@ var TestCases = []TestCase{
 		rhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
 		want: nil,
 	},
+}
+
+func isComparable[T any]() bool {
+	return reflect.TypeFor[T]().Comparable()
+}
+
+func init() {
+	if !isComparable[compStruct]() {
+		panic("compStruct is not comparable")
+	}
+	if isComparable[nonCompStruct]() {
+		panic("nonCompStruct is comparable")
+	}
+
+	names := make(map[string]struct{})
+	for _, tc := range TestCases {
+		if _, ok := names[tc.Name()]; ok {
+			panic(fmt.Sprintf("duplicate test case name: %s", tc.Name()))
+		}
+		names[tc.Name()] = struct{}{}
+	}
 }
