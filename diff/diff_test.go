@@ -8,6 +8,6 @@ import (
 
 func TestDiff(t *testing.T) {
 	for _, tt := range difftestutil.TestCases {
-		tt.Run(t)
+		tt.RunDiffTest(t)
 	}
 }
