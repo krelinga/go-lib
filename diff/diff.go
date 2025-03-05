@@ -262,8 +262,8 @@ func diffMap(p datapath.Path, lhs, rhs vt) *Result {
 		rhsFound := rhs.MapIndex(key)
 		if !rhsFound.Value.IsValid() {
 			return &Result{
-				Path: p,
-				Lhs:  key.Interface(),
+				Path: p.Key(key.Interface()),
+				Lhs:  lhsFound.Interface(),
 				Kind: Missing,
 			}
 		} else if diff := diffWithReflection(p.Key(key.Interface()), lhsFound, rhsFound); diff != nil {
@@ -274,8 +274,8 @@ func diffMap(p datapath.Path, lhs, rhs vt) *Result {
 		lhsFound := lhs.MapIndex(key)
 		if !lhsFound.Value.IsValid() {
 			return &Result{
-				Path: p,
-				Rhs:  key.Interface(),
+				Path: p.Key(key.Interface()),
+				Rhs:  rhs.MapIndex(key).Interface(),
 				Kind: Extra,
 			}
 		}
