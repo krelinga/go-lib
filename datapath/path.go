@@ -21,10 +21,18 @@ func (p Path) Field(name string) Path {
 	}
 }
 
+func Field(name string) Path {
+	return Path{}.Field(name)
+}
+
 func (p Path) Index(i int) Path {
 	return Path{
 		str: fmt.Sprintf("%s[%d]", p, i),
 	}
+}
+
+func Index(i int) Path {
+	return Path{}.Index(i)
 }
 
 func (p Path) Key(k any) Path {
@@ -33,14 +41,26 @@ func (p Path) Key(k any) Path {
 	}
 }
 
+func Key(k any) Path {
+	return Path{}.Key(k)
+}
+
 func (p Path) TypeAssert(name string) Path {
 	return Path{
 		str: fmt.Sprintf("%s.(%s)", p, name),
 	}
 }
 
+func TypeAssert(name string) Path {
+	return Path{}.TypeAssert(name)
+}
+
 func (p Path) PtrDeref() Path {
 	return Path{
 		str: fmt.Sprintf("(*%s)", p),
 	}
+}
+
+func PtrDeref() Path {
+	return Path{}.PtrDeref()
 }
