@@ -2,7 +2,6 @@ package ktest
 
 import (
 	"fmt"
-	"testing"
 
 	"github.com/krelinga/go-lib/diff"
 )
@@ -21,7 +20,7 @@ const fmtExtra = `
 `
 
 // Returns true if lhs and rhs are equal, false otherwise.
-func AssertEqual[T any](t *testing.T, lhs, rhs T) bool {
+func AssertEqual[T any](t TestingT, lhs, rhs T) bool {
 	t.Helper()
 	diffResult := diff.Diff(lhs, rhs)
 	if diffResult == nil {

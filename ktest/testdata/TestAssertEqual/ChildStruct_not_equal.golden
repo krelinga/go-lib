@@ -1,0 +1,3 @@
+
+- lhs.ChildStruct.Str: a
++ rhs.ChildStruct.Str: b
