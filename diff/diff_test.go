@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/krelinga/go-lib/datapath"
 	"github.com/krelinga/go-lib/diff"
 	"github.com/stretchr/testify/assert"
 )
@@ -106,7 +107,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[myInt]{name: "myInt equal", lhs: 1, rhs: 1, want: nil},
 		testDiffCase[getter]{
 			name: "getter not equal", lhs: myInt(1), rhs: myInt(2),
-			want: &diff.Result{Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.TypeAssert("myInt"),
+				Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[getter]{name: "getter equal", lhs: myInt(1), rhs: myInt(1), want: nil},
 		testDiffCase[getter]{name: "gitter nil", lhs: nil, rhs: nil, want: nil},
@@ -120,7 +124,10 @@ func TestDiff(t *testing.T) {
 		},
 		testDiffCase[ptrGetter]{
 			name: "ptrGetter not equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(2)),
-			want: &diff.Result{Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.TypeAssert("*myInt").PtrDeref(),
+				Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[ptrGetter]{
 			name: "ptrGetter equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(1)), want: nil,
@@ -132,7 +139,10 @@ func TestDiff(t *testing.T) {
 		},
 		testDiffCase[*int]{
 			name: "int ptr not equal", lhs: ptr(1), rhs: ptr(2),
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref(),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[*int]{name: "int ptr equal", lhs: ptr(1), rhs: ptr(1), want: nil},
 		testDiffCase[*int]{name: "int ptr nil", lhs: nil, rhs: nil, want: nil},
@@ -142,7 +152,10 @@ func TestDiff(t *testing.T) {
 		},
 		testDiffCase[**int]{
 			name: "int ptr ptr not equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(2)),
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref().PtrDeref(),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[**int]{
 			name: "int ptr ptr equal", lhs: ptr(ptr(1)), rhs: ptr(ptr(1)), want: nil,
@@ -154,7 +167,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[string]{name: "string equal", lhs: "a", rhs: "a", want: nil},
 		testDiffCase[*string]{
 			name: "string ptr not equal", lhs: ptr("a"), rhs: ptr("b"),
-			want: &diff.Result{Lhs: "a", Rhs: "b", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref(),
+				Lhs: "a", Rhs: "b", Kind: diff.Different,
+			},
 		},
 		testDiffCase[*string]{name: "string ptr equal", lhs: ptr("a"), rhs: ptr("a"), want: nil},
 		testDiffCase[float64]{
@@ -164,14 +180,20 @@ func TestDiff(t *testing.T) {
 		testDiffCase[float64]{name: "float64 equal", lhs: 1.0, rhs: 1.0, want: nil},
 		testDiffCase[*float64]{
 			name: "float64 ptr not equal", lhs: ptr(1.0), rhs: ptr(2.0),
-			want: &diff.Result{Lhs: float64(1.0), Rhs: float64(2.0), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref(),
+				Lhs: float64(1.0), Rhs: float64(2.0), Kind: diff.Different,
+			},
 		},
 		testDiffCase[*float64]{name: "float64 ptr equal", lhs: ptr(1.0), rhs: ptr(1.0), want: nil},
 		testDiffCase[compStruct]{
 			name: "compStruct not equal",
 			lhs:  compStruct{Str: "a", Int: 1},
 			rhs:  compStruct{Str: "b", Int: 2},
-			want: &diff.Result{Lhs: "a", Rhs: "b", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Field("Str"),
+				Lhs: "a", Rhs: "b", Kind: diff.Different,
+			},
 		},
 		testDiffCase[compStruct]{
 			name: "compStruct equal",
@@ -183,7 +205,10 @@ func TestDiff(t *testing.T) {
 			name: "compStruct ptr not equal",
 			lhs:  ptr(compStruct{Str: "a", Int: 1}),
 			rhs:  ptr(compStruct{Str: "b", Int: 2}),
-			want: &diff.Result{Lhs: "a", Rhs: "b", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref().Field("Str"),
+				Lhs: "a", Rhs: "b", Kind: diff.Different,
+			},
 		},
 		testDiffCase[*compStruct]{
 			name: "compStruct ptr equal",
@@ -195,7 +220,10 @@ func TestDiff(t *testing.T) {
 			name: "nonCompStruct not equal",
 			lhs:  nonCompStruct{Slice: []int{1, 2}},
 			rhs:  nonCompStruct{Slice: []int{2, 1}},
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Field("Slice").Index(0),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[nonCompStruct]{
 			name: "nonCompStruct equal",
@@ -213,7 +241,10 @@ func TestDiff(t *testing.T) {
 			name: "nonCompStruct ptr not equal",
 			lhs:  ptr(nonCompStruct{Slice: []int{1, 2}}),
 			rhs:  ptr(nonCompStruct{Slice: []int{2, 1}}),
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.PtrDeref().Field("Slice").Index(0),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[*nonCompStruct]{
 			name: "nonCompStruct ptr equal",
@@ -236,7 +267,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*[]int]{name: "slice ptr nil", lhs: nil, rhs: nil, want: nil},
 		testDiffCase[[]int]{
 			name: "slice not equal", lhs: []int{1, 2}, rhs: []int{2, 1},
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Index(0),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[[]int]{name: "slice equal", lhs: []int{1, 2}, rhs: []int{1, 2}, want: nil},
 		testDiffCase[[]int]{
@@ -257,7 +291,10 @@ func TestDiff(t *testing.T) {
 		},
 		testDiffCase[mySlice]{
 			name: "mySlice not equal", lhs: mySlice{1, 2}, rhs: mySlice{2, 1},
-			want: &diff.Result{Lhs: int(1), Rhs: int(2), Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Index(0),
+				Lhs: int(1), Rhs: int(2), Kind: diff.Different,
+			},
 		},
 		testDiffCase[mySlice]{
 			name: "mySlice equal", lhs: mySlice{1, 2}, rhs: mySlice{1, 2}, want: nil,
@@ -283,7 +320,10 @@ func TestDiff(t *testing.T) {
 		testDiffCase[*map[int]string]{name: "map ptr nil", lhs: nil, rhs: nil, want: nil},
 		testDiffCase[map[int]string]{
 			name: "map not equal", lhs: map[int]string{1: "1"}, rhs: map[int]string{1: "2"},
-			want: &diff.Result{Lhs: "1", Rhs: "2", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Key(1),
+				Lhs: "1", Rhs: "2", Kind: diff.Different,
+			},
 		},
 		testDiffCase[map[int]string]{
 			name: "map equal",
@@ -313,7 +353,10 @@ func TestDiff(t *testing.T) {
 		},
 		testDiffCase[myMap]{
 			name: "myMap not equal",lhs: myMap{1: "1"}, rhs: myMap{1: "2"},
-			want: &diff.Result{Lhs: "1", Rhs: "2", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Key(1),
+				Lhs: "1", Rhs: "2", Kind: diff.Different,
+			},
 		},
 		testDiffCase[myMap]{
 			name: "myMap equal", lhs: myMap{1: "1", 2: "2"}, rhs: myMap{1: "1", 2: "2"},
@@ -344,7 +387,10 @@ func TestDiff(t *testing.T) {
 			name: "ChildStruct not equal",
 			lhs:  ParentStruct{ChildStruct: ChildStruct{Str: "a"}, Int: 1},
 			rhs:  ParentStruct{ChildStruct: ChildStruct{Str: "b"}, Int: 1},
-			want: &diff.Result{Lhs: "a", Rhs: "b", Kind: diff.Different},
+			want: &diff.Result{
+				Path: datapath.Field("ChildStruct").Field("Str"),
+				Lhs: "a", Rhs: "b", Kind: diff.Different,
+			},
 		},
 		testDiffCase[ParentStruct]{
 			name: "ChildStruct equal",
