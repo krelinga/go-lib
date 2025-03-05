@@ -1,6 +1,9 @@
 package datapath
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Not making Path a string type because I might want to
 // extend it in the future in ways that are incompatible with raw strings.
@@ -63,4 +66,8 @@ func (p Path) PtrDeref() Path {
 
 func PtrDeref() Path {
 	return Path{}.PtrDeref()
+}
+
+func (p Path) Basename(bn string) string {
+	return strings.Replace(p.String(), "$", bn, 1)
 }
