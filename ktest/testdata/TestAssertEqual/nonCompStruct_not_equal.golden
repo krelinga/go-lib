@@ -1,3 +1,5 @@
 
 - lhs.Slice[0]: 1
 + rhs.Slice[0]: 2
+- lhs.Slice[1]: 2
++ rhs.Slice[1]: 1

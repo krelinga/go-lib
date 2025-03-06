@@ -8,33 +8,36 @@ import (
 
 const fmtDifferent = `
 - %s: %v
-+ %s: %v
-`
++ %s: %v`
 
 const fmtMissing = `
-- %s: %v
-`
+- %s: %v`
 
 const fmtExtra = `
-+ %s: %v
-`
++ %s: %v`
 
 // Returns true if lhs and rhs are equal, false otherwise.
 func AssertEqual[T any](t TestingT, lhs, rhs T) bool {
 	t.Helper()
-	diffResult := diff.Diff(lhs, rhs)
-	if diffResult == nil {
+	results := diff.Diff(lhs, rhs)
+	if results == nil {
 		return true
 	}
-	switch diffResult.Kind {
-	case diff.Different:
-		t.Errorf(fmtDifferent, diffResult.Path.Basename("lhs"), diffResult.Lhs, diffResult.Path.Basename("rhs"), diffResult.Rhs)
-	case diff.Missing:
-		t.Errorf(fmtMissing, diffResult.Path.Basename("lhs"), diffResult.Lhs)
-	case diff.Extra:
-		t.Errorf(fmtExtra, diffResult.Path.Basename("rhs"), diffResult.Rhs)
-	default:
-		panic(fmt.Sprintf("unexpected diff kind: %v", diffResult.Kind))
+	for i, r := range results {
+		switch r.Kind {
+		case diff.Different:
+			t.Errorf(fmtDifferent, r.Path.Basename("lhs"), r.Lhs, r.Path.Basename("rhs"), r.Rhs)
+		case diff.Missing:
+			t.Errorf(fmtMissing, r.Path.Basename("lhs"), r.Lhs)
+		case diff.Extra:
+			t.Errorf(fmtExtra, r.Path.Basename("rhs"), r.Rhs)
+		default:
+			panic(fmt.Sprintf("unexpected diff kind: %v", r.Kind))
+		}
+		if i == len(results)-1 {
+			t.Errorf("\n")
+		}
 	}
+
 	return false
 }

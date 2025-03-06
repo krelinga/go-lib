@@ -1,3 +1,5 @@
 
 - lhs.Str: a
 + rhs.Str: b
+- lhs.Int: 1
++ rhs.Int: 2

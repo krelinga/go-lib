@@ -38,8 +38,12 @@ type Result struct {
 	Kind Kind
 }
 
-func Diff[T any](lhs, rhs T) *Result {
-	return diffWithReflection(datapath.Path{}, newVt(lhs), newVt(rhs))
+func Diff[T any](lhs, rhs T) []Result {
+	results := diffWithReflection(datapath.Path{}, newVt(lhs), newVt(rhs))
+	if len(results) == 0 {
+		return nil
+	}
+	return results
 }
 
 type vt struct {
@@ -117,7 +121,7 @@ func (v vt) TypeName() string {
 	return prefix + v.Type.Name()
 }
 
-func diffWithReflection(p datapath.Path, lhs, rhs vt) *Result {
+func diffWithReflection(p datapath.Path, lhs, rhs vt) []Result {
 	if lhs.Type != rhs.Type {
 		panic("lhs and rhs must be of the same type")
 	}
@@ -147,16 +151,18 @@ func diffWithReflection(p datapath.Path, lhs, rhs vt) *Result {
 	panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
 }
 
-func diffPointer(p datapath.Path, lhs, rhs vt) *Result {
+func diffPointer(p datapath.Path, lhs, rhs vt) []Result {
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		return nil
 	}
 	if !lhs.Value.IsValid() || !rhs.Value.IsValid() {
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	if lhs.Value.IsNil() && rhs.Value.IsNil() {
@@ -164,29 +170,33 @@ func diffPointer(p datapath.Path, lhs, rhs vt) *Result {
 		return nil
 	}
 	if lhs.Value.IsNil() || rhs.Value.IsNil() {
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	return diffWithReflection(p.PtrDeref(), lhs.Elem(), rhs.Elem())
 }
 
-func diffComp(p datapath.Path, lhs, rhs vt) *Result {
+func diffComp(p datapath.Path, lhs, rhs vt) []Result {
 	if !lhs.Value.Equal(rhs.Value) {
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	return nil
 }
 
-func diffInterface(p datapath.Path, lhs, rhs vt) *Result {
+func diffInterface(p datapath.Path, lhs, rhs vt) []Result {
 	lhs = lhs.ResolveInterface()
 	rhs = rhs.ResolveInterface()
 	if lhs.Type == nil && rhs.Type == nil {
@@ -195,61 +205,73 @@ func diffInterface(p datapath.Path, lhs, rhs vt) *Result {
 	}
 	if lhs.Type != rhs.Type {
 		// This triggers if lhs and rhs were both non-nil interface values with different underlying types.
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	return diffWithReflection(p.TypeAssert(lhs.TypeName()), lhs, rhs)
 }
 
-func diffSlice(p datapath.Path, lhs, rhs vt) *Result {
+func diffSlice(p datapath.Path, lhs, rhs vt) []Result {
 	// TODO: is this block actually needed?  These should probably be reported as extra/missing.
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
 		return nil
 	}
+	// TODO: this could use some love now that we're reporting multiple results.
 	if lhs.Value.Len() < rhs.Value.Len() {
-		return &Result{
-			Path: p,
-			Rhs:  rhs.Index(lhs.Value.Len()).Interface(),
-			Kind: Extra,
+		return []Result{
+			{
+				Path: p,
+				Rhs:  rhs.Index(lhs.Value.Len()).Interface(),
+				Kind: Extra,
+			},
 		}
 	} else if lhs.Value.Len() > rhs.Value.Len() {
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Index(rhs.Value.Len()).Interface(),
-			Kind: Missing,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Index(rhs.Value.Len()).Interface(),
+				Kind: Missing,
+			},
 		}
 	}
+	results := []Result{}
 	for i := 0; i < lhs.Value.Len(); i++ {
 		if diff := diffWithReflection(p.Index(i), lhs.Index(i), rhs.Index(i)); diff != nil {
-			return diff
+			results = append(results, diff...)
 		}
 	}
-	return nil
+	return results
 }
 
-func diffMap(p datapath.Path, lhs, rhs vt) *Result {
+func diffMap(p datapath.Path, lhs, rhs vt) []Result {
 	// TODO: is this block actually needed?  These should probably be reported as extra/missing.
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
@@ -257,47 +279,51 @@ func diffMap(p datapath.Path, lhs, rhs vt) *Result {
 		return nil
 	}
 
+	results := []Result{}
 	for _, key := range lhs.Value.MapKeys() {
 		lhsFound := lhs.MapIndex(key)
 		rhsFound := rhs.MapIndex(key)
 		if !rhsFound.Value.IsValid() {
-			return &Result{
+			results = append(results, Result{
 				Path: p.Key(key.Interface()),
 				Lhs:  lhsFound.Interface(),
 				Kind: Missing,
-			}
+			})
 		} else if diff := diffWithReflection(p.Key(key.Interface()), lhsFound, rhsFound); diff != nil {
-			return diff
+			results = append(results, diff...)
 		}
 	}
 	for _, key := range rhs.Value.MapKeys() {
 		lhsFound := lhs.MapIndex(key)
 		if !lhsFound.Value.IsValid() {
-			return &Result{
+			results = append(results, Result{
 				Path: p.Key(key.Interface()),
 				Rhs:  rhs.MapIndex(key).Interface(),
 				Kind: Extra,
-			}
+			})
 		}
 	}
 
-	return nil
+	return results
 }
 
-func diffStruct(p datapath.Path, lhs, rhs vt) *Result {
+func diffStruct(p datapath.Path, lhs, rhs vt) []Result {
 	if lhs.Value.IsValid() != rhs.Value.IsValid() {
 		// Only one of the instances is nil.
-		return &Result{
-			Path: p,
-			Lhs:  lhs.Interface(),
-			Rhs:  rhs.Interface(),
-			Kind: Different,
+		return []Result{
+			{
+				Path: p,
+				Lhs:  lhs.Interface(),
+				Rhs:  rhs.Interface(),
+				Kind: Different,
+			},
 		}
 	}
 	if !lhs.Value.IsValid() && !rhs.Value.IsValid() {
 		// Both instances are nil.
 		return nil
 	}
+	results := []Result{}
 	for _, f := range reflect.VisibleFields(lhs.Type) {
 		isFieldOfNestedStruct := len(f.Index) > 1
 		if !f.IsExported() || isFieldOfNestedStruct {
@@ -307,10 +333,10 @@ func diffStruct(p datapath.Path, lhs, rhs vt) *Result {
 			continue
 		}
 		if diff := diffWithReflection(p.Field(f.Name), lhs.StructField(f), rhs.StructField(f)); diff != nil {
-			return diff
+			results = append(results, diff...)
 		}
 	}
-	return nil
+	return results
 }
 
 // Next Steps:
