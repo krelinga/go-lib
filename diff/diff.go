@@ -234,29 +234,26 @@ func diffSlice(p datapath.Path, lhs, rhs vt) []Result {
 		// Both instances are nil.
 		return nil
 	}
-	// TODO: this could use some love now that we're reporting multiple results.
-	if lhs.Value.Len() < rhs.Value.Len() {
-		return []Result{
-			{
-				Path: p,
-				Rhs:  rhs.Index(lhs.Value.Len()).Interface(),
-				Kind: Extra,
-			},
-		}
-	} else if lhs.Value.Len() > rhs.Value.Len() {
-		return []Result{
-			{
-				Path: p,
-				Lhs:  lhs.Index(rhs.Value.Len()).Interface(),
-				Kind: Missing,
-			},
-		}
-	}
 	results := []Result{}
-	for i := 0; i < lhs.Value.Len(); i++ {
+	i := 0
+	for ; i < lhs.Value.Len() && i < rhs.Value.Len(); i++ {
 		if diff := diffWithReflection(p.Index(i), lhs.Index(i), rhs.Index(i)); diff != nil {
 			results = append(results, diff...)
 		}
+	}
+	for ; i < lhs.Value.Len(); i++ {
+		results = append(results, Result{
+			Path: p.Index(i),
+			Lhs:  lhs.Index(i).Interface(),
+			Kind: Missing,
+		})
+	}
+	for ; i < rhs.Value.Len(); i++ {
+		results = append(results, Result{
+			Path: p.Index(i),
+			Rhs:  rhs.Index(i).Interface(),
+			Kind: Extra,
+		})
 	}
 	return results
 }
