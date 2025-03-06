@@ -339,11 +339,6 @@ func diffStruct(p datapath.Path, lhs, rhs vt) []Result {
 	return results
 }
 
-// Next Steps:
-// - Change Result to a struct, and rename the enum to Kind.
-// - Result should surface Lhs and Rhs as any values, and Kind to indicate what sort of result it is.
-// - Get rid of Same, and just return nil if there are no differences.
-
 // There's some really subtle stuff going on between reflect.Value.IsNil() and reflect.Value.IsValid().
 // AFAICT the difference is that nil interface values and the literal nil are considered invalid (i.e. things where we have no way to tell their type), but
 // nil pointers are considered valid (i.e. we know their type, and we know they're nil).
