@@ -23,9 +23,23 @@ var (
 	errEmptyPkgPath      = errors.New("empty package path")
 	errAlreadyRegistered = errors.New("type already registered")
 	errInvalidMethod     = errors.New("invalid method")
+	errPtrToPtr          = errors.New("pointer to pointer not allowed")
+	errPtrToInterface    = errors.New("pointer to interface not allowed")
 )
 
 func typeKey(t reflect.Type) (string, error) {
+	var prefix string
+	if t.Kind() == reflect.Ptr {
+		switch t.Elem().Kind() {
+		case reflect.Pointer:
+			return "", errPtrToPtr
+		case reflect.Interface:
+			return "", errPtrToInterface
+		default:
+			prefix = "*"
+			t = t.Elem()
+		}
+	}
 	if t.PkgPath() == "" {
 		return "", errEmptyPkgPath
 	}
@@ -52,7 +66,7 @@ func typeKey(t reflect.Type) (string, error) {
 		}
 		name = fmt.Sprintf("%s[]", t.Name()[:stop])
 	}
-	return fmt.Sprintf("%s.%s", t.PkgPath(), name), nil
+	return fmt.Sprintf("%s%s.%s", prefix, t.PkgPath(), name), nil
 }
 
 func checkMethodNames(t reflect.Type, methods []string) error {

@@ -18,6 +18,10 @@ type Bar[T any] struct {
 	Val T
 }
 
+type myPtrInt int
+
+func (*myPtrInt) Foo() string { return "" }
+
 func TestOptionsDb(t *testing.T) {
 	zeroOptions := &options{}
 	tests := []struct {
@@ -66,7 +70,7 @@ func TestOptionsDb(t *testing.T) {
 		},
 		{
 			name: "valid method interface",
-			t: reflect.TypeFor[fooer](),
+			t:    reflect.TypeFor[fooer](),
 			opts: []Option{
 				WithMethods("Foo"),
 			},
@@ -79,7 +83,7 @@ func TestOptionsDb(t *testing.T) {
 		},
 		{
 			name: "valid method non-interface",
-			t: reflect.TypeFor[myInt](),
+			t:    reflect.TypeFor[myInt](),
 			opts: []Option{
 				WithMethods("Foo"),
 			},
@@ -95,11 +99,38 @@ func TestOptionsDb(t *testing.T) {
 			init: func(db *optionsDb) error {
 				return db.register(reflect.TypeFor[Bar[int]]())
 			},
-			t: reflect.TypeFor[Bar[string]](),
+			t:    reflect.TypeFor[Bar[string]](),
 			want: errAlreadyRegistered,
 			wantLookups: map[reflect.Type]*options{
-				reflect.TypeFor[Bar[int]](): zeroOptions,
+				reflect.TypeFor[Bar[int]]():    zeroOptions,
 				reflect.TypeFor[Bar[string]](): zeroOptions,
+			},
+		},
+		{
+			name: "method with pointer reciever",
+			t:    reflect.TypeFor[*myPtrInt](),
+			opts: []Option{WithMethods("Foo")},
+			want: nil,
+			wantLookups: map[reflect.Type]*options{
+				reflect.TypeFor[*myPtrInt](): {
+					methods: []string{"Foo"},
+				},
+			},
+		},
+		{
+			name: "pointer to pointer",
+			t:    reflect.TypeFor[**myPtrInt](),
+			want: errPtrToPtr,
+			wantLookups: map[reflect.Type]*options{
+				reflect.TypeFor[**myPtrInt](): nil,
+			},
+		},
+		{
+			name: "pointer to interface",
+			t:    reflect.TypeFor[*fooer](),
+			want: errPtrToInterface,
+			wantLookups: map[reflect.Type]*options{
+				reflect.TypeFor[*fooer](): nil,
 			},
 		},
 	}
