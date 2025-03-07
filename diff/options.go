@@ -30,7 +30,7 @@ func typeKey(t reflect.Type) (string, error) {
 		return "", errEmptyPkgPath
 	}
 	var name string
-	if !strings.HasSuffix(t.PkgPath(), "]") {
+	if !strings.HasSuffix(t.Name(), "]") {
 		name = t.Name()
 	} else {
 		// This is a generic type, we need to remove the trailing [].
@@ -47,7 +47,7 @@ func typeKey(t reflect.Type) (string, error) {
 				break
 			}
 		}
-		if level == 0 {
+		if stop == 0 {
 			panic(fmt.Sprintf("unbalanced generic type: %s", t.Name()))
 		}
 		name = fmt.Sprintf("%s[]", t.Name()[:stop])

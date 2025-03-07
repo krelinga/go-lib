@@ -14,6 +14,10 @@ type myInt int
 
 func (myInt) Foo() string { return "" }
 
+type Bar[T any] struct {
+	Val T
+}
+
 func TestOptionsDb(t *testing.T) {
 	zeroOptions := &options{}
 	tests := []struct {
@@ -84,6 +88,18 @@ func TestOptionsDb(t *testing.T) {
 				reflect.TypeFor[myInt](): {
 					methods: []string{"Foo"},
 				},
+			},
+		},
+		{
+			name: "generic already registered",
+			init: func(db *optionsDb) error {
+				return db.register(reflect.TypeFor[Bar[int]]())
+			},
+			t: reflect.TypeFor[Bar[string]](),
+			want: errAlreadyRegistered,
+			wantLookups: map[reflect.Type]*options{
+				reflect.TypeFor[Bar[int]](): zeroOptions,
+				reflect.TypeFor[Bar[string]](): zeroOptions,
 			},
 		},
 	}
