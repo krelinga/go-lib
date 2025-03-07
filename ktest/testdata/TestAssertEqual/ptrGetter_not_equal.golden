@@ -1,3 +1,7 @@
 
+- lhs.GetPtr(): 1
++ rhs.GetPtr(): 2
+- (*lhs.(*myInt)).Get(): 1
++ (*rhs.(*myInt)).Get(): 2
 - (*lhs.(*myInt)): 1
 + (*rhs.(*myInt)): 2

@@ -147,15 +147,34 @@ var TestCases = []TestCase{
 	testCase[int]{name: "int equal", lhs: 1, rhs: 1, want: nil},
 	testCase[myInt]{
 		name: "myInt not equal", lhs: 1, rhs: 2,
-		want: []diff.Result{{Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different}},
+		want: []diff.Result{
+			{
+				Path: datapath.Method("Get"),
+				Lhs:  int(1), Rhs: int(2), Kind: diff.Different,
+			},
+			{
+				Lhs: myInt(1), Rhs: myInt(2), Kind: diff.Different,
+			},
+		},
 	},
 	testCase[myInt]{name: "myInt equal", lhs: 1, rhs: 1, want: nil},
 	testCase[getter]{
 		name: "getter not equal", lhs: myInt(1), rhs: myInt(2),
-		want: []diff.Result{{
-			Path: datapath.TypeAssert("myInt"),
-			Lhs:  myInt(1), Rhs: myInt(2), Kind: diff.Different,
-		}},
+		want: []diff.Result{
+			{
+				Path: datapath.Method("Get"),
+				Lhs:  int(1), Rhs: int(2), Kind: diff.Different,
+			},
+			// TODO: It doesn't seem desirable to have this method show up twice...
+			{
+				Path: datapath.TypeAssert("myInt").Method("Get"),
+				Lhs:  int(1), Rhs: int(2), Kind: diff.Different,
+			},
+			{
+				Path: datapath.TypeAssert("myInt"),
+				Lhs:  myInt(1), Rhs: myInt(2), Kind: diff.Different,
+			},
+		},
 	},
 	testCase[getter]{name: "getter equal", lhs: myInt(1), rhs: myInt(1), want: nil},
 	testCase[getter]{name: "gitter nil", lhs: nil, rhs: nil, want: nil},
@@ -169,10 +188,22 @@ var TestCases = []TestCase{
 	},
 	testCase[ptrGetter]{
 		name: "ptrGetter not equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(2)),
-		want: []diff.Result{{
-			Path: datapath.TypeAssert("*myInt").PtrDeref(),
-			Lhs:  myInt(1), Rhs: myInt(2), Kind: diff.Different,
-		}},
+		want: []diff.Result{
+			{
+				Path: datapath.Method("GetPtr"),
+				Lhs:  int(1), Rhs: int(2), Kind: diff.Different,
+			},
+			// TODO: it might be nice to disentangle the test types a bit to avoid this Get()
+			// showing up in a test that is nominally about GetPtr()
+			{
+				Path: datapath.TypeAssert("*myInt").PtrDeref().Method("Get"),
+				Lhs:  int(1), Rhs: int(2), Kind: diff.Different,
+			},
+			{
+				Path: datapath.TypeAssert("*myInt").PtrDeref(),
+				Lhs:  myInt(1), Rhs: myInt(2), Kind: diff.Different,
+			},
+		},
 	},
 	testCase[ptrGetter]{
 		name: "ptrGetter equal", lhs: ptr(myInt(1)), rhs: ptr(myInt(1)), want: nil,
@@ -578,4 +609,10 @@ func init() {
 		}
 		names[tc.Name()] = struct{}{}
 	}
+
+	diff.Register[getter](diff.WithMethods("Get"))
+	diff.Register[ptrGetter](diff.WithMethods("GetPtr"))
+	diff.Register[myInt](diff.WithMethods("Get"))
+	// TODO: this is failing with empty package path right now ... I might need some special handling for pointers
+	// diff.Register[*myInt](diff.WithMethods("GetPtr"))
 }

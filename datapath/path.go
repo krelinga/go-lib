@@ -71,3 +71,13 @@ func PtrDeref() Path {
 func (p Path) Basename(bn string) string {
 	return strings.Replace(p.String(), "$", bn, 1)
 }
+
+func (p Path) Method(name string) Path {
+	return Path{
+		str: fmt.Sprintf("%s.%s()", p, name),
+	}
+}
+
+func Method(name string) Path {
+	return Path{}.Method(name)
+}

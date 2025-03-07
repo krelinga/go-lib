@@ -121,11 +121,54 @@ func (v vt) TypeName() string {
 	return prefix + v.Type.Name()
 }
 
+func (v vt) CallIsSafe() bool {
+	if !v.Value.IsValid() {
+		return false
+	}
+	switch v.Value.Kind() {
+	case reflect.Interface: fallthrough
+	case reflect.Ptr: fallthrough
+	case reflect.Slice: fallthrough
+	case reflect.Map: fallthrough
+	case reflect.Chan: fallthrough
+	case reflect.Func:
+		if v.Value.IsNil() {
+			return false
+		}
+	}
+	return true
+}
+
+func (v vt) Call(name string) vt {
+
+	typeMethod, ok := v.Type.MethodByName(name)
+	if !ok {
+		panic(fmt.Sprintf("method %s not found on type %s", name, v.Type))
+	}
+	if typeMethod.Type.NumOut() != 1 {
+		panic(fmt.Sprintf("method %s must have exactly one return value", name))
+	}
+	valueMethod := v.Value.MethodByName(name)
+	if !valueMethod.IsValid() {
+		panic(fmt.Sprintf("method %s not found on value %s", name, v.Type))
+	}
+	outs := valueMethod.Call([]reflect.Value{})
+	return vt{
+		Value: outs[0],
+		Type:  typeMethod.Type.Out(0),
+	}
+}
+
 func diffWithReflection(p datapath.Path, lhs, rhs vt) []Result {
 	if lhs.Type != rhs.Type {
 		panic("lhs and rhs must be of the same type")
 	}
 
+	results := []Result{}
+	opts := globalDb.lookup(lhs.Type)
+	if opts != nil {
+		results = append(results, diffMethods(opts.methods, p, lhs, rhs)...)
+	}
 	if lhs.Type.Kind() == reflect.Interface {
 		// This is really subtle. If I take this if condition out, then we only get into
 		// trouble because the interface type is comparable, and it happens by pointer
@@ -135,20 +178,38 @@ func diffWithReflection(p datapath.Path, lhs, rhs vt) []Result {
 		// clear ... the docs say it will panic if the underlying types are not comparable,
 		// but then proceeds to describe how slice comparison works ... but slices are not
 		// comparable, so I don't know what to make of that.
-		return diffInterface(p, lhs, rhs)
+		results = append(results, diffInterface(p, lhs, rhs)...)
 	} else if lhs.Type.Kind() == reflect.Pointer {
-		return diffPointer(p, lhs, rhs)
+		results = append(results, diffPointer(p, lhs, rhs)...)
 	} else if lhs.Type.Kind() == reflect.Slice {
-		return diffSlice(p, lhs, rhs)
+		results = append(results, diffSlice(p, lhs, rhs)...)
 	} else if lhs.Type.Kind() == reflect.Map {
-		return diffMap(p, lhs, rhs)
+		results = append(results, diffMap(p, lhs, rhs)...)
 	} else if lhs.Type.Kind() == reflect.Struct {
-		return diffStruct(p, lhs, rhs)
+		results = append(results, diffStruct(p, lhs, rhs)...)
 	} else if lhs.Type.Comparable() {
-		return diffComp(p, lhs, rhs)
+		results = append(results, diffComp(p, lhs, rhs)...)
+	} else {
+		panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
 	}
+	return results
+}
 
-	panic(fmt.Sprintf("unsupported type: %v", lhs.Type))
+func diffMethods(methods []string, p datapath.Path, lhs, rhs vt) []Result {
+	// Only diff methods if both lhs and rhs are valid and non-nil.  The other
+	// cases will be caught by the other diff functions.
+	if !lhs.CallIsSafe() || !rhs.CallIsSafe() {
+		return nil
+	}
+	results := []Result{}
+	for _, name := range methods {
+		lhsOut := lhs.Call(name)
+		rhsOut := rhs.Call(name)
+		if diff := diffWithReflection(p.Method(name), lhsOut, rhsOut); diff != nil {
+			results = append(results, diff...)
+		}
+	}
+	return results
 }
 
 func diffPointer(p datapath.Path, lhs, rhs vt) []Result {
