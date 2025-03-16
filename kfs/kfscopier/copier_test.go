@@ -94,6 +94,22 @@ func TestCopier(t *testing.T) {
 			},
 		},
 		{
+			name: "Valid byte by byte",
+			opts: kfscopier.Options{
+				ChunkSize: 1,
+			},
+			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
+				tdp.CreateFile(t, "src")
+				return &kfscopier.Req{
+					Src:  tdp.Join("src"),
+					Dest: tdp.Join("dest"),
+				}
+			},
+			check: func(t *testing.T, tdp tempDirPath) {
+				tdp.Check(t, "src", "dest")
+			},
+		},
+		{
 			name: "Src does not exist",
 			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
 				return &kfscopier.Req{
