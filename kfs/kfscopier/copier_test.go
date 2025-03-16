@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/krelinga/go-lib/kfs/kfscopier"
+	"github.com/krelinga/go-lib/pipe"
 )
 
 type tempDirPath string
@@ -104,17 +105,18 @@ func TestCopier(t *testing.T) {
 			in <- req
 			close(in)
 			errs := kfscopier.New(context.Background(), in, tt.opts)
-			gotErr, gotErrOk := <-errs
+			gotErrs := []error{}
+			pipe.Wait(pipe.ToArrayFunc(errs, &gotErrs))
 			switch {
-				case tt.wantErr != nil && !gotErrOk:
+				case tt.wantErr != nil && len(gotErrs) == 0:
 					t.Errorf("expected error %v, got none", tt.wantErr)
-				case tt.wantErr != nil && gotErrOk && !errors.Is(gotErr, tt.wantErr):
-					t.Errorf("expected error %v, got %v", tt.wantErr, gotErr)
-				case tt.wantErr == nil && gotErrOk:
-					t.Errorf("expected no error, got %v", gotErr)
+				case tt.wantErr != nil && len(gotErrs) > 0 && !errors.Is(gotErrs[0], tt.wantErr):
+					t.Errorf("expected error %v, got %v", tt.wantErr, gotErrs[0])
+				case tt.wantErr == nil && len(gotErrs) > 0:
+					t.Errorf("expected no error, got %v", gotErrs[0])
 			}
-			if _, ok := <-errs; ok {
-				t.Error("expected no more errors, got one")
+			if len(gotErrs) > 1 {
+				t.Errorf("expected at most 1 error, got %d", len(gotErrs))
 			}
 			tt.check(t, tdp)
 		})
