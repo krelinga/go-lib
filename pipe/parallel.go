@@ -32,7 +32,7 @@ func ParDoErr[inType any, outType any, chanInType readable[inType]](ctx context.
 		}()
 	}
 
-	return mergeImpl(ctx, outs...), mergeImpl(ctx, errors...)
+	return Merge(ctx, outs...), Merge(ctx, errors...)
 }
 
 // ParDo() runs a function in parallel on each value from the input channel.

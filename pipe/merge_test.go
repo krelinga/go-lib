@@ -16,7 +16,7 @@ func TestMerge(t *testing.T) {
 		t.Parallel()
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-		c := Merge[int](ctx)
+		c := Merge[int, chan int](ctx)
 		pipetest.AssertEventuallyEmpty(t, c)
 	})
 	t.Run("Single", func(t *testing.T) {

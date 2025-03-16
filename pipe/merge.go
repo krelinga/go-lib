@@ -7,12 +7,8 @@ import (
 	"sync"
 )
 
-// A more-generic implementation of Merge() that can merge any readable channel type.
-// This is useful in situations where generic code needs to call Merge(), because the go compiler
-// is very picky about how types are inferred in generic functions.
-// Not exposing this on the public API because the standard go method of expressing a read-only channel
-// is more readable.
-func mergeImpl[t any, chanT readable[t]](ctx context.Context, channels ...chanT) <-chan t {
+// Merge() merges multiple channels into a single channel.
+func Merge[t any, chanT readable[t]](ctx context.Context, channels ...chanT) chanT {
 	out := make(chan t, len(channels))
 	var wg sync.WaitGroup
 	wg.Add(len(channels))
@@ -34,9 +30,4 @@ func mergeImpl[t any, chanT readable[t]](ctx context.Context, channels ...chanT)
 	}()
 
 	return out
-}
-
-// Merge() merges multiple channels into a single channel.
-func Merge[t any](ctx context.Context, channels ...<-chan t) <-chan t {
-	return mergeImpl[t](ctx, channels...)
 }
