@@ -93,6 +93,51 @@ func TestCopier(t *testing.T) {
 				tdp.Check(t, "src", "dest")
 			},
 		},
+		{
+			name: "Src does not exist",
+			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
+				return &kfscopier.Req{
+					Src:  tdp.Join("src"),
+					Dest: tdp.Join("dest"),
+				}
+			},
+			wantErr: kfscopier.ErrReqSrcNotStat,
+		},
+		{
+			name: "Src is a directory",
+			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
+				tdp.MkdirAll(t, "src")
+				return &kfscopier.Req{
+					Src:  tdp.Join("src"),
+					Dest: tdp.Join("dest"),
+				}
+			},
+			wantErr: kfscopier.ErrReqSrcNotFile,
+		},
+		{
+			name: "Dest file exists",
+			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
+				tdp.CreateFile(t, "src")
+				tdp.CreateFile(t, "dest")
+				return &kfscopier.Req{
+					Src:  tdp.Join("src"),
+					Dest: tdp.Join("dest"),
+				}
+			},
+			wantErr: kfscopier.ErrReqDestExists,
+		},
+		{
+			name: "Dest file exists and is a directory",
+			init: func(t *testing.T, tdp tempDirPath) *kfscopier.Req {
+				tdp.CreateFile(t, "src")
+				tdp.MkdirAll(t, "dest")
+				return &kfscopier.Req{
+					Src:  tdp.Join("src"),
+					Dest: tdp.Join("dest"),
+				}
+			},
+			wantErr: kfscopier.ErrReqDestExists,
+		},
 	}
 	tdp := newTempDirPath(t)
 	defer tdp.RemoveAll(t)
@@ -118,7 +163,9 @@ func TestCopier(t *testing.T) {
 			if len(gotErrs) > 1 {
 				t.Errorf("expected at most 1 error, got %d", len(gotErrs))
 			}
-			tt.check(t, tdp)
+			if tt.check != nil {
+				tt.check(t, tdp)
+			}
 		})
 	}
 }
